@@ -1,3 +1,4 @@
+![rubik-logo-001](https://user-images.githubusercontent.com/7745189/174275733-ff1ec56e-82ea-4c3b-86de-b2b07d258842.jpeg)
 # Rubik
 Rubik工具链是一套解决Android平台组件化的综合方案，提供gradle project之间的路由通讯能力，以及对gradle project的组件定义、版本控制、maven发布、aar/jar与源码之间的切换以及组件的自由组合等能力。
 
