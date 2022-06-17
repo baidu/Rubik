@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.mars.rubik-test</groupId>
+  <artifactId>home-lib-context</artifactId>
+  <versioning>
+    <latest>0.1.3-DEV</latest>
+    <release>0.1.3-DEV</release>
+    <versions>
+      <version>0.0.4-DEV</version>
+      <version>0.0.6-DEV</version>
+      <version>0.1.2-DEV</version>
+      <version>0.1.3-DEV</version>
+      <version>1.0.0</version>
+    </versions>
+    <lastUpdated>20220615101820</lastUpdated>
+  </versioning>
+</metadata>

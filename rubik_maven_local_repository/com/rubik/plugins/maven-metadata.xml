@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.rubik</groupId>
+  <artifactId>plugins</artifactId>
+  <versioning>
+    <latest>1.9.0.1.T-AGBT4-K1_3-LOCAL</latest>
+    <release>1.9.0.1.T-AGBT4-K1_3-LOCAL</release>
+    <versions>
+      <version>1.8.11.1-AGBT4-K1_3-LOCAL</version>
+      <version>1.8.11.1-AGBT4-K1_5-LOCAL</version>
+      <version>1.8.12.1-AGBT4-K1_3-LOCAL</version>
+      <version>1.8.12.1-AGBT4-K1_5-LOCAL</version>
+      <version>1.8.12.1.1-AGBT4-K1_3-LOCAL</version>
+      <version>1.8.12.1.T-AGBT4-K1_3-LOCAL</version>
+      <version>1.8.20.1-AGBT4-K1_3-LOCAL</version>
+      <version>1.9.0.1.T-AGBT4-K1_3-LOCAL</version>
+    </versions>
+    <lastUpdated>20220615072131</lastUpdated>
+  </versioning>
+</metadata>

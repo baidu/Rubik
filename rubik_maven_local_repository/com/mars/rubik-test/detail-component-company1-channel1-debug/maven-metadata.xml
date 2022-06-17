@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.mars.rubik-test</groupId>
+  <artifactId>detail-component-company1-channel1-debug</artifactId>
+  <versioning>
+    <latest>0.1.2-DEV</latest>
+    <release>0.1.2-DEV</release>
+    <versions>
+      <version>0.0.4-DEV</version>
+      <version>0.0.5-DEV</version>
+      <version>0.1.2-DEV</version>
+    </versions>
+    <lastUpdated>20220429035126</lastUpdated>
+  </versioning>
+</metadata>

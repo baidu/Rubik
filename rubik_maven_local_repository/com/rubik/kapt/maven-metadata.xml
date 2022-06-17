@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.rubik</groupId>
+  <artifactId>kapt</artifactId>
+  <versioning>
+    <latest>1.9.0.1.T-K1_3-LOCAL</latest>
+    <release>1.9.0.1.T-K1_3-LOCAL</release>
+    <versions>
+      <version>1.8.11.1-K1_3-LOCAL</version>
+      <version>1.8.11.1-K1_5-LOCAL</version>
+      <version>1.8.12.1.T-K1_3-LOCAL</version>
+      <version>1.8.20.1-K1_3-LOCAL</version>
+      <version>1.9.0.1.T-K1_3-LOCAL</version>
+    </versions>
+    <lastUpdated>20220615055325</lastUpdated>
+  </versioning>
+</metadata>

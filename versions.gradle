@@ -1,0 +1,104 @@
+ext.rubikUseLocalMaven = true
+ext.useKotlinV1_3 = true
+ext.useAGBT3 = false
+
+//// version for dependency remote
+//ext.router_dep =  "1.8.20.1"
+//ext.kapt_dep =  "1.8.20.1"
+//ext.plugins_dep = "1.8.20.1"
+//ext.annotations_dep = "1.8.20.1"
+
+// version for dependency local
+ext.router_dep =  "1.9.0.1.T"
+ext.kapt_dep =  "1.9.0.1.T"
+ext.plugins_dep = "1.9.0.1.T"
+ext.annotations_dep = "1.8.12.1.T"
+
+// version for publish
+ext.router_pub = "1.9.0.1.T"
+ext.kapt_pub = "1.9.0.1.T"
+ext.plugins_pub = "1.9.0.1.T"
+ext.annotations_pub = "1.8.12.1.T"
+
+// version for dependency
+ext.blueprint = "4.0.4"
+ext.knt_x = "0.0.5"
+ext.knt_plugins = "0.0.12"
+
+ext.publishRubikTaskPrefix = "publish-RUBIK-"
+ext.publishK1_3Suffix = "-K1_3"
+ext.publishK1_5Suffix = "-K1_5"
+ext.publishLocalSuffix = "-LOCAL"
+
+gradle.startParameter.taskNames.forEach {name->
+    if (name.startsWith(publishRubikTaskPrefix)) {
+        ext.useKotlinV1_3 = !name.contains(publishK1_5Suffix)
+        ext.rubikUseLocalMaven = name.contains(publishLocalSuffix)
+    }
+}
+
+ext.pubs = [:]
+ext.deps = [:]
+
+if (ext.useKotlinV1_3) {
+    ext.kotlin_version = '1.3.72'
+    ext.kotlin_version_suffix = ext.publishK1_3Suffix
+} else {
+    ext.kotlin_version = '1.5.0'
+    ext.kotlin_version_suffix = ext.publishK1_5Suffix
+}
+if (ext.useAGBT3) {
+    ext.agbt_version = '3.4.0'
+    ext.agbt_version_suffix = '-AGBT3'
+} else {
+    ext.agbt_version = '4.0.1'
+    ext.agbt_version_suffix = '-AGBT4'
+}
+if (ext.rubikUseLocalMaven) {
+    ext.local_version_suffix = ext.publishLocalSuffix
+} else {
+    ext.local_version_suffix = ''
+}
+
+def rubikPubs = [:]
+rubikPubs.router = router_pub + kotlin_version_suffix + local_version_suffix
+rubikPubs.kapt = kapt_pub + kotlin_version_suffix + local_version_suffix
+rubikPubs.plugins = plugins_pub + agbt_version_suffix + kotlin_version_suffix + local_version_suffix
+rubikPubs.annotations = annotations_pub + local_version_suffix
+pubs.rubik = rubikPubs
+
+def rubikDeps = [:]
+rubikDeps.router = "com.rubik:router:" + router_dep + kotlin_version_suffix + local_version_suffix
+rubikDeps.kapt = "com.rubik:kapt:" + kapt_dep + kotlin_version_suffix + local_version_suffix
+rubikDeps.plugins = "com.rubik:plugins:" + plugins_dep + agbt_version_suffix + kotlin_version_suffix + local_version_suffix
+rubikDeps.annotations = "com.rubik:annotations:" + annotations_dep + local_version_suffix
+deps.rubik = rubikDeps
+
+def kotlin = [:]
+kotlin.blueprint = "com.kotlin:blueprint:" + blueprint + kotlin_version_suffix
+deps.kotlin = kotlin
+
+def ktnailDeps = [:]
+ktnailDeps.x = "com.ktnail:x:" + knt_x + kotlin_version_suffix
+ktnailDeps.plugins = "com.ktnail:plugins:" + knt_plugins + agbt_version_suffix + kotlin_version_suffix
+deps.ktnail = ktnailDeps
+
+ext.rubik_kapt_version = deps.rubik.kapt
+ext.rubik_router_version = deps.rubik.router
+ext.rubik_plugins_version = deps.rubik.plugins
+
+def addRepos(RepositoryHandler handler) {
+    handler.maven {url rubik_maven_repository }
+    handler.maven { url uri(rubik_maven_local_repository) }
+
+//    handler.maven { url uri('./rubik_maven_local_repository') }
+
+    handler.maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    handler.google()
+    handler.jcenter()
+    handler.mavenCentral()
+}
+
+ext.addRepos = this.&addRepos

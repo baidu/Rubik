@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+<LinearLayout
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="horizontal">
+
+        <Button
+          android:id="@+id/button_start_home"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="start HOME" />
+        <Button
+          android:id="@+id/button_start_java_home"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="start HOME (Java lang)" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="horizontal">
+
+        <Button
+          android:id="@+id/button_test_life"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="test EVENT" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="horizontal">
+
+        <Button
+          android:id="@+id/button_test_data_type"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="test DATA TYPE" />
+
+        <Button
+          android:id="@+id/button_test_big_data"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="test BIG DATA" />
+    </LinearLayout>
+
+
+
+    <TextView
+      android:id="@+id/text_info"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="-" />
+
+</LinearLayout>
+</ScrollView>

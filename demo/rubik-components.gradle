@@ -1,0 +1,33 @@
+rubik {
+    component {
+        uri 'demo://com.mars.rubik-test.detail'
+        source {
+            project ':demo:demo_component_detail'
+            maven {
+                variant 'company1-channel1-debug'
+            }
+        }
+        tag('pr1')
+        tag('pr2')
+    }
+
+    component {
+        uri 'demo://com.mars.rubik-test.detail-java'
+
+        source {
+            project ":demo:demo_component_detail_java"
+        }
+    }
+
+    component {
+        uri 'demo://com.mars.rubik-test.home'
+        dependencies {
+            uri 'demo://com.mars.rubik-test.detail'
+            uri 'demo://com.mars.rubik-test.detail-java'
+        }
+        source {
+            project ':demo:demo_component_home'
+        }
+        tag('pr2')
+    }
+}

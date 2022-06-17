@@ -1,0 +1,19 @@
+def addRubikMavenRepos(RepositoryHandler handler) {
+    if (rubikUseLocalMaven) {
+        handler.maven {
+            name 'local'
+            url rubik_maven_local_repository
+        }
+    } else {
+        handler.maven {
+            name 'remote'
+            url rubik_maven_repository
+            credentials {
+                username rubik_maven_username
+                password rubik_maven_password
+            }
+        }
+    }
+}
+
+ext.addRubikMavenRepos = this.&addRubikMavenRepos

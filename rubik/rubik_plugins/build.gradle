@@ -1,0 +1,53 @@
+apply plugin: 'groovy'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
+apply plugin: 'ktnail-updatesrc'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation "com.android.tools.build:gradle:$agbt_version"
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    implementation 'com.squareup:kotlinpoet:1.4.0'
+    implementation 'org.javassist:javassist:3.27.0-GA'
+
+    implementation deps.rubik.annotations
+
+    implementation deps.ktnail.x
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+compileKotlin {
+    kotlinOptions.freeCompilerArgs += ['-module-name', "kmd.mars.rubik.plugins"]
+}
+
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+publishing {
+    publications {
+        rubikPlugins(MavenPublication) {
+            groupId "com.rubik"
+            artifactId 'plugins'
+            version pubs.rubik.plugins
+            description 'plugins'
+            from components.java
+        }
+    }
+
+    apply from: '../rubik_maven_repositories.gradle'
+    addRubikMavenRepos(repositories)
+}
+
+ktnail {
+    updateSrc {
+        srcFile uri('./src/main/java/ByVersion.kt').path
+        code "const val BY_VERSION = \"${pubs.rubik.plugins}\""
+    }
+}

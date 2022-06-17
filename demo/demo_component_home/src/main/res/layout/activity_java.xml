@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:orientation="horizontal">
+
+            <Button
+              android:id="@+id/button_builder_j_2_k"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="builder \n(Java -> Kotlin)"
+              android:textSize="10dp" />
+
+            <Button
+              android:id="@+id/button_context_j_2_k"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="context \n(Java -> Kotlin)"
+              android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:orientation="horizontal">
+
+            <Button
+              android:id="@+id/button_context_j_2_j"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="context \n(Java -> Java)"
+              android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:orientation="horizontal">
+
+            <Button
+              android:id="@+id/button_builder_start_j_2_j"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="builder start \n(java -> Java)"
+              android:textSize="10dp" />
+
+            <Button
+              android:id="@+id/button_context_start_j_2_j"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="context start \n(java -> Java)"
+              android:textSize="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:orientation="horizontal">
+
+            <Button
+              android:id="@+id/button_builder_start_j_2_k"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="builder start \n(java -> Kotlin)"
+              android:textSize="10dp" />
+
+            <Button
+              android:id="@+id/button_context_start_j_2_k"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="context start \n(java -> Kotlin)"
+              android:textSize="10dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello B1 !!" />
+
+    </LinearLayout>
+</ScrollView>

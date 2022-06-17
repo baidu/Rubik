@@ -1,0 +1,12 @@
+include ':rubik:rubik_annotations',
+        ':rubik:rubik_router',
+        ':rubik:rubik_kapt',
+        ':rubik:rubik_plugins'
+include ':demo:demo_root_app',
+        ':demo:demo_component_detail',
+        ':demo:demo_component_home',
+        ':demo:demo_component_detail_java',
+        ':demo:demo_until_library_a',
+        ':demo:demo_until_library_b',
+        ':test_app'
+rootProject.name = 'K-Component'

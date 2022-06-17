@@ -1,0 +1,81 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.ktnail",
+    "module": "x",
+    "version": "0.0.5-K1_5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.1.1",
+      "buildId": "ypjr5ovjmrbjnnlitnd657k7n4"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.localToProject": "public",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "x-0.0.5-K1_5.jar",
+          "url": "x-0.0.5-K1_5.jar",
+          "size": 35420,
+          "sha512": "32fc6f50a928c5153677b75c3427a664ca8f4c9de349c698c5e1c154e78cc5024383dbf4e281e19bd62eb60d1682627bb9ceb61889845481a4adb744c098dea4",
+          "sha256": "791454a97e3c6cb5c19ade3a9bf400c911b591f2fb776087b6de4088e2d58793",
+          "sha1": "9171a1c6df2f522c927823d880dad6e18149c89a",
+          "md5": "1563aed7b4ffd07f6d3a19c0ab9a4220"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.localToProject": "public",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk7",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.8.5"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "x-0.0.5-K1_5.jar",
+          "url": "x-0.0.5-K1_5.jar",
+          "size": 35420,
+          "sha512": "32fc6f50a928c5153677b75c3427a664ca8f4c9de349c698c5e1c154e78cc5024383dbf4e281e19bd62eb60d1682627bb9ceb61889845481a4adb744c098dea4",
+          "sha256": "791454a97e3c6cb5c19ade3a9bf400c911b591f2fb776087b6de4088e2d58793",
+          "sha1": "9171a1c6df2f522c927823d880dad6e18149c89a",
+          "md5": "1563aed7b4ffd07f6d3a19c0ab9a4220"
+        }
+      ]
+    }
+  ]
+}
