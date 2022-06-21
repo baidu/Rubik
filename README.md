@@ -5,8 +5,8 @@ Rubik工具链是一套解决Android平台组件化的综合方案，提供gradl
 Rubik工具链由两部分组成：
 * Rubik Router ：即Rubik的函数级路由能力，与一般的页面路由不同，Rubik Router允许把Uri及参数，导航到工程内部，任意的一个公开的JVM语言（Java/Kotlin）函数的执行上，以便于更灵活的进行gradle project之间不基于代码调用的通讯。
 * Rubik 工具链 ：提供组件上下文的定义、版本控制、maven发布、aar/jar与源码之间的切换等能力，包括4个gradle plugin:
-    + rubik-config：
-        -contexts.gradle提全局组件定义
+    + rubik：
+        - 提供全局定义组件的能力，并根据全局定义自动启用rubik-contex、rubik-root等插件
     + rubik-context：
         - 提供task，生成中间代码，并把中间代码打包成context.jar ,按版本号发布到maven
         - 提供task，把业务代码按flavor、版本号编译成aar (包括代码、资源、内置SDK)发布到maven
