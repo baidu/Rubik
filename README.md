@@ -51,14 +51,14 @@ fun getUser(id : Int, name : String) : User? {
    * 通过Kotlin DSL：
 ```
 navigate {
-	uri = "app://business.account/user"
-	query {
-	        "id" with 400
-	        "name" with "cuizhe01" 
-	}
+    uri = "app://business.account/user"
+    query {
+        "id" with 400
+        "name" with "cuizhe01" 
+    }
     result<User?> { user -> 
     // 通过泛型指定接收数据类型，多次异步返回时，可以用多个result接收
-        …
+    …
     }
 } 
 ```
