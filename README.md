@@ -18,9 +18,9 @@ Rubik工具链由两部分组成：
         - 给壳工程提供单元测试环境
         
 ## 快速开始
-1. 创建或使用已有的android app gradle project，作为"壳工程"（如测试代码中的root_app），用于把组件组装成Apk
-2. 创建或使用已有的一个或多个android lib gradle project，作为"组件工程"(如测试代码中的component_a、component_b)，用于开发真正的业务逻辑
-3. 为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件
+1. 创建或使用已有的android app gradle project，作为"壳工程"（如测试代码中的root_app），用于把组件组装成Apk。
+2. 创建或使用已有的一个或多个android lib gradle project，作为"组件工程"(如测试代码中的component_a、component_b)，用于开发真正的业务逻辑。
+3. 为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件。
 4. 在最外层gradle project的build.gradle文件或rubik-*.gradle文件中，配置组件信息：
 ```
 rubik {
@@ -60,7 +60,7 @@ navigate {
     }
     result<User?> { user -> 
     // 通过泛型指定接收数据类型，多次异步返回时，可以用多个result接收
-    …
+        …
     }
 } 
 ```
