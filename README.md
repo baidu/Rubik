@@ -8,14 +8,14 @@ Rubik工具链由两部分组成：
     + rubik：
         - 提供全局定义组件的能力，并根据全局定义自动启用rubik-contex、rubik-root等插件
     + rubik-context：
-        - 提供task，生成中间代码，并把中间代码打包成context.jar ,按版本号发布到maven
+        - 提供task，自动生成镜像函数等中间代码，并把中间代码打包成context.jar ,按版本号发布到maven
         - 提供task，把业务代码按flavor、版本号编译成aar (包括代码、资源、内置SDK)发布到maven
-        - 通过contexts.gradle中的定义，为组件所在子工程自动添加其他context-lib的依赖
+        - 通过全局定义的组件，为组件所在子工程自动添加其他context.jar的依赖
     + rubik-root：
-        - 给壳工程提供pick context能力，根据flavor、版本号筛选要打包进apk的业务组件
+        - 给壳工程提供筛选组件等能力，根据flavor、版本号筛选要打包进apk的业务组件
         - 提供组件的源码工程和aar切换的能力
     + rubik-test:
-        - 给壳工程提供单元测试环境
+        - 给工程提供单元测试环境
         
 ## 快速开始
 1. 创建或使用已有的android app gradle project，作为"壳工程"（如测试代码中的root_app），用于把组件组装成Apk。
