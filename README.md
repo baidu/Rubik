@@ -34,9 +34,9 @@ rubik {
 	 }
 	 source {    // 定义默认来源，如不需切换源码和aar，可以只声明project或maven
             project (":component_a") 
-        }
+         }
     }
-	context { … }  //第二个组件
+    component { … }  //第二个组件
 } 
 ```
 4.在一个组件工程内，通过注解定义路由路径，作为组件暴露给其他组件的接口：
