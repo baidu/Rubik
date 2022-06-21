@@ -81,7 +81,7 @@ rubik {
             uri ("app://com.component-b")
         }
         mavenMode { // mavenMode，通过maven打包组件的aar
-            uri ("app://app://com.component-c") {
+            uri ("app://com.component-c") {
                 version "0.2.0" 
             }
         }
