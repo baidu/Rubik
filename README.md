@@ -27,7 +27,7 @@ rubik {
     component { // 第一个组件
         uri "app://com.component-a"  // 组件的Uri
         dependencies {    // 组件需要依赖的其他组件
-            uri ("baidu://component-b" ) { 
+            uri ("baidu://com.component-b" ) { 
                 version "0.1.1"  // 依赖其他组件的版本信息
             }
             uri( … ) 
@@ -53,7 +53,7 @@ fun getUser(id : Int, name : String) : User? {
 通过Kotlin DSL：
 ```
 navigate {
-    uri = "app://business.account/user"
+    uri = "app://business.component-a/account/user"
     query {
         "id" with 400
         "name" with "CuiVincent" 
@@ -68,7 +68,7 @@ navigate {
 
 通过自动生成的镜像函数：
 ```
-UserContext.user(400, "CuiVincent" ) { user ->
+ComponentAContext.Account.user(400, "CuiVincent" ) { user ->
     …
 }
 ```
@@ -77,11 +77,11 @@ UserContext.user(400, "CuiVincent" ) { user ->
 rubik {	
     packing {
         projectMode { // projectMode，通过工程打包组件的源码
-            uri ("app://business.account/user")
-            uri ("app://business.account/file")
+            uri ("app://com.component-a")
+            uri ("app://com.component-b")
         }
         mavenMode { // mavenMode，通过maven打包组件的aar
-            uri ("app://business.account/download") {
+            uri ("app://app://com.component-c") {
                 version "0.2.0" 
             }
         }
