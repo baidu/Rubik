@@ -43,7 +43,7 @@ rubik {
     
 通过RRoute注解声明函数路由:
 ```
-@RRoute(path = "user") 
+@RRoute(path = "account/user") 
 fun getUser(id : Int, name : String) : User? { 
     …
 }
