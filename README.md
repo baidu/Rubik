@@ -25,16 +25,16 @@ Rubik工具链由两部分组成：
 ```
 rubik {
     component { // 第一个组件
-	 uri "app://com.component-a"  // 组件的Uri
-	 dependencies {    // 组件需要依赖的其他组件
+        uri "app://com.component-a"  // 组件的Uri
+        dependencies {    // 组件需要依赖的其他组件
             uri ("baidu://component-b" ) { 
-                    version "0.1.1"  // 依赖其他组件的版本信息
+                version "0.1.1"  // 依赖其他组件的版本信息
             }
             uri( … ) 
-	 }
-	 source {    // 定义默认来源，如不需切换源码和aar，可以只声明project或maven
+        }
+        source {    // 定义默认来源，如不需切换源码和aar，可以只声明project或maven
             project (":component_a") 
-         }
+        }
     }
     component { … }  //第二个组件
 } 
