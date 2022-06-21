@@ -18,27 +18,28 @@ Rubik工具链由两部分组成：
         - 给壳工程提供单元测试环境
         
 ## 快速开始
-1.创建一个用于组装组件的android app gradle project，作为"壳工程"（如测试代码中的root_app）
-2.创建一个或多个作为组件的android lib gradle project，作为"组件工程"(如测试代码中的component_a、component_b)
-3.为最外层工程添加rubik-config插件，并增加组件配置信息：
+1.创建或使用已有的android app gradle project，作为"壳工程"（如测试代码中的root_app），用于把组件组装成Apk
+2.创建或使用已有的一个或多个android lib gradle project，作为"组件工程"(如测试代码中的component_a、component_b)，用于开发真正的业务逻辑
+3.为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件
+4.在最外层gradle project的build.gradle文件或rubik-*.gradle文件中，配置组件信息：
 ```
 rubik {
-	component { // 第一个组件
-	    uri "app://com.component-a"  // 组件的Uri
-	    dependencies {    // 组件需要依赖的其他组件
+    component { // 第一个组件
+	 uri "app://com.component-a"  // 组件的Uri
+	 dependencies {    // 组件需要依赖的其他组件
             uri ("baidu://component-b" ) { 
                     version "0.1.1"  // 依赖其他组件的版本信息
             }
             uri( … ) 
-	    }
-	    source {    // 定义默认来源，如不需切换源码和aar，可以只声明project或maven
+	 }
+	 source {    // 定义默认来源，如不需切换源码和aar，可以只声明project或maven
             project (":component_a") 
         }
     }
 	context { … }  //第二个组件
 } 
 ```
-4.在一个组件工程内定义一个路由路径，作为组件暴露给其他组件的接口：
+4.在一个组件工程内，通过注解定义路由路径，作为组件暴露给其他组件的接口：
     * 通过RRoute注解声明函数路由
 ```
 @RRoute(path = "user") 
@@ -46,7 +47,7 @@ fun getUser(id : Int, name : String) : User? {
     …
 }
 ```
-5.在另一个组件工程内调用其他组件的路由接口：
+5.在另一个组件工程内，调用其他组件的路由接口：
    * 通过Kotlin DSL：
 ```
 navigate {
@@ -68,7 +69,7 @@ UserContext.user(400, "cuizhe01" ) { user ->
     …
 }
 ```
-6.在壳工程中使用添加rubik-root插件，并在build.gradle中指定壳工程最终要将哪些组件，以哪种方式打包到最终的编译产物之中：
+6.在壳工程的的build.gradle文件或rubik-*.gradle文件中，指定壳工程最终要将哪些组件，以哪种方式打包到最终的编译产物之中：
 ```
 rubik {	
     packing {
@@ -85,7 +86,7 @@ rubik {
 } 
 ```
 ## 测试
-* rubik-test插件，给当前工程的androidTest variant添加全部可pick组件的context.jar依赖，便于写测试用例。
+* 通过rubik-test插件，给当前工程的androidTest variant添加全部可pick组件的context.jar依赖，便于写测试用例。
 ```
 @RunWith(AndroidJUnit4::class)
 class RouterTestCase {
