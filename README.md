@@ -18,10 +18,12 @@ Rubik由两部分组成：
         - 给工程提供单元测试环境
         
 ## 快速开始
-1. 创建或使用已有的android application project，作为"壳工程"（如demo代码中的demo_root_app），用于把组件组装成Apk。
-2. 创建或使用已有的一个或多个android library project，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
-3. 为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件。
-4. 在最外层gradle project的build.gradle文件或同级目录下的rubik-*.gradle文件中，配置组件信息：
+### 1. 工程创建和组件声明：
+&ensp;&ensp;(1). 创建或使用已有的一个或多个android library project，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
+
+&ensp;&ensp;(2). 为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件。
+
+&ensp;&ensp;(3). 在最外层gradle project的build.gradle文件或同级目录下的rubik-*.gradle文件中，配置组件信息：
 ```
 rubik {
     component { // 第一个组件
@@ -39,21 +41,33 @@ rubik {
     component { … }  //继续配置第二个组件
 } 
 ```
-5. 在"组件工程"内，通过注解定义路由路径，作为组件暴露给其他组件的接口：
-    
-通过RRoute注解声明函数路由:
+
+### 2. 让组件之间互相通信：
+&ensp;&ensp;(1). 在接口提供者工程内，通过注解定义路由路径，作为组件暴露给其他组件的通信接口：
+
+&ensp;&ensp;&ensp;&ensp;通过RFunction注解声明函数路由:
 ```
-@RRoute(path = "account/user") 
+@RFunction(path = "account/user") 
 fun getUser(id : Int, name : String) : User? { 
     …
 }
 ```
-6. 在另一个"组件工程"内，调用其他"组件工程"先前定义好的路由接口，可以选择两种方式：
+
+&ensp;&ensp;&ensp;&ensp;通过RPage注解声明页面路由:
+```
+@RPage(path = "page/main") 
+class HomeActivity : AppCompatActivity() { … }
+```
+&ensp;&ensp;(2). 执行接口提供者工程对应的"publishRubikXxxRContextLib"任务，发布组件上下文到云端或本地maven仓库。
+
+&ensp;&ensp;(3). 执行接口提供者工程对应的"publishRubikXxxRComponent"任务，发布组件aar到云端或本地maven仓库。
+    
+&ensp;&ensp;(4). 在接口调用者工程内，调用上述接口提供者所提供的接口，可以选择两种方式：
    
-通过Kotlin DSL：
+&ensp;&ensp;&ensp;&ensp;通过Kotlin DSL：
 ```
 navigate {
-    uri = "app://com.myapp.detail/account/user"
+    uri = "app://com.myapp.detail/account/user"  // 请求的uri
     query { // 请求的参数
         "id" with 400
         "name" with "CuiVincent" 
@@ -65,14 +79,17 @@ navigate {
 } 
 ```
    
-
-通过自动生成的镜像函数：
+&ensp;&ensp;&ensp;&ensp;通过自动生成的镜像函数：
 ```
 DetailContext.Account.user(400, "CuiVincent" ) { user ->
     … // 自动生成的镜像函数的参数类型、返回值类型都是明确的，比DSL方式更具有约束力
 }
 ```
-7. 在"壳工程"的的build.gradle文件或同级目录下的rubik-*.gradle文件中，指定"壳工程"最终要将哪些组件，以哪种方式引入，并打包到最终的编译产物之中：
+
+### 3. 筛选要打包的组件
+&ensp;&ensp;(1). 创建或使用已有的android application project，作为"壳工程"（如demo代码中的demo_root_app），用于把组件组装并编译成Apk。
+
+&ensp;&ensp;(2). 在"壳工程"的的build.gradle文件或同级目录下的rubik-*.gradle文件中，指定"壳工程"最终要将哪些组件，以哪种方式引入，并打包到最终的编译产物之中：
 ```
 rubik {	
     packing {
