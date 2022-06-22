@@ -100,7 +100,7 @@ DetailContext.Account.user(400, "CuiVincent" ) { user ->
 &ensp;&ensp;(1). 创建或使用已有的android application project，作为"壳工程"（如demo代码中的demo_root_app），用于把组件组装并编译成Apk。
 
 &ensp;&ensp;(2). 在"壳工程"的的build.gradle文件或同级目录下的rubik-*.gradle文件中，指定"壳工程"最终要将哪些组件，以哪种方式引入，并打包到最终的编译产物之中：
-```groory
+```groovy
 rubik {	
     packing {
         projectMode { // projectMode，通过源码工程的方式引入组件
