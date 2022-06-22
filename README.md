@@ -1,4 +1,14 @@
 ![rubik-logo-001](https://user-images.githubusercontent.com/7745189/174275733-ff1ec56e-82ea-4c3b-86de-b2b07d258842.jpeg)
+
+<div align="center">
+    
+![license](https://img.shields.io/github/license/baidu/rubik.svg)
+![platform](https://img.shields.io/badge/platform-Android-red)
+![language](https://img.shields.io/github/languages/top/baidu/rubik)
+![last](https://img.shields.io/github/last-commit/baidu/rubik.svg)
+
+</div>
+
 # Rubik
 Rubik是一套解决Android平台组件化的综合方案，提供gradle project之间的路由通讯能力，以及对gradle project的组件定义、版本控制、maven发布、aar/jar与源码之间的切换以及组件的自由组合等能力。
 
@@ -24,7 +34,7 @@ Rubik由两部分组成：
 &ensp;&ensp;(2). 为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件。
 
 &ensp;&ensp;(3). 在最外层gradle project的build.gradle文件或同级目录下的rubik-*.gradle文件中，配置组件信息：
-```
+```groovy
 rubik {
     component { // 第一个组件
         uri "app://com.myapp.home"  // 组件的Uri
@@ -46,7 +56,7 @@ rubik {
 &ensp;&ensp;(1). 在接口提供者工程内，通过注解定义路由路径，作为组件暴露给其他组件的通信接口：
 
 &ensp;&ensp;&ensp;&ensp;通过RFunction注解声明函数路由:
-```
+```kotlin
 @RFunction(path = "account/user") 
 fun getUser(id : Int, name : String) : User? { 
     …
@@ -54,7 +64,7 @@ fun getUser(id : Int, name : String) : User? {
 ```
 
 &ensp;&ensp;&ensp;&ensp;通过RPage注解声明页面路由:
-```
+```kotlin
 @RPage(path = "page/main") 
 class HomeActivity : AppCompatActivity() { … }
 ```
@@ -65,7 +75,7 @@ class HomeActivity : AppCompatActivity() { … }
 &ensp;&ensp;(4). 在接口调用者工程内，调用上述接口提供者所提供的接口，可以选择两种方式：
    
 &ensp;&ensp;&ensp;&ensp;通过Kotlin DSL：
-```
+```kotlin
 navigate {
     uri = "app://com.myapp.detail/account/user"  // 请求的uri
     query { // 请求的参数
@@ -80,7 +90,7 @@ navigate {
 ```
    
 &ensp;&ensp;&ensp;&ensp;通过自动生成的镜像函数：
-```
+```kotlin
 DetailContext.Account.user(400, "CuiVincent" ) { user ->
     … // 自动生成的镜像函数的参数类型、返回值类型都是明确的，比DSL方式更具有约束力
 }
@@ -90,7 +100,7 @@ DetailContext.Account.user(400, "CuiVincent" ) { user ->
 &ensp;&ensp;(1). 创建或使用已有的android application project，作为"壳工程"（如demo代码中的demo_root_app），用于把组件组装并编译成Apk。
 
 &ensp;&ensp;(2). 在"壳工程"的的build.gradle文件或同级目录下的rubik-*.gradle文件中，指定"壳工程"最终要将哪些组件，以哪种方式引入，并打包到最终的编译产物之中：
-```
+```groory
 rubik {	
     packing {
         projectMode { // projectMode，通过源码工程的方式引入组件
@@ -107,7 +117,7 @@ rubik {
 ```
 ## 测试
 * 通过rubik-test插件，给当前工程的androidTest variant添加全部可pick组件的context.jar依赖，便于写测试用例。
-```
+```kotlin
 @RunWith(AndroidJUnit4::class)
 class RouterTestCase {
     @Before
