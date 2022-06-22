@@ -105,10 +105,10 @@ rubik {
     packing {
         projectMode { // projectMode，通过源码工程的方式引入组件
             uri ("app://com.myapp.home")
-            uri ("app://com.myapp.detail")
+            uri ("app://com.myapp.*") // 支持通过*匹配任意字符
         }
         mavenMode { // mavenMode，通过maven上的aar的方式引入组件
-            uri ("app://com.myapp.other") {
+            uri ("app://com.myapp.detail") {
                 version "0.2.0" 
             }
         }
