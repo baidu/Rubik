@@ -2,6 +2,7 @@
 <div align="center">
   <p> <img width="600" src="https://user-images.githubusercontent.com/7745189/174275733-ff1ec56e-82ea-4c3b-86de-b2b07d258842.jpeg"> </p>
     
+![version](https://img.shields.io/badge/version-v1.9.0-orange)
 ![license](https://img.shields.io/github/license/baidu/rubik.svg)
 ![platform](https://img.shields.io/badge/platform-Android-red)
 ![language](https://img.shields.io/github/languages/top/baidu/rubik)
