@@ -127,7 +127,7 @@ class RouterTestCase {
     } // 初始化Rubik
     @Test
     fun usePerview() {
-        PerviewContext.preViewVideo(path : String) { success ->
+        PerviewContext.preViewVideo(path) { success ->
             log("preViewVideo success:${success}")
         } // 测试用例
     }
