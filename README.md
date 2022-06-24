@@ -30,7 +30,7 @@ Rubik由两部分组成：
         
 ## 快速开始
 ### 1. 工程创建和组件声明：
-&ensp;&ensp;(1) 创建或使用已有的一个或多个android library project，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
+&ensp;&ensp;(1) 创建或使用已有的一个或多个android library module，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
 
 &ensp;&ensp;(2) 在最外层工程（gradle root project)的build.gradle或gradle.properties文件中配置Rubik版本号等初始化参数，并在最外层工程中启用rubik插件：
 ```groovy
@@ -50,7 +50,7 @@ rubik {
         uri "app://com.myapp.home"  // 组件的Uri
         dependencies {    // 组件需要依赖的其他组件
             uri ("app://com.myapp.detail" ) { 
-                version "0.1.1"  // 依赖其他组件的版本信息
+                version "0.1.1"  // 依赖其他组件的版本
             }
             uri( … ) 
         }
@@ -76,7 +76,9 @@ fun getUser(id : Int, name : String) : User? {
 &ensp;&ensp;&ensp;&ensp;通过RPage注解声明页面路由:
 ```kotlin
 @RPage(path = "page/main") 
-class HomeActivity : AppCompatActivity() { … }
+class HomeActivity : AppCompatActivity() {
+    … 
+}
 ```
 &ensp;&ensp;(2). 执行接口提供者工程对应的"publishRubikXxxRContextLib"任务，发布组件上下文到云端或本地maven仓库。
 
