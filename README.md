@@ -30,11 +30,20 @@ Rubik由两部分组成：
         
 ## 快速开始
 ### 1. 工程创建和组件声明：
-&ensp;&ensp;(1). 创建或使用已有的一个或多个android library project，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
+&ensp;&ensp;(1) 创建或使用已有的一个或多个android library project，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
 
-&ensp;&ensp;(2). 为最外层gradle project添加apply plugin: 'rubik'，启用rubik插件。
+&ensp;&ensp;(2) 在最外层工程（gradle root project)的build.gradle或gradle.properties文件中配置Rubik版本号等初始化参数，并在最外层工程中启用rubik插件：
+```groovy
+ext {
+    rubik_kapt_version = "com.rubik:kapt:1.9.0.1-K1_5"   
+    rubik_router_version = "com.rubik:router:1.9.0.1-K1_5"   
+    rubik_plugins_version = "com.rubik:plugins:1.9.0.1-AGBT4-K1_5"  
+} 
 
-&ensp;&ensp;(3). 在最外层gradle project的build.gradle文件或同级目录下的rubik-*.gradle文件中，配置组件信息：
+apply plugin: 'rubik' // 启用rubik插件
+```
+
+&ensp;&ensp;(3) 在最外层工程的build.gradle文件或同级目录下的rubik-*.gradle文件中，配置组件信息：
 ```groovy
 rubik {
     component { // 第一个组件
