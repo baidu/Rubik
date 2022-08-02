@@ -9,6 +9,7 @@ import com.rubik.plugins.context.model.Lib.Companion.nameToLibArtifactId
 import com.rubik.plugins.context.model.Lib.Companion.versionToDevVersion
 import com.rubik.plugins.extension.RubikExtension
 import com.rubik.plugins.extension.context.dependency.DependenciesExtension
+import com.rubik.plugins.extension.context.dependency.DependencyExtension
 import com.rubik.plugins.extension.context.source.SourceExtension
 import groovy.lang.Closure
 import org.gradle.util.ConfigureUtil
@@ -163,5 +164,12 @@ open class ContextExtension(val rubik: RubikExtension, private val keyWord: Stri
 
     override fun toString() =
         "ContextExtension : scheme:$scheme authority:$_authority dependencies:$_dependencies source:$_source name:$_name group:$_group"
+
+    fun toDependencyExtension(): DependencyExtension{
+        val contextUri = this.uri
+        return DependencyExtension(rubik).apply {
+            setUri(contextUri)
+        }
+    }
 
 }

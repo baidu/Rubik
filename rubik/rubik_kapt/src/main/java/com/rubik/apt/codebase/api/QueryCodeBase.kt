@@ -32,8 +32,8 @@ import com.rubik.apt.utility.isVarargs
 class QueryCodeBase(
     private var name: String,
     type: KbpType,
-    var isExtendThis: Boolean,
-    var isVarargs: Boolean,
+    val isExtendThis: Boolean,
+    val isVarargs: Boolean,
     val resultInvoker: ResultInvokerCodeBase?
 ) : TypeCodeBase(type) {
     companion object {
@@ -58,8 +58,7 @@ class QueryCodeBase(
                 QueryCodeBase(
                     variableElement.name,
                     variableElement.type,
-                    isExtendThis = null != variableElement.jmElement?.getAnnotation(
-                        RExtend::class.java),
+                    isExtendThis = null != variableElement.jmElement?.getAnnotation(RExtend::class.java),
                     isVarargs = variableElement.type.isVarargs(),
                     resultInvoker = if (variableElement.isResultInvoker()) ResultInvokerCodeBase(
                         variableElement,
@@ -70,8 +69,8 @@ class QueryCodeBase(
     }
 
     fun addNameAssistPrefix() {
-        if (!name.startsWith(Constants.Apis.PARAMETER_NAME_ASSIST_PREFIX)) {
-            name = "${Constants.Apis.PARAMETER_NAME_ASSIST_PREFIX}${name.camelToPascal()}"
+        if (!name.startsWith(Constants.Apis.PARAMETER_NAME_INSTANCE_PREFIX)) {
+            name = "${Constants.Apis.PARAMETER_NAME_INSTANCE_PREFIX}${name.camelToPascal()}"
         }
     }
 
@@ -81,9 +80,10 @@ class QueryCodeBase(
     val originalName
         get() = name
 
-    fun makeGetQueryCode(name: String, type: KbpType, index: Int) =
-        if (isRValue)
-            Constants.Aggregate.makeGetValueQueryCode(name, type.toTypeName().toString(), index)
-        else
-            Constants.Aggregate.makeGetQueryCode(name, type.toTypeName().toString(), index)
+    val callName
+        get() = if (isVarargs) "*${legalName}" else legalName
+
+    fun makeGetQueryContextTypeCode(name: String, index: Int) =
+        Constants.Aggregate.makeGetQueryCode(name, index)
+
 }

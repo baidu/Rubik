@@ -6,7 +6,7 @@ import com.ktnail.x.uri.buildVersionPath
 import com.squareup.kotlinpoet.FunSpec
 
 
-fun FunSpec.Builder.addActivityStatements(activities: Map<String, ActivityCodeBase>) = apply {
+fun FunSpec.Builder.addActivityOnRouteStatements(activities: Map<String, ActivityCodeBase>) = apply {
     activities.forEach { (_, activity) ->
         val path = buildVersionPath(activity.path, activity.version)
         if(Constants.Aggregate.isParameterPath(path))

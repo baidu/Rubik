@@ -17,7 +17,7 @@ package com.rubik.apt.codebase.event
 
 import com.blueprint.kotlin.lang.element.KbpElement
 import com.blueprint.kotlin.pool.ElementPool
-import com.rubik.apt.codebase.InvokeElementCodeBase
+import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
 
 class EventInstanceCodeBase(
     val forTag: String,

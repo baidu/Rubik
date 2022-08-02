@@ -4,7 +4,7 @@ import android.content.Context
 import rubik.generate.context.demo_com_mars_rubik_test_detail_java.DetailJavaContext
 import rubik.generate.context.demo_com_mars_rubik_test_detail_java.TestJavaBean
 
-class TestKotlinInvokeJavaFunctionTask {
+class TestKotlinInvokeActionFunctionJavaTask {
     fun invoke(context: Context, onFinish: (String) -> Unit) {
 
         val tag = " B FUNCTION TASK "

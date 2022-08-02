@@ -4,14 +4,14 @@ import BY_VERSION
 import com.ktnail.x.camelToPascal
 import com.ktnail.x.pathToCamel
 import com.rubik.annotations.source.RGenerated
+import com.rubik.annotations.source.RGeneratedRouter
 import com.rubik.apt.Constants
 import com.rubik.apt.InvokeElementType
+import com.rubik.apt.codebase.AnnotationCodeBase
 import com.rubik.apt.codebase.api.RouteCodeBase
 import com.rubik.apt.codebase.context.SectionCodeBase
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.rubik.apt.files.source.value.addAnnotationMembers
+import com.squareup.kotlinpoet.*
 
 fun invokeElementCode(
     type: InvokeElementType,
@@ -35,7 +35,13 @@ fun invokeElementCode(
     }
     val element = when (type) {
         InvokeElementType.METHOD, InvokeElementType.HIGHER_ORDER_FUNC, InvokeElementType.CONSTRUCTOR -> {
-            "$elementName(${queriesCode ?: ""})"
+            "$elementName(${
+                if (queriesCode.isNullOrBlank()) {
+                    ""
+                } else {
+                    "$queriesCode"
+                }
+            })"
         }
         InvokeElementType.PROPERTY -> {
             elementName
@@ -46,12 +52,12 @@ fun invokeElementCode(
 
 
 fun FunSpec.Builder.inControlFlowStatementIf(
-    check: Boolean,
-    beginControlFlow: String,
+    checkIf: Boolean,
+    nameIf: String,
     action: () -> Unit
 ) {
-    if (check){
-        beginControlFlow(beginControlFlow)
+    if (checkIf){
+        beginControlFlow("if ( null!=$nameIf )".noSpaces())
         action()
         endControlFlow()
     } else {
@@ -66,6 +72,27 @@ fun TypeSpec.Builder.addRGeneratedAnnotation(kind: String, version: String) = ap
             .addMember("by = %S", "rubik-kapt:${BY_VERSION}")
             .addMember("version = %S", version)
             .build()
+    )
+}
+
+fun FunSpec.Builder.addRGeneratedRouterAnnotation(
+    uri: String,
+    kind: String,
+    className: String,
+    methodName: String
+) = apply {
+    addAnnotation(
+        AnnotationSpec.builder(
+            RGeneratedRouter::class.java
+        ).addMember(
+            "uri = %S", uri
+        ).addMember(
+            "kind = %S", kind
+        ).addMember(
+            "clazz = %S", className
+        ).addMember(
+            "method = %S",methodName
+        ).build()
     )
 }
 
@@ -101,4 +128,20 @@ fun TypeSpec.Builder.addSectionTypes(
 ): TypeSpec.Builder = apply {
     addThisLevelSectionTypes(sections, action)
     addNextLevelSectionTypes(sections, action)
+}
+
+fun TypeSpec.Builder.addAnnotations(annotations: List<AnnotationCodeBase>) = apply {
+    addAnnotations(annotations.map { codebase ->
+        AnnotationSpec.builder(
+            Class.forName(
+                codebase.className
+            ).asClassName()
+        ).addAnnotationMembers(codebase.members).build()
+    })
+}
+
+fun TypeSpec.Builder.addInterfaces(interfaces: List<ClassName>) = apply {
+    interfaces.forEach { name ->
+        addSuperinterface(name)
+    }
 }

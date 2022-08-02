@@ -27,8 +27,10 @@ open class RouteCodeBase(
     private val pathSection = if (pathSectionOptimize && path.contains("/")) path.split("/") else listOf()
     val sections = if (pathSectionOptimize && pathSection.isNotEmpty()) pathSection.dropLast(1) else listOf()
 
-    val functionName = (if (pathSectionOptimize && pathSection.isNotEmpty()) pathSection.last() else path).pathToCamel()
-    val propertyName = (if (pathSectionOptimize && pathSection.isNotEmpty()) pathSection.last() else path).pathToSnake(true)
+    val contextFunctionName = (if (pathSectionOptimize && pathSection.isNotEmpty()) pathSection.last() else path).pathToCamel()
+    val contextPropertyName = (if (pathSectionOptimize && pathSection.isNotEmpty()) pathSection.last() else path).pathToSnake(true)
+
+    val actionFunctionName = path.pathToCamel()
 }
 
 

@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.rubik</groupId>
       <artifactId>annotations</artifactId>
-      <version>1.8.12.1.T-LOCAL</version>
+      <version>1.9.0.1.T-LOCAL</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

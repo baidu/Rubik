@@ -1,7 +1,15 @@
 package com.rubik.route
 
-typealias ResultGroups = List<Results>
+class ResultGroups {
+    private val groups: MutableList<Results> = mutableListOf()
 
-fun ResultGroups.set(index: Int, vararg results: Result) {
-    getOrNull(index)?.set(*results)
+    fun load(results: Results) {
+        groups.add(results)
+    }
+
+    fun set(index: Int, vararg results: Result) {
+        groups.getOrNull(index)?.set(*results)
+    }
+
 }
+

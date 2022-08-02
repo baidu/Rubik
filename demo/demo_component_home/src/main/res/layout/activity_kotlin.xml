@@ -23,12 +23,20 @@
                 android:textSize="10dp" />
 
             <Button
-                android:id="@+id/button_context_k_2_k"
+                android:id="@+id/button_context_k_2_k_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="context \n(Kotlin -> Kotlin)"
+                android:text="context(action) \n(Kotlin -> Kotlin)"
                 android:textSize="10dp" />
+
+            <Button
+              android:id="@+id/button_context_k_2_k_router"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="context(router) \n(Kotlin -> Kotlin)"
+              android:textSize="10dp" />
 
         </LinearLayout>
 

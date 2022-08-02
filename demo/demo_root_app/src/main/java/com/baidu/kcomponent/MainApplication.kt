@@ -11,11 +11,11 @@ class MainApplication : Application() {
         Rubik.logger {
             bigLogEnable = false
             d = { log -> Log.d("R DEBUG", log) }
-            e = { log, _ ->
+            e = { log, e ->
                 Log.e("R ERROR", "$log ")
-//            exception?.let {
-//                throw it
-//            }
+                e?.let {
+                    throw it
+                }
             }
         }
         Rubik.init()

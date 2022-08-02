@@ -15,7 +15,6 @@
  */
 package com.rubik.apt.codebase.context
 
-import com.ktnail.x.Logger
 import com.ktnail.x.find
 import com.ktnail.x.toPascal
 import com.ktnail.x.uri.buildVersionPath
@@ -50,8 +49,13 @@ class ContextCodeBase {
 
     fun getContextName(): String = toPascal(name, Constants.Contexts.CONTEXT_BASE_CLASS_NAME)
 
+    fun getRouteActionsName(): String = toPascal(name, Constants.RouteActions.CONTEXT_ROUTE_ACTIONS_BASE_CLASS_NAME)
+
+    fun getRouteContextName(): String = toPascal(name, Constants.ContextRouters.ROUTE_CONTEXT_BASE_CLASS_NAME)
+
     fun merge(other: ContextCodeBase) {
         events.putAll(other.events)
+        eventAssistants.putAll(other.eventAssistants)
         values.addAll(other.values)
         apis.putAll(other.apis)
         apiAssistants.putAll(other.apiAssistants)
@@ -74,19 +78,19 @@ class ContextCodeBase {
 
     private fun composeSections() {
         activities.forEach { (_, activity) ->
-            if (!activity.navigationOnly) {
-                sections.addItem(activity, activity.sections)
-            }
+            sections.addItem(activity, activity.sections)
+
         }
         apis.forEach { (_, api) ->
-            if (!api.navigationOnly) {
-                sections.addItem(api, api.sections)
-            }
+            sections.addItem(api, api.sections)
         }
     }
 
     private fun composeEventAssistants() {
         eventAssistants.forEach { (tag, assistant) ->
+            assistant.invoker.queries.forEach { query ->
+                query.addNameAssistPrefix()
+            }
             events.forEach { (_, msgEvents) ->
                 msgEvents.filter { life -> life.tag == tag }.forEach { life ->
                     life.invoker.assistant = assistant.invoker
@@ -113,7 +117,7 @@ class ContextCodeBase {
     }
 
     private fun composeApiAssistant(api: ApiCodeBase, apiAssistant: ApiInstanceCodeBase) {
-        api.invoker.assistant = apiAssistant.invoker
+        api.originalInvoker.assistant = apiAssistant.invoker
     }
 
 }

@@ -4,10 +4,7 @@ import com.android.build.gradle.api.BaseVariant
 import com.ktnail.x.Logger
 import com.ktnail.x.uri.buildUri
 import com.rubik.plugins.basic.LogTags
-import com.rubik.plugins.basic.exception.RubikConfigPluginNotApplyException
-import com.rubik.plugins.basic.exception.RubikDefaultSchemeNotSetException
-import com.rubik.plugins.basic.exception.RubikKaptDependencyNotSetException
-import com.rubik.plugins.basic.exception.RubikMavenRepositoryNotSetException
+import com.rubik.plugins.basic.exception.*
 import com.rubik.plugins.basic.utility.Rubik.CONTEXT_PLUGIN_NAME
 import com.rubik.plugins.basic.utility.Rubik.ROOT_PLUGIN_NAME
 import com.rubik.plugins.basic.utility.Rubik.TEST_PLUGIN_NAME
@@ -138,7 +135,7 @@ val Project.rubikMavenRepository: URI
     get() = uri(propertyOr(Ext.RUBIK_MAVEN_REPOSITORY) { throw RubikMavenRepositoryNotSetException() })
 
 val Project.rubikMavenLocalRepository: URI
-    get() = uri(propertyOr(Ext.RUBIK_MAVEN_LOCAL_REPOSITORY) { "./rubik_maven_local_repository" })
+    get() = uri(propertyOr(Ext.RUBIK_MAVEN_LOCAL_REPOSITORY) { "./rubik_maven_local" })
 
 fun Project.addRubikRepository() {
     repositories.maven { maven ->
@@ -175,12 +172,11 @@ fun Project.applyTest() {
 }
 
 fun Project.addRubikKaptDependency() {
-    addDependency(
-        Kapt.CONFIGURATION_NAME, propertyOr(Ext.RUBIK_KAPT_VERSION) { throw RubikKaptDependencyNotSetException() })
+    addDependency(Kapt.CONFIGURATION_NAME, propertyOr(Ext.RUBIK_KAPT_VERSION) { throw RubikKaptDependencyNotSetException() })
 }
 
 fun Project.addRubikRouterDependency() {
-    addDependency(DependencyType.IMPLEMENTATION, propertyOr(Ext.RUBIK_ROUTER_VERSION) { throw RubikKaptDependencyNotSetException() })
+    addDependency(DependencyType.IMPLEMENTATION, propertyOr(Ext.RUBIK_ROUTER_VERSION) { throw RubikRouterDependencyNotSetException() })
 }
 
 fun Project.fuzzyApplyRubikConfigFiles(dir: File) {

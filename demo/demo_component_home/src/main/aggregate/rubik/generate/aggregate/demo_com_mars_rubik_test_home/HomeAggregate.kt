@@ -7,26 +7,28 @@ import com.rubik.context.Aggregatable
 import com.rubik.context.AggregateFactory
 import com.rubik.route.Queries
 import com.rubik.route.Result
-import com.rubik.route.Results
-import com.rubik.route.set
+import com.rubik.route.ResultGroups
+import com.rubik.route.mapping.caseToTypeOfT
+import com.rubik.route.mapping.toTypeOfT
 import com.rubik.router.uri.Path
 import kotlin.Function0
 import kotlin.String
 import kotlin.collections.List
+import rubik.generate.context.demo_com_mars_rubik_test_home.HomeRouteActions
 
 /**
  * aggregate router function and router event of Rubik Context.
  *
  * context uri: [demo://com.mars.rubik-test.home]
- * version: 0.1.3
+ * version: 0.1.4
  */
 @RGenerated(
   kind = "aggregate",
   by = "rubik-kapt:1.9.0.1.T-K1_3-LOCAL",
-  version = "0.1.3"
+  version = "0.1.4"
 )
 @Keep
-class HomeAggregate : Aggregatable {
+class HomeAggregate : Aggregatable, HomeRouteActions {
   override fun onEvent(msg: String, queries: Queries) {
     when(msg){
       "LifeCycleEvent_Init" ->  {
@@ -48,7 +50,7 @@ class HomeAggregate : Aggregatable {
   override fun onRoute(
     path: String,
     queries: Queries,
-    results: List<Results>
+    results: ResultGroups
   ) {
     when {
       else -> { throw com.rubik.route.exception.BadPathOrVersionException(path)}
@@ -58,7 +60,7 @@ class HomeAggregate : Aggregatable {
   @RGenerated(
     kind = "aggregate_companion",
     by = "rubik-kapt:1.9.0.1.T-K1_3-LOCAL",
-    version = "0.1.3"
+    version = "0.1.4"
   )
   @Keep
   companion object : AggregateFactory() {

@@ -20,7 +20,7 @@ package com.rubik.plugins.basic.exception
  *
  * @since 1.5
  */
-internal class RubikMavenDependencyVersionNotSetException : RubikException() {
+internal class RubikMavenDependencyVersionNotSetException(private val uri :String) : RubikException() {
     override fun toString() =
-        "RubikMavenDependencyVersionNotSetException context dependency maven but no version set ! "
+        "RubikMavenDependencyVersionNotSetException context dependency maven but no version set. uri:[$uri]! "
 }

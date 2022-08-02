@@ -16,8 +16,10 @@
 package com.rubik.plugins.root
 
 import com.android.build.gradle.api.BaseVariant
+import com.ktnail.x.Logger
 import com.ktnail.x.toCamel
 import com.rubik.plugins.RubikPlugin
+import com.rubik.plugins.basic.LogTags
 import com.rubik.plugins.basic.exception.RubikMavenVariantNotSetException
 import com.rubik.plugins.basic.exception.RubikMavenVersionNotSetException
 import com.rubik.plugins.basic.exception.RubikPluginNotApplyException
@@ -26,6 +28,8 @@ import com.rubik.plugins.basic.utility.*
 import com.rubik.plugins.extension.root.model.MavenMode
 import com.rubik.plugins.extension.root.model.NoSourceMode
 import com.rubik.plugins.extension.root.model.ProjectMode
+import com.rubik.plugins.root.checker.CheckRouterRule
+import com.rubik.plugins.root.checker.transform.CheckRouterTransform
 import com.rubik.plugins.root.files.RubikExtSourceFiles
 import com.rubik.plugins.root.pick.ContextPicker
 import org.gradle.api.Project
@@ -62,6 +66,11 @@ class RootPlugin : RubikPlugin() {
         project.afterEvaluate {
             doPickContexts()
             project.addRubikRouterDependency()
+        }
+
+        if (project.propertyOr(Ext.RUBIK_ENABLE_CHECK_ROUTER_VERSION, false) && CheckRouterRule.RULES.isNotEmpty()) {
+            Logger.p(LogTags.CHECK_ROUTER_VERSION, project) { " enable ! " }
+            project.androidExtension?.registerTransform(CheckRouterTransform(project))
         }
     }
 

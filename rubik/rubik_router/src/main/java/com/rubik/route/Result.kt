@@ -7,7 +7,6 @@ package com.rubik.route
  * @since 1.0
  */
 data class Result(
-    val value: Any?,
-    val isRValue: Boolean = false
+    val value: Any?
 )
 

@@ -15,16 +15,16 @@
  */
 package com.rubik.apt.codebase.api
 
+import com.blueprint.kotlin.lang.element.KbpHighOrderFunctionElement
+import com.blueprint.kotlin.lang.element.KbpVariableElement
+import com.blueprint.kotlin.lang.utility.asTypeElement
+import com.blueprint.kotlin.lang.utility.toKbpClassElement
+import com.blueprint.kotlin.pool.ElementPool
+import com.ktnail.x.findFirstOrNull
+import com.ktnail.x.firstOrNull
 import com.rubik.annotations.route.RResult
 import com.rubik.apt.CallResultType
 import com.rubik.apt.Constants
-import com.blueprint.kotlin.lang.element.KbpHighOrderFunctionElement
-import com.blueprint.kotlin.lang.element.KbpVariableElement
-import com.blueprint.kotlin.pool.ElementPool
-import com.blueprint.kotlin.lang.utility.asTypeElement
-import com.blueprint.kotlin.lang.utility.toKbpClassElement
-import com.ktnail.x.findFirstOrNull
-import com.ktnail.x.firstOrNull
 import javax.lang.model.element.ElementKind
 
 data class ResultInvokerCodeBase(
@@ -75,12 +75,34 @@ data class ResultInvokerCodeBase(
     val queriesHighLevelTypeCode: String
         get() = parameters?.joinToString(",") { "${Any::class.qualifiedName}?" } ?: ""
 
-    fun getQueriesTypeAndNameCode() = parameters?.joinToString(",") { "${it.name}: ${it.toTypeName()}" } ?: ""
+    fun getQueriesTypeAndNameCode() = parameters?.joinToString(",") { "${it.name}: ${it.toContextTypeName()}" } ?: ""
 
     val queriesCode: String
         get() = parameters?.joinToString(",") { it.name } ?: ""
 
-    val queriesRequestsCode: String
-        get() = parameters?.joinToString(",") { Constants.Aggregate.makeResultsCode(it.name, it.isRValue) } ?: ""
+    fun queryNamesCode(castAllQuery: Boolean) = parameters?.joinToString(",\n") { codeBase ->
+        var code = codeBase.name
+        if (codeBase.isRValue) {
+            code = Constants.Aggregate.makeToTypeCode(code)
+        } else {
+            if (castAllQuery) code = Constants.Aggregate.makeCaseToTypeCode(code)
+        }
+        "  $code"
+    }?.let { code ->
+        if (code.isNotBlank()) {
+            "\n$code\n"
+        } else {
+            ""
+        }
+    }
 
+    val queriesRequestsCode: String
+        get() = parameters?.joinToString(",") { Constants.Aggregate.makeResultsCode(it.name) } ?: ""
+
+    val needTransform: Boolean
+        get() = if (callResultType == CallResultType.HIGHER_ORDER_FUNC) {
+            null != parameters?.find { it.isRValue }
+        } else {
+            true
+        }
 }

@@ -1,7 +1,7 @@
 
 <div align="center">
   <p> <img width="600" src="https://user-images.githubusercontent.com/7745189/174275733-ff1ec56e-82ea-4c3b-86de-b2b07d258842.jpeg"> </p>
-    
+
 ![license](https://img.shields.io/github/license/baidu/rubik.svg)
 ![platform](https://img.shields.io/badge/platform-Android-red)
 ![language](https://img.shields.io/github/languages/top/baidu/rubik)
@@ -27,7 +27,7 @@ Rubik由两部分组成：
         - 提供组件的源码工程和aar切换的能力
     + rubik-test:
         - 给工程提供单元测试环境
-        
+
 ## 快速开始
 ### 1. 工程创建和组件声明：
 &ensp;&ensp;(1) 创建或使用已有的一个或多个android library module，作为"组件工程"（如demo代码中的demo_component_detail、demo_component_home等），用于开发真正的业务逻辑。
@@ -83,9 +83,9 @@ class HomeActivity : AppCompatActivity() {
 &ensp;&ensp;(2). 执行接口提供者工程对应的"publishRubikXxxRContextLib"任务，发布组件上下文到云端或本地maven仓库。
 
 &ensp;&ensp;(3). 执行接口提供者工程对应的"publishRubikXxxRComponent"任务，发布组件aar到云端或本地maven仓库。
-    
+
 &ensp;&ensp;(4). 在接口调用者工程内，调用上述接口提供者所提供的接口，可以选择两种方式：
-   
+
 &ensp;&ensp;&ensp;&ensp;通过Kotlin DSL：
 ```kotlin
 navigate {
@@ -100,7 +100,7 @@ navigate {
     }
 } 
 ```
-   
+
 &ensp;&ensp;&ensp;&ensp;通过自动生成的镜像函数：
 ```kotlin
 DetailContext.Account.user(400, "CuiVincent" ) { user ->
@@ -143,7 +143,7 @@ class RouterTestCase {
         } // 测试用例
     }
     … // 继续写测试用例
- }
+}
 
 ```
 

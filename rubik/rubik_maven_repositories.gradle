@@ -4,6 +4,15 @@ def addRubikMavenRepos(RepositoryHandler handler) {
             name 'local'
             url rubik_maven_local_repository
         }
+    } else if(rubikUseGithubMaven){
+        handler.maven {
+            name 'github'
+            url rubik_github_maven_repository
+            credentials {
+                username rubik_github_maven_username
+                password rubik_github_maven_password
+            }
+        }
     } else {
         handler.maven {
             name 'remote'

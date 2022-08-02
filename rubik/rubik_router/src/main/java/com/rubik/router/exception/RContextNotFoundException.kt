@@ -15,11 +15,14 @@
  */
 package com.rubik.router.exception
 
+import com.rubik.router.annotations.RInvariant
+
 /**
  * Thrown when can not find rubik context by uri.
  *
  * @since 1.0
  */
-internal class RContextNotFoundException(private val uri: String) : Exception(){
+@RInvariant
+class RContextNotFoundException(private val uri: String) : Exception(){
     override fun toString() = "RContextNotFoundException on uri:$uri"
 }

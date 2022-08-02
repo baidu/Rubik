@@ -6,7 +6,11 @@ rubik {
 //        mavenMode() {
 //            uri('demo://com.mars.rubik-test.home')
 //            uri('demo://com.mars.rubik-test.detail')
-//            uri('demo://com.mars.rubik-test.detail-java')
+////            uri('demo://com.mars.rubik-test.detail-java')
+//        }
+
+//        all {
+//            projectMode()
 //        }
 
 //    flavor('company1') {

@@ -19,27 +19,27 @@ data class EventsWithLambda(
 
 class Events {
     @REvent(msg = LifeCycleEvent.INIT)
-    fun onInit(context: Context) {
-        println(" CT DBG init DETAIL Events begin !!!")
+    fun onInit(context: Context, parameter1: String) {
+        println(" CT DBG init DETAIL Events begin :${context.hashCode()} parameter1:$parameter1!!!")
         initSdk()
     }
 
     @REvent(msg = LifeCycleEvent.DESTROY)
-    fun onDestroy(context: Context) {
-        println(" CT DBG destroy DETAIL Events begin !!!")
+    fun onDestroy(context: Context, parameter1: String) {
+        println(" CT DBG destroy DETAIL Events begin :${context.hashCode()} parameter1:$parameter1!!!")
     }
 }
 
 class EventsByInstance {
-    @REvent(msg = LifeCycleEvent.INIT, tag = "events-by-instance")
-    fun onInit(arg: Any, arg1: Any, arg2: Any, arg3: Any) {
-        println(" CT DBG init DETAIL:${hashCode()} arg:$arg arg1:$arg1 arg2:$arg2 arg3:$arg3 EventsByInstance begin !!!")
+    @REvent(msg = "MY_INIT", tag = "events-by-instance")
+    fun onInit(arg1: Any, arg2: Any, arg3: Any) {
+        println(" CT DBG MY_INIT DETAIL:${hashCode()}  arg1:$arg1 arg2:$arg2 arg3:$arg3 EventsByInstance begin !!!")
         initSdk()
     }
 
-    @REvent(msg = LifeCycleEvent.DESTROY, tag = "events-by-instance")
-    fun onDestroy(arg: Any, arg1: Any, arg2: Any, arg3: Any) {
-        println(" CT DBG destroy  DETAIL:${hashCode()} arg:$arg arg1:$arg1 arg2:$arg2 arg3:$arg3  EventsByInstance begin !!!")
+    @REvent(msg = "MY_DESTROY", tag = "events-by-instance")
+    fun onDestroy(arg1: Any, arg2: Any, arg3: Any) {
+        println(" CT DBG MY_DESTROY DETAIL:${hashCode()}  arg1:$arg1 arg2:$arg2 arg3:$arg3  EventsByInstance begin !!!")
     }
 }
 
@@ -51,4 +51,4 @@ private val life = EventsByInstance()
 
 @REventInstance(provideForTag = "events-by-instance")
 @REventInstance(provideForTag = "events-by-instance")
-fun provideEventsInstance() = life
+fun provideEventsInstance(bool: Boolean) = life

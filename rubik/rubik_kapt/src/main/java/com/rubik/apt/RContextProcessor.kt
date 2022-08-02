@@ -44,7 +44,7 @@ import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-class RContextProcessor  {
+class RContextProcessor {
 
     private val processingContexts: MutableMap<String, ContextCodeBase> = mutableMapOf()
     private var defaultContexts: ContextCodeBase? = null
@@ -90,7 +90,9 @@ class RContextProcessor  {
                     }
                 }
                 makeDefaultGeneratedDir(processingEnv)?.let { directory ->
-                    ContextSourceFiles(directory).generate(processingContexts.find { value -> value.generatedEnable })
+                    processingContexts.find { value -> value.generatedEnable }.let { contexts->
+                        ContextSourceFiles(directory).generate(contexts)
+                    }
                 }
             }
             Logger.e(" APT DBG RContextProcessor process over ")
@@ -288,7 +290,6 @@ class RContextProcessor  {
             )
         }
     }
-
 
     private fun processFunctionRoute(
         element: Element,

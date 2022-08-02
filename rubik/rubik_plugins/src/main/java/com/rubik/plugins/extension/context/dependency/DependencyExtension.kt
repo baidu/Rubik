@@ -46,7 +46,7 @@ open class DependencyExtension(val rubik: RubikExtension) {
 
     fun versionToDependency(dev: Boolean?): String {
         return (if (null != dev) rubik.globalConfig.getMavenVersion(uri, _version, dev = dev)
-        else rubik.globalConfig.getMavenVersion(uri, _version)) ?: throw RubikMavenDependencyVersionNotSetException()
+        else rubik.globalConfig.getMavenVersion(uri, _version)) ?: throw RubikMavenDependencyVersionNotSetException(uri)
     }
 
     val uri

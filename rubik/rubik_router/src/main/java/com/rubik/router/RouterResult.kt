@@ -16,6 +16,7 @@
 package com.rubik.router
 
 import com.rubik.builder.router.RouterBuildable
+import com.rubik.route.mapping.caseToTypeOfT
 import com.rubik.router.annotations.RInvariant
 
 /**
@@ -31,7 +32,7 @@ inline fun <reified R1> RouterBuildable.result(
 ) =
     receiveResults { results ->
         onReceive(
-            results.toTypeOfT(0)
+            results.value(0).caseToTypeOfT()
         )
     }
 
@@ -48,8 +49,8 @@ inline fun <reified R1, reified R2> RouterBuildable.result(
 ) =
     receiveResults { results ->
         onReceive(
-            results.toTypeOfT(0),
-            results.toTypeOfT(1)
+            results.value(0).caseToTypeOfT(),
+            results.value(1).caseToTypeOfT()
         )
     }
 
@@ -66,9 +67,9 @@ inline fun <reified R1, reified R2, reified R3> RouterBuildable.result(
 ) =
     receiveResults { results ->
         onReceive(
-            results.toTypeOfT(0),
-            results.toTypeOfT(1),
-            results.toTypeOfT(2)
+            results.value(0).caseToTypeOfT(),
+            results.value(1).caseToTypeOfT(),
+            results.value(2).caseToTypeOfT()
         )
     }
 
@@ -85,10 +86,10 @@ inline fun <reified R1, reified R2, reified R3, reified R4> RouterBuildable.resu
 ) =
     receiveResults { results ->
         onReceive(
-            results.toTypeOfT(0),
-            results.toTypeOfT(1),
-            results.toTypeOfT(2),
-            results.toTypeOfT(3)
+            results.value(0).caseToTypeOfT(),
+            results.value(1).caseToTypeOfT(),
+            results.value(2).caseToTypeOfT(),
+            results.value(3).caseToTypeOfT()
         )
     }
 
@@ -105,11 +106,11 @@ inline fun <reified R1, reified R2, reified R3, reified R4, reified R5> RouterBu
 ) =
     receiveResults { results ->
         onReceive(
-            results.toTypeOfT(0),
-            results.toTypeOfT(1),
-            results.toTypeOfT(2),
-            results.toTypeOfT(3),
-            results.toTypeOfT(4)
+            results.value(0).caseToTypeOfT(),
+            results.value(1).caseToTypeOfT(),
+            results.value(2).caseToTypeOfT(),
+            results.value(3).caseToTypeOfT(),
+            results.value(4).caseToTypeOfT()
         )
     }
 
@@ -126,11 +127,11 @@ inline fun <reified R1, reified R2, reified R3, reified R4, reified R5, reified 
 ) =
     receiveResults { results ->
         onReceive(
-            results.toTypeOfT(0),
-            results.toTypeOfT(1),
-            results.toTypeOfT(2),
-            results.toTypeOfT(3),
-            results.toTypeOfT(4),
-            results.toTypeOfT(5)
+            results.value(0).caseToTypeOfT(),
+            results.value(1).caseToTypeOfT(),
+            results.value(2).caseToTypeOfT(),
+            results.value(3).caseToTypeOfT(),
+            results.value(4).caseToTypeOfT(),
+            results.value(5).caseToTypeOfT()
         )
     }

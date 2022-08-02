@@ -2,9 +2,32 @@ package com.rubik.apt.files.source.aggregate
 
 import com.rubik.apt.Constants
 import com.rubik.apt.codebase.event.EventCodeBase
+import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
 import com.squareup.kotlinpoet.FunSpec
 
-fun FunSpec.Builder.addEventStatements(events: Map<String, List<EventCodeBase>>) = apply {
+
+private fun FunSpec.Builder.addInvokeParametersCode(
+    codeBase: InvokeElementCodeBase
+){
+    var queryCount = codeBase.assistant?.queries?.size ?: 0
+    val queryIndex = { queryCount++ }
+
+    var resultCount = 0
+    val resultIndex = { resultCount++ }
+
+    codeBase.queries.forEach { queryCodeBase ->
+        if (null != queryCodeBase.resultInvoker) {
+            addApiResultTransformCode(queryCodeBase, queryCodeBase.resultInvoker) { _ ->
+                addStatement(Constants.Aggregate.makeSetResultsCode(queryCodeBase.resultInvoker.queriesRequestsCode, resultIndex()))
+            }
+        } else {
+            addApiOnRouteParametersStatements(codeBase, queryCodeBase, queryIndex())
+        }
+    }
+
+}
+
+internal fun FunSpec.Builder.addEventStatements(events: Map<String, List<EventCodeBase>>) = apply {
     events.forEach { (msg, msgEvents) ->
         beginControlFlow("\"$msg\" -> ")
         msgEvents.forEach {event->
@@ -19,7 +42,7 @@ fun FunSpec.Builder.addEventStatements(events: Map<String, List<EventCodeBase>>)
                 addInvokeParametersCode(invoker)
             }
             addInvokeParametersCode(event.invoker)
-            addInvokeCode(event.invoker)
+            addStatement(event.invoker.invokeCode(castAllQuery = true, processExt = false))
         }
         endControlFlow()
     }

@@ -239,28 +239,28 @@ class TestKotlinInvokeDSLTask {
         navigate {
             uri = DetailContext.Uris.DO_STH_EXT
             query {
-                "s" with "tmp"
                 "i" with 99
+                "s" with "tmp"
             }
             result<Int> { value ->
                 onFinish("$tag NA DBG doSthExt value:$value")
             }
         }
 
-        navigate {
-            uri = "app://com.kc.a/sth/234/a-567?code1=wer&code2=sdf"
-            result<String> { value ->
-                onFinish("$tag NA DBG getSth value:$value")
-            }
-        }
-
-        // navigateOnly
-        navigate {
-            uri = "app://com.kc.a/sthNavigationOnly/9090"
-            result<String> { value ->
-                onFinish("$tag NA DBG getSth value:$value")
-            }
-        }
+//        navigate {
+//            uri = "app://com.kc.a/sth/234/a-567?code1=wer&code2=sdf"
+//            result<String> { value ->
+//                onFinish("$tag NA DBG getSth value:$value")
+//            }
+//        }
+//
+//        // navigateOnly
+//        navigate {
+//            uri = "app://com.kc.a/sthNavigationOnly/9090"
+//            result<String> { value ->
+//                onFinish("$tag NA DBG getSth value:$value")
+//            }
+//        }
 
         // 传递ResultReceiver
         navigate {

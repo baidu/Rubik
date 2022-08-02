@@ -17,7 +17,7 @@ package com.rubik.apt.codebase.api
 
 import com.blueprint.kotlin.lang.element.KbpElement
 import com.blueprint.kotlin.pool.ElementPool
-import com.rubik.apt.codebase.InvokeElementCodeBase
+import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
 
 class ApiInstanceCodeBase(
     val forPath: String,

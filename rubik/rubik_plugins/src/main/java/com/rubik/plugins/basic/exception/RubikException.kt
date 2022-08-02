@@ -20,4 +20,4 @@ package com.rubik.plugins.basic.exception
  *
  *  @since 1.3
  */
-internal abstract class RubikException : Exception()
+abstract class RubikException : Exception()

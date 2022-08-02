@@ -9,6 +9,7 @@ import com.mars.component.home.ui.HomeActivity
 import com.mars.component.home.ui.java.JavaHomeActivity
 import com.rubik.context.LifeCycleEvent
 import com.rubik.router.doEvent
+import com.rubik.router.doEventWithContext
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +28,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         button_test_life.setOnClickListener {
-            applicationContext.doEvent(LifeCycleEvent.INIT, "a", 11, 22)
-            doEvent(LifeCycleEvent.DESTROY, applicationContext, "a", "c", "d")
+            applicationContext.doEventWithContext(LifeCycleEvent.INIT, "initapp", 11, 22)
+            doEvent(LifeCycleEvent.DESTROY, applicationContext, "desapp", 33, 44)
+
+            doEvent("MY_INIT", true, "initmyapp", "a", "b")
+            doEvent("MY_DESTROY", false, "desapp", "c", "d")
         }
 
         button_test_data_type.setOnClickListener {

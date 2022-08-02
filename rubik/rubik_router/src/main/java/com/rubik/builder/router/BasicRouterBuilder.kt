@@ -18,6 +18,7 @@ package com.rubik.builder.router
 import com.ktnail.x.uri.Uri
 import com.ktnail.x.uri.toUri
 import com.rubik.builder.query.QueriesBuildable
+import com.rubik.route.ResultGroups
 import com.rubik.route.Results
 import com.rubik.route.exception.BadUriException
 import com.rubik.router.Router
@@ -26,7 +27,7 @@ abstract class BasicRouterBuilder : RouterBuildable {
     protected abstract val queriesBuilder: QueriesBuildable
     protected abstract fun createUri(): String
 
-    private val resultGroups: MutableList<Results> = mutableListOf()
+    private val resultGroups: ResultGroups = ResultGroups()
     private var checkRouterVersion: Int? = null
 
     private fun buildUri(): Uri {
@@ -39,7 +40,7 @@ abstract class BasicRouterBuilder : RouterBuildable {
     }
 
     override fun receiveResults(receive: (Results) -> Unit) = apply {
-        resultGroups.add(Results(receive))
+        resultGroups.load(Results(receive))
     }
 
     override fun build() = Router(buildUri(), queriesBuilder.buildQueries(), resultGroups, checkRouterVersion)

@@ -7,8 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.mars.component.home.R
 import com.mars.component.home.test.kotlin.TestKotlinInvokeDSLTask
-import com.mars.component.home.test.kotlin.TestKotlinInvokeFunctionTask
-import com.mars.component.home.test.kotlin.TestKotlinInvokeJavaFunctionTask
+import com.mars.component.home.test.kotlin.TestKotlinInvokeActionFunctionTask
+import com.mars.component.home.test.kotlin.TestKotlinInvokeActionFunctionJavaTask
+import com.mars.component.home.test.kotlin.TestKotlinInvokeRouteFunctionTask
 import com.rubik.router.navigate
 import com.rubik.router.result
 import kotlinx.android.synthetic.main.activity_kotlin.*
@@ -34,17 +35,29 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        button_context_k_2_k.setOnClickListener {
+        button_context_k_2_k_action.setOnClickListener {
             text_hello.text = ""
-            TestKotlinInvokeFunctionTask().invoke(applicationContext) { result ->
+            val timeAction = System.currentTimeMillis()
+            TestKotlinInvokeActionFunctionTask().invoke(applicationContext) { result ->
                 println(result)
                 text_hello.text = "${text_hello.text}\n$result"
             }
+            text_hello.text = "${text_hello.text}\n\naction cost:${System.currentTimeMillis()-timeAction}"
+        }
+
+        button_context_k_2_k_router.setOnClickListener {
+            text_hello.text = ""
+            val timeRoute = System.currentTimeMillis()
+            TestKotlinInvokeRouteFunctionTask().invoke(applicationContext) { result ->
+                println(result)
+                text_hello.text = "${text_hello.text}\n$result"
+            }
+            text_hello.text = "${text_hello.text}\n\nroute cost:${System.currentTimeMillis()-timeRoute}"
         }
 
         button_context_k_2_j.setOnClickListener{
             text_hello.text = ""
-            TestKotlinInvokeJavaFunctionTask().invoke(applicationContext) { result ->
+            TestKotlinInvokeActionFunctionJavaTask().invoke(applicationContext) { result ->
                 println(result)
                 text_hello.text = "${text_hello.text}\n$result"
             }

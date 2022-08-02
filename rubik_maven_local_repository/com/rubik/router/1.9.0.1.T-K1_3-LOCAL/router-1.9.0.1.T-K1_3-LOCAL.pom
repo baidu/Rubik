@@ -8,7 +8,7 @@
     <dependency>
       <groupId>com.rubik</groupId>
       <artifactId>annotations</artifactId>
-      <version>1.8.12.1.T-LOCAL</version>
+      <version>1.9.0.1.T-LOCAL</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.rubik</groupId>
       <artifactId>annotations</artifactId>
-      <version>1.8.12.1.T-LOCAL</version>
+      <version>1.9.0.1.T-LOCAL</version>
     </dependency>
   </dependencies>
 </project>

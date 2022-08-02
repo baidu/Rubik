@@ -15,51 +15,32 @@
  */
 package com.rubik.builder.result
 
-import java.lang.reflect.Type
-
 interface ResultsBuildable<T> {
     fun result(
-        typeOfR1: Type? = null,
         onReceive: (Any?) -> Unit
     ): T
 
     fun result(
-        typeOfR1: Type? = null,
-        typeOfR2: Type? = null,
         onReceive: (Any?, Any?) -> Unit
     ): T
 
     fun result(
-        typeOfR1: Type? = null,
-        typeOfR2: Type? = null,
-        typeOfR3: Type? = null,
         onReceive: (Any?, Any?, Any?) -> Unit
     ): T
 
     fun result(
-        typeOfR1: Type? = null,
-        typeOfR2: Type? = null,
-        typeOfR3: Type? = null,
-        typeOfR4: Type? = null,
         onReceive: (Any?, Any?, Any?, Any?) -> Unit
     ): T
 
     fun result(
-        typeOfR1: Type? = null,
-        typeOfR2: Type? = null,
-        typeOfR3: Type? = null,
-        typeOfR4: Type? = null,
-        typeOfR5: Type? = null,
         onReceive: (Any?, Any?, Any?, Any?, Any?) -> Unit
     ): T
 
     fun result(
-        typeOfR1: Type? = null,
-        typeOfR2: Type? = null,
-        typeOfR3: Type? = null,
-        typeOfR4: Type? = null,
-        typeOfR5: Type? = null,
-        typeOfR6: Type? = null,
         onReceive: (Any?, Any?, Any?, Any?, Any?, Any?) -> Unit
+    ): T
+
+    fun result(
+        onReceive: (Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> Unit
     ): T
 }

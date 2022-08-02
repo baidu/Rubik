@@ -15,19 +15,19 @@
  */
 package com.rubik.apt.codebase.api
 
+import com.blueprint.kotlin.lang.type.KbpType
 import com.rubik.apt.utility.containRValue
 import com.rubik.apt.utility.toRValueTypeName
-import com.blueprint.kotlin.lang.type.KbpType
 import com.squareup.kotlinpoet.TypeName
 
 open class TypeCodeBase(
-     val type: KbpType
+    val originalType: KbpType
 ) {
-    fun toTypeName(uri: String? = null): TypeName = type.toRValueTypeName(uri)
+    fun toContextTypeName(uri: String? = null): TypeName = originalType.toRValueTypeName(uri)
 
     val isRValue
-        get() =type.containRValue()
+        get() = originalType.containRValue()
 
-    val originalType
-        get() = type
+    val nullabe
+        get() = originalType.nullable
 }

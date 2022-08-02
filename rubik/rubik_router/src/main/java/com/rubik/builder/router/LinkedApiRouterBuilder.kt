@@ -16,6 +16,7 @@
 package com.rubik.builder.router
 
 import com.rubik.builder.query.QueriesBuilder
+import com.rubik.route.mapping.caseToTypeOfT
 import java.lang.reflect.Type
 
 class LinkedApiRouterBuilder : BasicRouterBuilder(), LinkedApiRouterBuildable {
@@ -34,65 +35,90 @@ class LinkedApiRouterBuilder : BasicRouterBuilder(), LinkedApiRouterBuildable {
         }
     }
 
-    override fun result(typeOfR1: Type?, onReceive: (Any?) -> Unit) = apply {
+    override fun result(onReceive: (Any?) -> Unit) = apply {
         receiveResults { results ->
             onReceive(
-                results.toType(0, typeOfR1)
+                results.value(0)
             )
         }
     }
 
-    override fun result(typeOfR1: Type?, typeOfR2: Type?, onReceive: (Any?, Any?) -> Unit)= apply {
+    override fun result(onReceive: (Any?, Any?) -> Unit) = apply {
         receiveResults { results ->
             onReceive(
-                results.toType(0, typeOfR1),
-                results.toType(1, typeOfR2)
+                results.value(0),
+                results.value(1)
             )
         }
     }
 
-    override fun result(typeOfR1: Type?, typeOfR2: Type?, typeOfR3: Type?, onReceive: (Any?, Any?, Any?) -> Unit) = apply {
+    override fun result(
+        onReceive: (Any?, Any?, Any?) -> Unit
+    ) = apply {
         receiveResults { results ->
             onReceive(
-                results.toType(0, typeOfR1),
-                results.toType(1, typeOfR2),
-                results.toType(2, typeOfR3)
+                results.value(0),
+                results.value(1),
+                results.value(2)
             )
         }
     }
 
-    override fun result(typeOfR1: Type?, typeOfR2: Type?, typeOfR3: Type?, typeOfR4: Type?, onReceive: (Any?, Any?, Any?, Any?) -> Unit) = apply {
+    override fun result(
+        onReceive: (Any?, Any?, Any?, Any?) -> Unit
+    ) = apply {
         receiveResults { results ->
             onReceive(
-                results.toType(0, typeOfR1),
-                results.toType(1, typeOfR2),
-                results.toType(2, typeOfR3),
-                results.toType(3, typeOfR4)
+                results.value(0),
+                results.value(1),
+                results.value(2),
+                results.value(3)
+
             )
         }
     }
 
-    override fun result(typeOfR1: Type?, typeOfR2: Type?, typeOfR3: Type?, typeOfR4: Type?, typeOfR5: Type?, onReceive: (Any?, Any?, Any?, Any?, Any?) -> Unit) = apply {
+    override fun result(
+        onReceive: (Any?, Any?, Any?, Any?, Any?) -> Unit
+    ) = apply {
         receiveResults { results ->
             onReceive(
-                results.toType(0, typeOfR1),
-                results.toType(1, typeOfR2),
-                results.toType(2, typeOfR3),
-                results.toType(3, typeOfR4),
-                results.toType(4, typeOfR5)
+                results.value(0),
+                results.value(1),
+                results.value(2),
+                results.value(3),
+                results.value(4)
             )
         }
     }
 
-    override fun result(typeOfR1: Type?, typeOfR2: Type?, typeOfR3: Type?, typeOfR4: Type?, typeOfR5: Type?, typeOfR6: Type?, onReceive: (Any?, Any?, Any?, Any?, Any?, Any?) -> Unit) = apply {
+    override fun result(
+        onReceive: (Any?, Any?, Any?, Any?, Any?, Any?) -> Unit
+    ) = apply {
         receiveResults { results ->
             onReceive(
-                results.toType(0,typeOfR1),
-                results.toType(1,typeOfR2),
-                results.toType(2,typeOfR3),
-                results.toType(3,typeOfR4),
-                results.toType(4,typeOfR5),
-                results.toType(5,typeOfR6)
+                results.value(0),
+                results.value(1),
+                results.value(2),
+                results.value(3),
+                results.value(4),
+                results.value(5)
+            )
+        }
+    }
+
+    override fun result(
+        onReceive: (Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> Unit
+    ) = apply {
+        receiveResults { results ->
+            onReceive(
+                results.value(0),
+                results.value(1),
+                results.value(2),
+                results.value(3),
+                results.value(4),
+                results.value(5),
+                results.value(6)
             )
         }
     }

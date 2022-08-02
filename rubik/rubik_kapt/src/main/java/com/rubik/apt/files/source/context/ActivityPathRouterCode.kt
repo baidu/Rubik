@@ -3,6 +3,7 @@ package com.rubik.apt.files.source.context
 import com.ktnail.x.uri.buildVersionUri
 import com.rubik.apt.Constants
 import com.rubik.apt.codebase.activity.ActivityCodeBase
+import com.rubik.apt.utility.addRGeneratedRouterAnnotation
 import com.squareup.kotlinpoet.*
 
 fun TypeSpec.Builder.addActivityRouterFunctions(
@@ -22,7 +23,7 @@ fun createActivityRouterFunctionBuilder(
     activity: ActivityCodeBase,
     receiverName: String
 ) = FunSpec.builder(
-    activity.functionName
+    activity.contextFunctionName
 ).addParameter(
     Constants.Activities.PROPERTY_LAUNCHER, ClassName.bestGuess(receiverName)
 ).addActivityRouterStatement(
@@ -31,6 +32,8 @@ fun createActivityRouterFunctionBuilder(
     activity
 ).addAnnotation(
     JvmStatic::class.java
+).addRGeneratedRouterAnnotation(
+    apiUri, "ACTIVITY", activity.className, ""
 ).addKdoc(
     Constants.KDoc.functionRouter(apiUri, activity.className, activity.propertiesKDoc)
 )
@@ -50,7 +53,7 @@ fun FunSpec.Builder.addActivityRouterStatement(
     activity.sortedProperties.forEach { property ->
         addParameter(
             ParameterSpec.builder(
-                property.legalName, property.toTypeName(contextUri)
+                property.legalName, property.toContextTypeName(contextUri)
             ).build()
         )
         addStatement(property.makeAddToQueryCode())

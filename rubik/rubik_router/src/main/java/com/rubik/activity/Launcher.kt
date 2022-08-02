@@ -17,10 +17,7 @@ package com.rubik.activity
 
 import android.app.Activity
 import android.content.Intent
-import com.rubik.route.LaunchQueries
-import com.rubik.route.Queries
-import com.rubik.route.Query
-import com.rubik.route.Results
+import com.rubik.route.*
 import com.rubik.router.annotations.RInvariant
 
 /**
@@ -34,7 +31,7 @@ class Launcher {
         clazz: Class<out Activity>,
         queries: Queries,
         pathQueries: List<Query>? = null,
-        results: List<Results>? = null
+        results: ResultGroups? = null
     ) {
         (queries as? LaunchQueries)?.let { launchQueries ->
             launchQueries.context?.let { context ->

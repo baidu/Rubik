@@ -1,9 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: 'rubik'
+// ./gradlew publishRubikDevHomeRContextLib -Prpubversion=1.0.0
 
 buildscript {
     ext {
-        rubik_tmp_lib_dir = uri('./rubik_libs_repository').path
+        rubik_tmp_lib_dir = uri('./rubik_libs_repository').path // default:./rubik_libs
 //        rubik_tmp_lib_dir_mode = false  // default: false
 
         rubik_maven_repository = "http://xxxxxx/repository/releases/"
@@ -11,7 +12,7 @@ buildscript {
         rubik_maven_password = "xxx"
         rubik_maven_local_repository = uri('./rubik_maven_local_repository').path
 
-        rubik_use_reset_compiler = true // default: false
+//        rubik_use_reset_compiler = true // default: false
 
 //        rubik_publish_context_lib_source = true // default: true
 
@@ -37,6 +38,12 @@ buildscript {
         modules_snapshot_maven_default_group_id = "com.mars.module.demo"
 //        modules_snapshot_local_mode = false   // default: true
 //        modules_snapshot_local_no_maven_mode = true   // default: false
+
+        rubik_github_maven_repository = "https://maven.pkg.github.com/baidu/rubik/"
+        rubik_github_maven_username = "xxx"
+        rubik_github_maven_password = "xxx"
+
+//        rubik_enable_check_router_version = true // default: false
 
     }
 

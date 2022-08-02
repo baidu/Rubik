@@ -42,7 +42,7 @@ public class TestJavaInvokeBuilderTask {
         Router.builder()
                 .uri(DetailContext.Uris.DO_STH_BEAN)
                 .with("a1", new TestDataBean(33, "xxx"))
-                .result(TestListBean.class, value -> {
+                .result(value -> {
                     onFinish.invoke(tag + " NA DBG doSthBean value:" + ((TestListBean) value).getD1());
                     return null;
                 })

@@ -17,7 +17,8 @@ package com.rubik.apt.codebase.api
 
 import com.blueprint.kotlin.lang.element.KbpElement
 import com.blueprint.kotlin.pool.ElementPool
-import com.rubik.apt.codebase.InvokeElementCodeBase
+import com.rubik.apt.codebase.invoker.InvokeContextCodeBase
+import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
 import com.squareup.kotlinpoet.TypeName
 
 /**
@@ -30,8 +31,8 @@ class ApiCodeBase(
     version: String,
     navigationOnly: Boolean,
     pathSectionOptimize: Boolean,
-    val invoker: InvokeElementCodeBase,
-    private val defineResultType: String?,
+    val originalInvoker: InvokeElementCodeBase,
+    val defineResultType: String?,
     val forResult: Boolean = false
 ) : RouteCodeBase(path, version, navigationOnly, pathSectionOptimize) {
     companion object {
@@ -59,14 +60,7 @@ class ApiCodeBase(
         }
     }
 
-    fun getForResult(uri: String): TypeName{
-        return invoker.getForResultOrDefine(defineResultType, uri)
-    }
-
-    fun getResultGroupsLambdaOrDefine(uri: String): List<Pair<String?, TypeName>> {
-        return invoker.getResultGroupsLambdaOrDefine(defineResultType, uri)
-    }
-
+    fun contextInvoker(uri: String) = InvokeContextCodeBase(this, uri)
 }
 
 

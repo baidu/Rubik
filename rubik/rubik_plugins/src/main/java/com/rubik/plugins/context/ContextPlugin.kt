@@ -84,6 +84,7 @@ class ContextPlugin : RubikPlugin() {
        }
 
        dependencyContexts.addAll(context.dependencyExtensions)
+       dependencyContexts.add(context.toDependencyExtension())
     }
 
     private fun dependContextLibsTmpDir(libTmpDirRoot: File, dependency: DependencyExtension) {

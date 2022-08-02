@@ -51,7 +51,7 @@ object Constants {
         const val RESULT_PACKAGE_NAME = "${Router.PACKAGE_NAME}.route"
         const val RESULT_CLASS_NAME = "Result"
         const val QUERIES_FULL_CLASS_NAME = "${Router.PACKAGE_NAME}.route.Queries"
-        const val RESULTS_FULL_CLASS_NAME = "${Router.PACKAGE_NAME}.route.Results"
+        const val RESULTS_FULL_CLASS_NAME = "${Router.PACKAGE_NAME}.route.ResultGroups"
 
         const val PROPERTY_DEPENDENCIES_NAME = "DEPENDENCIES"
 
@@ -74,6 +74,10 @@ object Constants {
         const val LAUNCHER_CLASS_NAME = "Launcher"
         const val METHOD_LAUNCH_NAME = "launch"
 
+        const val MAPPING_PACKAGE_NAME = "${Router.PACKAGE_NAME}.route.mapping"
+        const val TO_TYPE_OF_T_FUNCTION_NAME = "toTypeOfT"
+        const val CASE_TO_TYPE_OF_T_FUNCTION_NAME = "caseToTypeOfT"
+
         private val PATH_PARAMETER_REGEX = Regex("\\{([^}]*)\\}")
         fun isParameterPath(path: String) = path.contains(PATH_PARAMETER_REGEX)
         fun makeGetPathQueriesCode(originPath: String): String = "$PATH_CLASS_NAME(\"$originPath\").$METHOD_GET_PARAMETERS_NAME($ROUTE_PARAMETER_PATH_NAME)"
@@ -81,11 +85,14 @@ object Constants {
 
         fun makeRouteExceptionCode() = "${Router.PACKAGE_NAME}.route.exception.BadPathOrVersionException($ROUTE_PARAMETER_PATH_NAME)"
 
-        fun makeGetQueryCode(name: String, type: String, index: Int): String = "${ROUTE_PARAMETER_QUERIES_NAME}.toTypeOfT<$type>($index, $name)".noSpaces()
-        fun makeGetValueQueryCode(name: String, type: String, index: Int): String = "${ROUTE_PARAMETER_QUERIES_NAME}.toTypeOfT<$type>($index, $name, true)".noSpaces()
-        fun makeResultsCode(name: String, containRValue: Boolean): String = if (containRValue) "$RESULT_CLASS_NAME($name, true)" else "$RESULT_CLASS_NAME($name)"
-        fun makeSetResultsCode(code: String, index: Int): String = "${ROUTE_PARAMETER_RESULTS_NAME}.set($index, $code)"
+        fun makeGetQueryCode(name: String, index: Int): String = "${ROUTE_PARAMETER_QUERIES_NAME}.value($index, $name)".noSpaces()
+        fun makeToTypeCode(name: String, type: String? = null): String =
+            "$name.$TO_TYPE_OF_T_FUNCTION_NAME${if (null != type) "<$type>" else ""}()".noSpaces()
+        fun makeCaseToTypeCode(name: String, type: String? = null): String =
+            "$name.$CASE_TO_TYPE_OF_T_FUNCTION_NAME${if (null != type) "<$type>" else ""}()".noSpaces()
 
+        fun makeResultsCode(name: String): String = "$RESULT_CLASS_NAME($name)"
+        fun makeSetResultsCode(code: String, index: Int): String = "${ROUTE_PARAMETER_RESULTS_NAME}.set($index, $code)".noSpaces()
     }
 
     object Contexts {
@@ -116,7 +123,7 @@ object Constants {
         const val RESULT_DSL_NAME = "result"
         const val CHECK_ROUTER_VERSION_DSL_NAME = "checkRouterVersion"
         const val PARAMETER_NAME_PREFIX = "rubik"
-        const val PARAMETER_NAME_ASSIST_PREFIX = "${PARAMETER_NAME_PREFIX}Assist"
+        const val PARAMETER_NAME_INSTANCE_PREFIX = "${PARAMETER_NAME_PREFIX}Instance"
         fun makeFunctionResultName(index: Int, baseName: String?): String = if (null == baseName || baseName.isBlank()) "${PARAMETER_NAME_PREFIX}ReceiveResult$index" else baseName
         fun makeAddToQueryCode(keyName: String, filedName: String): String = "\"$keyName\" with $filedName"
 
@@ -124,6 +131,9 @@ object Constants {
 
         private val PARAMETER_KEYWORDS = arrayOf("navigate", "query", "uri", "flags", "requestCode", "result", "path", "queries", "results")
         fun toLegalParameterName(name: String) = if (PARAMETER_KEYWORDS.contains(name)) toCamel(name, PARAMETER_NAME_PREFIX, "parameter") else name
+
+        fun toResultTransformName(name: String) =  toCamel(name, PARAMETER_NAME_PREFIX, "result", "transform")
+
     }
 
     object Activities {
@@ -135,6 +145,18 @@ object Constants {
         const val PROPERTY_LAUNCHER = "${Apis.PARAMETER_NAME_PREFIX}Launcher"
         const val REQUEST_CODE_DSL_NAME = "requestCode"
         const val FLAGS_DSL_NAME = "flags"
+    }
+
+    object RouteActions {
+        const val CONTEXT_ROUTE_ACTIONS_BASE_CLASS_NAME = "RouteActions"
+        const val INTERFACE_NAME = "${Router.PACKAGE_NAME}.context.RouteActions"
+        const val PROPERTY_ROUTE_ACTION = "rubikRouteAction"
+    }
+
+    object ContextRouters {
+        const val ROUTE_CONTEXT_BASE_CLASS_NAME = "RouteContext"
+        const val RUBIK_CLASS_NAME = "Rubik"
+        const val FIND_ACTIONS_FUNCTION_NAME = "findActions"
     }
 
     object KDoc {
@@ -180,6 +202,14 @@ object Constants {
             |version: $version
             """.trimMargin()
 
+        fun routerContext(uri: String, version: String) =
+            """
+            |generated Rubik Router Context.
+            |
+            |uri: [$uri]
+            |version: $version
+            """.trimMargin()
+
         fun value(uri: String, version: String) =
             """
             |generated Rubik Context Value class.
@@ -193,6 +223,14 @@ object Constants {
             |aggregate router function and router event of Rubik Context.
             |
             |context uri: [$uri]
+            |version: $version
+            """.trimMargin()
+
+        fun routeActions(uri: String, version: String) =
+            """
+            |generated Rubik RouteActions.
+            |
+            |uri: [$uri]
             |version: $version
             """.trimMargin()
 

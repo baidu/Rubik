@@ -3,17 +3,17 @@ rubik {
         devMode true
         maven {
             variant 'release'
-            version('demo://com.mars.rubik-test.detail', '0.1.3') {
-                publish '0.1.3'
+            version('demo://com.mars.rubik-test.detail', '0.1.4') {
+                publish '0.1.4'
             }
-            version('demo://com.mars.rubik-test.detail-java', '0.1.3') {
-                publish '0.1.3'
+            version('demo://com.mars.rubik-test.detail-java', '0.1.4') {
+                publish '0.1.4'
             }
             version('demo://com.mars.rubik-test.a-other-detail', '0.0.0') {
                 publish '0.0.0'
             }
-            version('demo://com.mars.rubik-test.home', '0.1.3') {
-                publish '0.1.3'
+            version('demo://com.mars.rubik-test.home', '0.1.4') {
+                publish '0.1.4'
             }
         }
     }

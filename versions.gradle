@@ -1,24 +1,31 @@
-ext.rubikUseLocalMaven = true
+ext.rubikUseLocalMaven = false
 ext.useKotlinV1_3 = true
 ext.useAGBT3 = false
-
-//// version for dependency remote
-//ext.router_dep =  "1.8.20.1"
-//ext.kapt_dep =  "1.8.20.1"
-//ext.plugins_dep = "1.8.20.1"
-//ext.annotations_dep = "1.8.20.1"
+ext.rubikUseGithubMaven = true
 
 // version for dependency local
-ext.router_dep =  "1.9.0.1.T"
-ext.kapt_dep =  "1.9.0.1.T"
-ext.plugins_dep = "1.9.0.1.T"
-ext.annotations_dep = "1.8.12.1.T"
+//ext.router_dep =  "1.9.0.1.T"
+//ext.kapt_dep =  "1.9.0.1.T"
+//ext.plugins_dep = "1.9.0.1.T"
+//ext.annotations_dep = "1.9.0.1.T"
+
+//  version for publish
+//ext.router_pub = "1.9.0.1.T"
+//ext.kapt_pub = "1.9.0.1.T"
+//ext.plugins_pub = "1.9.0.1.T"
+//ext.annotations_pub = "1.9.0.1.T"
+
+// version for dependency remote
+ext.router_dep =  "1.9.1.1"
+ext.kapt_dep =  "1.9.1.1"
+ext.plugins_dep = "1.9.1.1"
+ext.annotations_dep = "1.9.1.1"
 
 // version for publish
-ext.router_pub = "1.9.0.1.T"
-ext.kapt_pub = "1.9.0.1.T"
-ext.plugins_pub = "1.9.0.1.T"
-ext.annotations_pub = "1.8.12.1.T"
+ext.router_pub = "1.9.1.1"
+ext.kapt_pub = "1.9.1.1"
+ext.plugins_pub = "1.9.1.1"
+ext.annotations_pub = "1.9.1.1"
 
 // version for dependency
 ext.blueprint = "4.0.4"
@@ -88,14 +95,12 @@ ext.rubik_router_version = deps.rubik.router
 ext.rubik_plugins_version = deps.rubik.plugins
 
 def addRepos(RepositoryHandler handler) {
-    handler.maven {url rubik_maven_repository }
+    handler.maven { url rubik_maven_repository }
     handler.maven { url uri(rubik_maven_local_repository) }
-
-//    handler.maven { url uri('./rubik_maven_local_repository') }
-
     handler.maven {
         url 'http://maven.aliyun.com/nexus/content/groups/public/'
     }
+//    handler.maven { url rubik_github_maven_repository }
     handler.google()
     handler.jcenter()
     handler.mavenCentral()

@@ -2,9 +2,10 @@ package com.rubik.apt.files.source
 
 import com.rubik.apt.Constants
 import com.rubik.apt.codebase.context.ContextCodeBase
-import com.rubik.apt.files.source.aggregate.addActivityStatements
-import com.rubik.apt.files.source.aggregate.addApiStatements
+import com.rubik.apt.files.source.aggregate.addActivityOnRouteStatements
+import com.rubik.apt.files.source.aggregate.addApiOnRouteStatements
 import com.rubik.apt.files.source.aggregate.addEventStatements
+import com.rubik.apt.files.source.aggregate.addRouteActionsImplFunctions
 import com.rubik.apt.utility.addRGeneratedAnnotation
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -12,7 +13,7 @@ import java.io.File
 
 class AggregateSourceFiles(
     private val directory: File
-)  {
+) {
     fun generate(
         contexts: Map<String, ContextCodeBase>
     ) {
@@ -37,16 +38,22 @@ class AggregateSourceFiles(
                 Constants.Aggregate.LAUNCHER_CLASS_NAME
             )
             .addImport(
-                Constants.Aggregate.RESULT_PACKAGE_NAME,
-                "set"
+                Constants.Aggregate.MAPPING_PACKAGE_NAME,
+                Constants.Aggregate.CASE_TO_TYPE_OF_T_FUNCTION_NAME
+            )
+            .addImport(
+                Constants.Aggregate.MAPPING_PACKAGE_NAME,
+                Constants.Aggregate.TO_TYPE_OF_T_FUNCTION_NAME
             )
             .addType(
                 TypeSpec.classBuilder(className).addSuperinterface(
                     ClassName.bestGuess(Constants.Aggregate.Declare.INTERFACE_NAME)
+                ).addSuperinterface(
+                    ClassName.bestGuess(Constants.Contexts.makeContextPackageName(uri) + "." + context.getRouteActionsName())
                 ).addType(
                     TypeSpec.companionObjectBuilder()
                         .superclass(
-                            ClassName.bestGuess( Constants.Aggregate.COMPANION_SUPER_NAME)
+                            ClassName.bestGuess(Constants.Aggregate.COMPANION_SUPER_NAME)
                         ).addProperty(
                             PropertySpec.builder(
                                 Constants.Aggregate.Declare.PROPERTY_URI_NAME, String::class
@@ -76,7 +83,8 @@ class AggregateSourceFiles(
                         ).addProperty(
                             PropertySpec.builder(
                                 Constants.Aggregate.PROPERTY_CREATOR_NAME,
-                                Function0::class.asTypeName().parameterizedBy(ClassName.bestGuess(Constants.Aggregate.Declare.INTERFACE_NAME))
+                                Function0::class.asTypeName()
+                                    .parameterizedBy(ClassName.bestGuess(Constants.Aggregate.Declare.INTERFACE_NAME))
                             ).addModifiers(
                                 KModifier.OVERRIDE
                             ).initializer(
@@ -113,11 +121,13 @@ class AggregateSourceFiles(
                         ClassName.bestGuess(Constants.Aggregate.QUERIES_FULL_CLASS_NAME)
                     ).addParameter(
                         Constants.Aggregate.ROUTE_PARAMETER_RESULTS_NAME,
-                        List::class.parameterizedBy(Class.forName(Constants.Aggregate.RESULTS_FULL_CLASS_NAME).kotlin)
+                        ClassName.bestGuess(Constants.Aggregate.RESULTS_FULL_CLASS_NAME)
                     ).addRouteStatements {
-                        addApiStatements(uri, context.apis)
-                        addActivityStatements(context.activities)
+                        addApiOnRouteStatements(uri, context.apis)
+                        addActivityOnRouteStatements(context.activities)
                     }.build()
+                ).addRouteActionsImplFunctions(
+                    uri, context.sections
                 ).addRGeneratedAnnotation(
                     "aggregate", context.version
                 ).addAnnotation(
@@ -133,13 +143,13 @@ class AggregateSourceFiles(
 fun FunSpec.Builder.addLiveStatements(block: FunSpec.Builder.() -> Unit) = apply {
     beginControlFlow("when(${Constants.Aggregate.LIVE_PARAMETER_MSG_NAME}){")
     block.invoke(this)
-    addStatement("else -> {}" )
+    addStatement("else -> {}")
     endControlFlow()
 }
 
 fun FunSpec.Builder.addRouteStatements(block: FunSpec.Builder.() -> Unit) = apply {
     beginControlFlow("when {")
     block.invoke(this)
-    addStatement("else -> { throw ${Constants.Aggregate.makeRouteExceptionCode()}}" )
+    addStatement("else -> { throw ${Constants.Aggregate.makeRouteExceptionCode()}}")
     endControlFlow()
 }

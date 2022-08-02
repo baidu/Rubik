@@ -51,11 +51,9 @@ class Router internal constructor(
         get() = uri.versionPath
 
     fun route() {
-        try {
+        safeRoute {
             checkRouterVersion()
             findAggregate(uri.basicUri).onRoute(path, queries, resultGroups)
-        } catch (e: Exception) {
-            Logger.e(" RUBIK navigation on uri: $uri with exception : $e", e)
         }
     }
 
@@ -63,16 +61,16 @@ class Router internal constructor(
      * route and get the result.
      */
     fun routeForResult(type: Type? = null): Any? {
-        return routeSync().toType(0, type)
+        return routeSync().value(0).caseToTypeOfT()
     }
 
+    @RInvariant
     fun routeSync(): Results {
         val results = Results(null)
-        try {
+        safeRoute {
             checkRouterVersion()
-            findAggregate(uri.basicUri).onRoute(path, queries, listOf(results))
-        } catch (e: Exception) {
-            Logger.e(" RUBIK navigation on uri: $uri with exception : $e", e)
+            resultGroups.load(results)
+            findAggregate(uri.basicUri).onRoute(path, queries, resultGroups)
         }
         return results
     }
@@ -82,10 +80,18 @@ class Router internal constructor(
     }
 
     private fun checkRouterVersion() {
-        if (null != checkRouterVersion ) Rubik.checkRouterVersionLogic(checkRouterVersion)
+        if (null != checkRouterVersion) Rubik.checkRouterVersionLogic(checkRouterVersion)
     }
 
-    companion object{
+    private fun safeRoute(body: () -> Unit) {
+        return try {
+            body()
+        } catch (e: Exception) {
+            Logger.e(" RUBIK navigation on uri: $uri with exception : $e", e)
+        }
+    }
+
+    companion object {
         // event
         /**
          * start to sending a event message.
@@ -122,32 +128,37 @@ class Router internal constructor(
          * get a builder to build a route for starting a Activity.
          */
         @JvmStatic
-        fun builder(context: Context): LinkedLaunchRouterBuilder = LinkedLaunchRouterBuilder().launchBy(context)
+        fun builder(context: Context): LinkedLaunchRouterBuilder =
+            LinkedLaunchRouterBuilder().launchBy(context)
 
         /**
          * get a builder to build a route for starting a Activity by given Activity.
          */
         @JvmStatic
-        fun builder(activity: Activity): LinkedLaunchRouterBuilder = LinkedLaunchRouterBuilder().launchBy(activity)
+        fun builder(activity: Activity): LinkedLaunchRouterBuilder =
+            LinkedLaunchRouterBuilder().launchBy(activity)
 
         /**
          * get a builder to build a route for starting a Activity by given Fragment.
          */
         @JvmStatic
-        fun builder(fragment: Fragment): LinkedLaunchRouterBuilder = LinkedLaunchRouterBuilder().launchBy(fragment)
+        fun builder(fragment: Fragment): LinkedLaunchRouterBuilder =
+            LinkedLaunchRouterBuilder().launchBy(fragment)
 
         // property
         /**
          * get a property value in Intent by name.
          */
         @JvmStatic
-        fun <T> valueProperty(intent: Intent, name: String, type: Type): T? = intent.valueProperty(name, type)
+        fun <T> valueProperty(intent: Intent, name: String, type: Type): T? =
+            intent.valueProperty(name, type)
 
         /**
          * get a property value in Bundle by name.
          */
         @JvmStatic
-        fun <T> valueProperty(bundle: Bundle, name: String, type: Type): T? = bundle.valueProperty(name, type)
+        fun <T> valueProperty(bundle: Bundle, name: String, type: Type): T? =
+            bundle.valueProperty(name, type)
     }
 }
 
@@ -155,7 +166,7 @@ class Router internal constructor(
 /**
  * start to sending a event message.
  */
-fun Context.doEvent(msg: String, vararg args: Any) = Router.doEvent(msg, this, *args)
+fun Context.doEventWithContext(msg: String, vararg args: Any) = Router.doEvent(msg, this, *args)
 
 /**
  * start to sending a event message.
@@ -174,7 +185,8 @@ fun touch(uri: String, action: () -> Unit) = Router.touch(uri, action)
 /**
  * navigate to a router path , using DSL code style.
  */
-fun navigate(body: DSLRouterBuildable.() -> Unit): Unit = DSLApiRouterBuilder().apply(body).build().route()
+fun navigate(body: DSLRouterBuildable.() -> Unit): Unit =
+    DSLApiRouterBuilder().apply(body).build().route()
 
 /**
  * navigate to a router path , using DSL code style.
@@ -199,16 +211,10 @@ fun Fragment.navigate(body: DSLLaunchRouterBuildable.() -> Unit): Unit =
  */
 @RInvariant
 inline fun <reified T> navigateForResult(noinline body: DSLRouterBuildable.() -> Unit): T? {
-    return try {
-        navigateForAny(body).toType(0, typeOfT<T>()).caseToTypeOfT()
-    } catch (e: Exception) {
-        Logger.e(" RUBIK navigateForResult with exception:$e", e)
-        null
+    return safeRoute<T> {
+        DSLApiRouterBuilder().apply(body).build().routeSync().value(0).caseToTypeOfT()
     }
 }
-
-@RInvariant
-fun navigateForAny(body: DSLRouterBuildable.() -> Unit) = DSLApiRouterBuilder().apply(body).build().routeSync()
 
 // bundle/property
 /**
@@ -216,12 +222,26 @@ fun navigateForAny(body: DSLRouterBuildable.() -> Unit) = DSLApiRouterBuilder().
  */
 @RInvariant
 inline fun <reified T> Bundle.property(name: String): T? = query(name, typeOfT<T>()).caseToTypeOfT()
+
 @RInvariant
-inline fun <reified T> Activity.property(name: String): T? = intent?.query(name, typeOfT<T>()).caseToTypeOfT()
+inline fun <reified T> Activity.property(name: String): T? =
+    intent?.query(name, typeOfT<T>()).caseToTypeOfT()
+
 @RInvariant
 inline fun <reified T> Fragment.property(name: String): T? = activity?.property(name)
 
 /**
  * add queries to bundle.
  */
-fun bundleQueries(block: BundleQueriesFrameable<Unit>.() -> Unit) = BundleQueriesBuilder().apply(block).queries.toBundle()
+fun bundleQueries(block: BundleQueriesFrameable<Unit>.() -> Unit) =
+    BundleQueriesBuilder().apply(block).queries.toBundle()
+
+@RInvariant
+fun <T> safeRoute(body: () -> T): T? {
+    return try {
+        return body()
+    } catch (e: Exception) {
+        Logger.e(" RUBIK navigation with exception : $e", e)
+        null
+    }
+}

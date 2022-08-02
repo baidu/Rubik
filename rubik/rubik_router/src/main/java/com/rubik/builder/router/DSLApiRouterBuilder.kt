@@ -17,7 +17,9 @@ package com.rubik.builder.router
 
 import com.rubik.builder.query.QueriesBuilder
 import com.rubik.builder.query.QueriesFrameable
+import com.rubik.router.annotations.RInvariant
 
+@RInvariant
 class DSLApiRouterBuilder : BasicRouterBuilder() ,DSLRouterBuildable{
     override val queriesBuilder = QueriesBuilder()
     override fun createUri(): String = uri

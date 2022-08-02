@@ -11,5 +11,6 @@ object LogTags {
     const val TASK_GRAPHIC = "<RUBIK> TASK_GRAPHIC "
     const val PICK_CONTEXT = "<RUBIK> PICK_CONTEXT "
     const val MODULE_LINK = "<RUBIK> MODULE_LINK "
+    const val CHECK_ROUTER_VERSION = "<RUBIK> CHECK_ROUTER_VERSION "
 
 }

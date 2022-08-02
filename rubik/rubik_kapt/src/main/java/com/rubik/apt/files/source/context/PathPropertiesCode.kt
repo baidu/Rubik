@@ -1,7 +1,5 @@
 package com.rubik.apt.files.source.context
 
-import com.ktnail.x.Logger
-import com.ktnail.x.pathToSnake
 import com.ktnail.x.uri.buildVersionUri
 import com.rubik.apt.Constants
 import com.rubik.apt.codebase.api.RouteCodeBase
@@ -14,7 +12,7 @@ fun TypeSpec.Builder.addPathProperties(
     uri: String,
     route: RouteCodeBase
 ) = apply {
-    val name = route.propertyName
+    val name = route.contextPropertyName
     val versionUri = buildVersionUri(uri, route.path, route.version)
     if (Constants.Aggregate.isParameterPath(route.path)) {
         addFunction(

@@ -15,7 +15,6 @@
  */
 package com.rubik.route.exception
 
-import com.rubik.route.mapping.caseToTypeOfT
 import com.rubik.router.annotations.RInvariant
 
 /**

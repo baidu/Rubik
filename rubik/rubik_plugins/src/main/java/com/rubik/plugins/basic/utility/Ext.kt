@@ -34,6 +34,8 @@ object Ext {
     const val MODULES_SNAPSHOT_LOCAL_MODE = "modules_snapshot_local_mode"
     const val MODULES_SNAPSHOT_LOCAL_NO_MAVEN_MODE = "modules_snapshot_local_no_maven_mode"
 
+    const val RUBIK_ENABLE_CHECK_ROUTER_VERSION = "rubik_enable_check_router_version"
+
     const val R_PUB_VERSION = "rpubversion"
 
 }

@@ -22,13 +22,8 @@ import android.os.Parcelable
 import android.util.Size
 import android.util.SizeF
 import com.rubik.route.exception.BadQueryException
-import com.rubik.route.mapping.caseToTypeOfT
 import com.rubik.route.mapping.putJson
-import com.rubik.route.mapping.toType
-import com.rubik.route.mapping.typeOfT
-import com.rubik.router.annotations.RInvariant
 import java.io.Serializable
-import java.lang.reflect.Type
 
 /**
  * The Queries of rubik router.
@@ -54,27 +49,11 @@ open class Queries {
         } ?: valuesList.getOrNull(index) ?: throw BadQueryException(index, name)
     }
 
-    @RInvariant
-    inline fun <reified T> toTypeOfT(
+    fun value(
         index: Int,
-        name: String? = null,
-        isRValue: Boolean = false
-    ): T {
-        return toType(index, name, if (isRValue) typeOfT<T>() else null).caseToTypeOfT()
-    }
-
-    @RInvariant
-    fun toType(
-        index: Int,
-        name: String? = null,
-        rValueType: Type? = null
+        name: String? = null
     ): Any? {
-        val value = this[index, name].value
-        return if (null != rValueType) { // is RValue
-            value.toType(rValueType)
-        } else {
-            value
-        }
+        return this[index, name].value
     }
 
     fun toBundle() = Bundle(valuesList.size).apply {

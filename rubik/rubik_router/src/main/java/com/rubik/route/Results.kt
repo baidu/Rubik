@@ -1,11 +1,6 @@
 package com.rubik.route
 
 import com.rubik.route.exception.BadResultException
-import com.rubik.route.mapping.caseToTypeOfT
-import com.rubik.route.mapping.toType
-import com.rubik.route.mapping.typeOfT
-import com.rubik.router.annotations.RInvariant
-import java.lang.reflect.Type
 
 /**
  * The Results of rubik router.
@@ -32,21 +27,9 @@ class Results(private val receiver: ((Results) -> Unit)?) {
         receiver?.invoke(this)
     }
 
-    @RInvariant
-    inline fun <reified T> toTypeOfT(
+    fun value(
         index: Int
-    ): T {
-        return toType(index, if (this[index].isRValue) typeOfT<T>() else null).caseToTypeOfT()
+    ): Any? {
+        return this[index].value
     }
-
-    fun toType(index: Int, rValueType: Type?): Any? {
-        val value = this[index].value
-        return if (this[index].isRValue && null != rValueType) {
-            value.toType(rValueType)
-        } else {
-            value
-        }
-    }
-
-
 }
