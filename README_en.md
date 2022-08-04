@@ -39,9 +39,9 @@ Rubik consists of two parts:
 &ensp;&ensp;(2) Set Rubik initialization parameters such as the Rubik version in the build.gradle or gradle.properties file of the gradle root project. and enable the Rubik plugin in the gradle root project:
 ```groovy
 ext {
-    rubik_kapt_version = "com.rubik:kapt:1.9.0.1-K1_5"   
-    rubik_router_version = "com.rubik:router:1.9.0.1-K1_5"   
-    rubik_plugins_version = "com.rubik:plugins:1.9.0.1-AGBT4-K1_5"  
+    rubik_kapt_version = "com.rubik:kapt:1.9.1.1-K1_5"   
+    rubik_router_version = "com.rubik:router:1.9.1.1-K1_5"   
+    rubik_plugins_version = "com.rubik:plugins:1.9.1.1-AGBT4-K1_5"  
 } 
 
 apply plugin: 'rubik' // enable the Rubik plugin
