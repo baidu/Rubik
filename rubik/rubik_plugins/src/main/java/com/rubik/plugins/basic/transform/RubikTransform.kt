@@ -39,7 +39,6 @@ abstract class RubikTransform : Transform() {
                 dir.scopes,
                 Format.DIRECTORY
             ).let { out ->
-                Logger.d(" xxx c:${dir.file.absolutePath} t:${out.absolutePath}")
                 dir.file.copyRecursively(out,true)
                 afterCopy?.invoke(out)
             }
@@ -59,7 +58,6 @@ abstract class RubikTransform : Transform() {
                 jar.scopes,
                 Format.JAR
             ).let { out ->
-                Logger.d(" yyy c:${jar.file.absolutePath} t:${out.absolutePath}")
                 jar.file.copyTo(out, true)
                 afterCopy?.invoke(out)
             }

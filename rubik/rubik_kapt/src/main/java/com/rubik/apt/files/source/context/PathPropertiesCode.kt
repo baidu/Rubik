@@ -23,7 +23,7 @@ fun TypeSpec.Builder.addPathProperties(
             ).returns(
                 String::class
             ).addStatement(
-                "return ${Constants.Aggregate.PATH_CLASS_NAME}(\"$versionUri\").${Constants.Aggregate.METHOD_SET_PARAMETERS_NAME}(${Constants.Aggregate.PARAMETER_VALUES_NAME})"
+                "return ${Constants.Aggregate.PATH_CLASS_NAME_AS}(\"$versionUri\").${Constants.Aggregate.METHOD_SET_PARAMETERS_NAME}(${Constants.Aggregate.PARAMETER_VALUES_NAME})"
             ).build()
         )
     } else {

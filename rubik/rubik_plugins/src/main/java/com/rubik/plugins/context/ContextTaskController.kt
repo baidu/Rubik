@@ -31,7 +31,7 @@ class ContextTaskController(
     }
 
     fun addTasks(tasks: ContextLibTasks) {
-        tasks.isConfiguring(project)?.let { type->
+        tasks.isConfiguring(project)?.let { type ->
             operation = PublishOperation.PUBLISH_CONTEXT_LIB
             project.applyMaven()
             publicationType = type
@@ -43,7 +43,7 @@ class ContextTaskController(
     }
 
     fun addTasks(tasks: ContextComponentTasks) {
-        tasks.configuringPublicationType(project)?.let { type->
+        tasks.configuringPublicationType(project)?.let { type ->
             operation = PublishOperation.PUBLISH_COMPONENT
             project.applyMaven()
             publicationType = type
@@ -66,10 +66,16 @@ class ContextTaskController(
         }
     }
 
-    private fun initConfig(){
+    private fun initConfig() {
         if (project.autoGenerateAggregate) {
             enableRubikKapt()
             project.putKaptBooleanArgument(Arguments.Declare.AGGREGATE_ENABLE, true)
+            if (!project.generateAggregateInBuildDir) {
+                project.rubikExtension.listenAggregateSetChanged { path ->
+                    project.addToJavaSourceSet("main", path)
+                    project.putKaptArgument(Arguments.Declare.AGGREGATE_GENERATED, path)
+                }
+            }
         } else {
             project.rubikExtension.listenAggregateSetChanged { path ->
                 project.addToJavaSourceSet("main", path)
@@ -83,14 +89,17 @@ class ContextTaskController(
                 isDebuggable = true
                 setMatchingFallbacks("debug")
             }
-            Logger.p(LogTags.COMPUTE_CONTEXT_LIBS, project) { " ADD BUILD_TYPES (${context.buildTypeName()})" }
+            Logger.p(
+                LogTags.COMPUTE_CONTEXT_LIBS,
+                project
+            ) { " ADD BUILD_TYPES (${context.buildTypeName()})" }
         })
         if (!context.useResetCompiler) {
             project.androidExtension?.registerTransform(MakeLibsTransform(project, context))
         }
     }
 
-    private fun ContextLibTasks.configKapt(){
+    private fun ContextLibTasks.configKapt() {
         enableRubikKapt()
         project.putKaptContextEnable(context)
         if (!project.autoGenerateAggregate) {
@@ -101,6 +110,7 @@ class ContextTaskController(
         } else {
             project.putKaptBooleanArgument(Arguments.Declare.AGGREGATE_ENABLE, false)
         }
+        project.putKaptBooleanArgument(Arguments.Declare.CONTEXT_ROUTER_ENABLE, project.generateRouterContext)
     }
 
     private fun ContextLibTasks.graphic() {
@@ -110,12 +120,12 @@ class ContextTaskController(
     }
 
     private fun ContextComponentTasks.graphic() {
-        variant.outputAar?.let{ output ->
+        variant.outputAar?.let { output ->
             ContextComponentTaskGraphic(project, this, publishingTaskProvider, output).graph()
         }
     }
 
-    private fun enableRubikKapt(){
+    private fun enableRubikKapt() {
         project.applyKapt()
         project.addRubikKaptDependency()
         project.rubikConfigExtension.listenDefaultSchemeChanged { scheme ->

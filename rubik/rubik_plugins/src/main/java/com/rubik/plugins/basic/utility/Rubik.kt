@@ -131,6 +131,12 @@ val Project.isRubikRoot
 val Project.autoGenerateAggregate
     get() = propertyOr(Ext.RUBIK_AUTO_GENERATE_AGGREGATE, false)
 
+val Project.generateAggregateInBuildDir
+    get() = propertyOr(Ext.RUBIK_GENERATE_AGGREGATE_IN_BUILD_DIR, true)
+
+val Project.generateRouterContext
+    get() = propertyOr(Ext.RUBIK_GENERATE_ROUTER_CONTEXT, false)
+
 val Project.rubikMavenRepository: URI
     get() = uri(propertyOr(Ext.RUBIK_MAVEN_REPOSITORY) { throw RubikMavenRepositoryNotSetException() })
 

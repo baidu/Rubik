@@ -2,16 +2,11 @@ package rubik.generate.aggregate.demo_com_mars_rubik_test_detail_java
 
 import android.content.Context
 import androidx.annotation.Keep
-import com.rubik.activity.Launcher
 import com.rubik.annotations.source.RGenerated
 import com.rubik.context.Aggregatable
 import com.rubik.context.AggregateFactory
-import com.rubik.route.Queries
-import com.rubik.route.Result
-import com.rubik.route.ResultGroups
 import com.rubik.route.mapping.caseToTypeOfT
 import com.rubik.route.mapping.toTypeOfT
-import com.rubik.router.uri.Path
 import kotlin.Array
 import kotlin.Function0
 import kotlin.Int
@@ -22,6 +17,11 @@ import kotlin.Unit
 import kotlin.collections.List
 import rubik.generate.context.demo_com_mars_rubik_test_detail_java.DetailJavaRouteActions
 import rubik.generate.context.demo_com_mars_rubik_test_detail_java.TestJavaBean
+import com.rubik.activity.Launcher as RubikLauncher
+import com.rubik.route.Queries as RubikQueries
+import com.rubik.route.Result as RubikResult
+import com.rubik.route.ResultGroups as RubikResultGroups
+import com.rubik.router.uri.Path as RubikPath
 
 /**
  * aggregate router function and router event of Rubik Context.
@@ -36,7 +36,7 @@ import rubik.generate.context.demo_com_mars_rubik_test_detail_java.TestJavaBean
 )
 @Keep
 class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
-  override fun onEvent(msg: String, queries: Queries) {
+  override fun onEvent(msg: String, queries: RubikQueries) {
     when(msg){
       else -> {}
     }
@@ -44,8 +44,8 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
 
   override fun onRoute(
     path: String,
-    queries: Queries,
-    results: ResultGroups
+    queries: RubikQueries,
+    results: RubikResultGroups
   ) {
     when {
       "doTestDataType1" == path ->  {
@@ -53,7 +53,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType1(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType1-2" == path ->  {
@@ -61,7 +61,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType12(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType2" == path ->  {
@@ -69,7 +69,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType2(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType2-2" == path ->  {
@@ -77,7 +77,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType22(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType3" == path ->  {
@@ -85,7 +85,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType3(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType4" == path ->  {
@@ -93,7 +93,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType4(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType5" == path ->  {
@@ -101,7 +101,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType5(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType6" == path ->  {
@@ -109,7 +109,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType6(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType7" == path ->  {
@@ -117,14 +117,14 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         doTestDataType7(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "do-sth-bean-provide-instance-by-func" == path ->  {
         val rubikInstanceValue = queries.value(0, null)
         val d1 = queries.value(1, null)
         val rubikReceiveResult0 : (rubik.generate.context.demo_com_mars_rubik_test_detail_java.TestJavaBean) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthBeanProvideInstanceByFunc(
               rubikInstanceValue.caseToTypeOfT(),
@@ -137,7 +137,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
       }
       "1.0/property/property" == path ->  {
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         propertyProperty(
               rubikReceiveResult0
@@ -148,7 +148,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         val j = queries.value(1, null)
         val k = queries.value(2, null)
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthStatic(
               i.caseToTypeOfT(),
@@ -159,7 +159,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
       }
       "property/static" == path ->  {
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         propertyStatic(
               rubikReceiveResult0
@@ -167,7 +167,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
       }
       "do-sth-async-open" == path ->  {
         val onResult : (kotlin.String?, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsyncOpen(
               onResult
@@ -175,7 +175,7 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
       }
       "do-sth-async-interface" == path ->  {
         val onResult : (kotlin.String?, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsyncInterface(
               onResult
@@ -187,15 +187,15 @@ class DetailJavaAggregate : Aggregatable, DetailJavaRouteActions {
         // --- key_str4 : kotlin.collections.List<kotlin.String>?
         // --- key_str5 : kotlin.collections.List<com.mars.component.detail.java.value.TestJavaBean>?
         // --- key_str6 : kotlin.Array<com.mars.component.detail.java.value.TestJavaBean>?
-        Launcher().launch(com.mars.component.detail.java.ui.FirstPageActivity::class.java,queries,null,results)
+        RubikLauncher().launch(com.mars.component.detail.java.ui.FirstPageActivity::class.java,queries,null,results)
       }
-      Path("activity/java_page2/{key_str1}/{key_str2}/{key_str3}").matching(path) ->  {
+      RubikPath("activity/java_page2/{key_str1}/{key_str2}/{key_str3}").matching(path) ->  {
         // com.mars.component.detail.java.ui.SecondActivity
         // - parameters:
         // --- key_str1 : kotlin.String?
         // --- key_str2 : kotlin.String?
         // --- key_str3 : kotlin.Int?
-        Launcher().launch(com.mars.component.detail.java.ui.SecondActivity::class.java,queries,Path("activity/java_page2/{key_str1}/{key_str2}/{key_str3}").getParameters(path),results)
+        RubikLauncher().launch(com.mars.component.detail.java.ui.SecondActivity::class.java,queries,RubikPath("activity/java_page2/{key_str1}/{key_str2}/{key_str3}").getParameters(path),results)
       }
       else -> { throw com.rubik.route.exception.BadPathOrVersionException(path)}
     }

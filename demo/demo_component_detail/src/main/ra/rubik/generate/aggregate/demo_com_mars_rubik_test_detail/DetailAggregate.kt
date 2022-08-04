@@ -7,16 +7,11 @@ import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import com.mars.util_library.TestLibDataBean
-import com.rubik.activity.Launcher
 import com.rubik.annotations.source.RGenerated
 import com.rubik.context.Aggregatable
 import com.rubik.context.AggregateFactory
-import com.rubik.route.Queries
-import com.rubik.route.Result
-import com.rubik.route.ResultGroups
 import com.rubik.route.mapping.caseToTypeOfT
 import com.rubik.route.mapping.toTypeOfT
-import com.rubik.router.uri.Path
 import kotlin.Array
 import kotlin.BooleanArray
 import kotlin.Function0
@@ -38,6 +33,11 @@ import rubik.generate.context.demo_com_mars_rubik_test_detail.TestListBean
 import rubik.generate.context.demo_com_mars_rubik_test_detail.TestNullableBean
 import rubik.generate.context.demo_com_mars_rubik_test_detail.TestParcelizeBean
 import rubik.generate.context.demo_com_mars_rubik_test_detail.TestSerializableBean
+import com.rubik.activity.Launcher as RubikLauncher
+import com.rubik.route.Queries as RubikQueries
+import com.rubik.route.Result as RubikResult
+import com.rubik.route.ResultGroups as RubikResultGroups
+import com.rubik.router.uri.Path as RubikPath
 
 /**
  * aggregate router function and router event of Rubik Context.
@@ -52,7 +52,7 @@ import rubik.generate.context.demo_com_mars_rubik_test_detail.TestSerializableBe
 )
 @Keep
 class DetailAggregate : Aggregatable, DetailRouteActions {
-  override fun onEvent(msg: String, queries: Queries) {
+  override fun onEvent(msg: String, queries: RubikQueries) {
     when(msg){
       "MY_INIT" ->  {
         // com.mars.component.detail.event.EventsByInstance.onInit
@@ -136,8 +136,8 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
 
   override fun onRoute(
     path: String,
-    queries: Queries,
-    results: ResultGroups
+    queries: RubikQueries,
+    results: RubikResultGroups
   ) {
     when {
       "doTestGenericity7" == path ->  {
@@ -145,12 +145,12 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestGenericity7(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "testGenericity4" == path ->  {
         testGenericity4().apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "testGenericity5" == path ->  {
@@ -158,7 +158,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         testGenericity5(
           arg0.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestGenericity6" == path ->  {
@@ -166,7 +166,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestGenericity6(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestGenericity1" == path ->  {
@@ -174,7 +174,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestGenericity1(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestGenericity2" == path ->  {
@@ -182,7 +182,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestGenericity2(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestGenericity3" == path ->  {
@@ -190,7 +190,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestGenericity3(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestGenericity8" == path ->  {
@@ -210,7 +210,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType1(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType2" == path ->  {
@@ -218,7 +218,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType2(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType3" == path ->  {
@@ -226,7 +226,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType3(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType4" == path ->  {
@@ -234,7 +234,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType4(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType5" == path ->  {
@@ -242,7 +242,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType5(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType6" == path ->  {
@@ -250,7 +250,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType6(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType7" == path ->  {
@@ -258,7 +258,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType7(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType8" == path ->  {
@@ -266,7 +266,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType8(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType9" == path ->  {
@@ -274,7 +274,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType9(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType10" == path ->  {
@@ -287,10 +287,10 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "doTestDataType11" == path ->  {
         val resultSuccess : (kotlin.Int, rubik.generate.context.demo_com_mars_rubik_test_detail.TestNullableBean) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         val resultSuccess2 : (rubik.generate.context.demo_com_mars_rubik_test_detail.TestNullableBean?) -> kotlin.Unit = { arg0 ->
-          results.set(1, Result(arg0))
+          results.set(1, RubikResult(arg0))
         }
         doTestDataType11(
               resultSuccess,
@@ -302,7 +302,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType13(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType14" == path ->  {
@@ -310,7 +310,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType14(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType15" == path ->  {
@@ -318,7 +318,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType15(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType16" == path ->  {
@@ -326,7 +326,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType16(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType17" == path ->  {
@@ -334,7 +334,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType17(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "doTestDataType18" == path ->  {
@@ -342,14 +342,14 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         doTestDataType18(
           data.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "test-bean/create" == path ->  {
         val d1 = queries.value(0, null)
         val d2 = queries.value(1, null)
         val rubikReceiveResult0 : (rubik.generate.context.demo_com_mars_rubik_test_detail.TestCreateBean) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         testBeanCreate(
               d1.caseToTypeOfT(),
@@ -361,7 +361,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         val i = queries.value(0, null)
         val s = queries.value(1, null)
         val rubikReceiveResult0 : (kotlin.Int) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthExt(
               i.caseToTypeOfT(),
@@ -374,7 +374,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         val j = queries.value(1, null)
         val k = queries.value(2, null)
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthCompanion(
               i.caseToTypeOfT(),
@@ -385,7 +385,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "property/companion" == path ->  {
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         propertyCompanion(
               rubikReceiveResult0
@@ -394,7 +394,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "doSthHOFCompanion" == path ->  {
         val arg0 = queries.value(0, "arg0")
         val rubikReceiveResult0 : (kotlin.Int) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthHOFCompanion(
               arg0.caseToTypeOfT(),
@@ -410,12 +410,12 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
           arg1.caseToTypeOfT(),
           arg2.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "1.0/property/property" == path ->  {
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         propertyProperty(
               rubikReceiveResult0
@@ -427,21 +427,21 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "view/get" == path ->  {
         val context = queries.value(0, null)
         val rubikReceiveResult0 : ((android.view.View?) -> kotlin.Unit)? = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         viewGet(
               context.caseToTypeOfT(),
               rubikReceiveResult0
             )
       }
-      Path("sth/{id}/a-{name}?code1={code1}&code2={code2}").matching(path) ->  {
-        queries.addAll(Path("sth/{id}/a-{name}?code1={code1}&code2={code2}").getParameters(path))
+      RubikPath("sth/{id}/a-{name}?code1={code1}&code2={code2}").matching(path) ->  {
+        queries.addAll(RubikPath("sth/{id}/a-{name}?code1={code1}&code2={code2}").getParameters(path))
         val id = queries.value(0, null)
         val name = queries.value(1, null)
         val code1 = queries.value(2, null)
         val code2 = queries.value(3, null)
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         sthIdAName(
               id.caseToTypeOfT(),
@@ -451,11 +451,11 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
               rubikReceiveResult0
             )
       }
-      Path("sth-navigation-only/{uri}").matching(path) ->  {
-        queries.addAll(Path("sth-navigation-only/{uri}").getParameters(path))
+      RubikPath("sth-navigation-only/{uri}").matching(path) ->  {
+        queries.addAll(RubikPath("sth-navigation-only/{uri}").getParameters(path))
         val uriRubikParameter = queries.value(0, null)
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         sthNavigationOnlyUri(
               uriRubikParameter.caseToTypeOfT(),
@@ -473,7 +473,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "doSthBean" == path ->  {
         val a1 = queries.value(0, null)
         val rubikReceiveResult0 : (rubik.generate.context.demo_com_mars_rubik_test_detail.TestListBean) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthBean(
               a1.caseToTypeOfT(),
@@ -482,7 +482,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "doSthAsyncHOF" == path ->  {
         val hof : (kotlin.String, rubik.generate.context.demo_com_mars_rubik_test_detail.TestDataBean) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsyncHOF(
               hof
@@ -491,7 +491,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "doSthAsyncHOFNullable" == path ->  {
         val hof2p = queries.value(0, null)
         val hof : ((kotlin.String, rubik.generate.context.demo_com_mars_rubik_test_detail.TestDataBean) -> kotlin.Unit)? = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsyncHOFNullable(
               hof2p.caseToTypeOfT(),
@@ -500,10 +500,10 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "doSthAsync2HOF" == path ->  {
         val hof : (kotlin.String, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         val hof2 : (kotlin.String, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(1, Result(arg0),Result(arg1))
+          results.set(1, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsync2HOF(
               hof,
@@ -513,7 +513,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "doSthAsyncOpen" == path ->  {
         val uriRubikParameter = queries.value(0, null)
         val resultsRubikParameter : ((kotlin.String?, kotlin.Int) -> kotlin.Unit)? = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsyncOpen(
               uriRubikParameter.caseToTypeOfT(),
@@ -522,7 +522,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "do-sth-async-interface" == path ->  {
         val onResult : (kotlin.String?, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         doSthAsyncInterface(
               onResult
@@ -530,13 +530,13 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "do-sth-async-2-interface" == path ->  {
         val onResult : (kotlin.String?, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(0, Result(arg0),Result(arg1))
+          results.set(0, RubikResult(arg0),RubikResult(arg1))
         }
         val onResult2 : (kotlin.String?, kotlin.Int) -> kotlin.Unit = { arg0,arg1 ->
-          results.set(1, Result(arg0),Result(arg1))
+          results.set(1, RubikResult(arg0),RubikResult(arg1))
         }
         val onResult3 : (rubik.generate.context.demo_com_mars_rubik_test_detail.TestDataBean?) -> kotlin.Unit = { arg0 ->
-          results.set(2, Result(arg0))
+          results.set(2, RubikResult(arg0))
         }
         doSthAsync2Interface(
               onResult,
@@ -547,7 +547,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "doSthHOFTop" == path ->  {
         val arg0 = queries.value(0, "arg0")
         val rubikReceiveResult0 : (kotlin.Unit) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthHOFTop(
               arg0.caseToTypeOfT(),
@@ -556,7 +556,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "property/top" == path ->  {
         val rubikReceiveResult0 : (kotlin.String) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         propertyTop(
               rubikReceiveResult0
@@ -570,7 +570,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         val beans = queries.value(4, null)
         val lb = queries.value(5, null)
         val rubikReceiveResult0 : (kotlin.collections.List<rubik.generate.context.demo_com_mars_rubik_test_detail.TestDataBean>) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthTop(
               ints.caseToTypeOfT(),
@@ -617,7 +617,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       "doSthResultReceiver" == path ->  {
         val resultRubikParameter = queries.value(0, null)
         val rubikReceiveResult0 : (android.os.ResultReceiver) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         doSthResultReceiver(
               resultRubikParameter.caseToTypeOfT(),
@@ -626,7 +626,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "live-data/get" == path ->  {
         val rubikReceiveResult0 : (androidx.lifecycle.LiveData<kotlin.String>) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         liveDataGet(
               rubikReceiveResult0
@@ -634,7 +634,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "live-data-bean/get" == path ->  {
         val rubikReceiveResult0 : (androidx.lifecycle.LiveData<rubik.generate.context.demo_com_mars_rubik_test_detail.TestDataBean>) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         liveDataBeanGet(
               rubikReceiveResult0
@@ -642,7 +642,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "live-data-bean-list/get" == path ->  {
         val rubikReceiveResult0 : (androidx.lifecycle.LiveData<kotlin.collections.List<rubik.generate.context.demo_com_mars_rubik_test_detail.TestListBean>>) -> kotlin.Unit = { arg0 ->
-          results.set(0, Result(arg0))
+          results.set(0, RubikResult(arg0))
         }
         liveDataBeanListGet(
               rubikReceiveResult0
@@ -650,7 +650,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
       }
       "fragment/page1" == path ->  {
         fragmentPage1().apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/serialization/parcel-bean" == path ->  {
@@ -658,7 +658,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiSerializationParcelBean(
           parcelBean.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/serialization/parcel-array" == path ->  {
@@ -666,7 +666,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiSerializationParcelArray(
           parcels.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/serialization/parcel-list" == path ->  {
@@ -674,7 +674,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiSerializationParcelList(
           parcels.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/serialization/Serializable-bean" == path ->  {
@@ -682,7 +682,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiSerializationSerializableBean(
           serializableBean.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/json-array" == path ->  {
@@ -690,7 +690,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataJsonArray(
           array.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/parcel-array" == path ->  {
@@ -698,7 +698,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataParcelArray(
           array.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/lib-array" == path ->  {
@@ -706,7 +706,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataLibArray(
           array.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/json-list" == path ->  {
@@ -714,7 +714,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataJsonList(
           list.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/parcel-list" == path ->  {
@@ -722,7 +722,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataParcelList(
           list.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/lib-list" == path ->  {
@@ -730,7 +730,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataLibList(
           list.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
       "api/bigdata/parcel-arraylist" == path ->  {
@@ -738,16 +738,16 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         apiBigdataParcelArraylist(
           list.caseToTypeOfT()
         ).apply {
-          results.set(0, Result(this))
+          results.set(0, RubikResult(this))
         }
       }
-      Path("activity/page2/{key_str1}/{key_str2}/{key_str3}").matching(path) ->  {
+      RubikPath("activity/page2/{key_str1}/{key_str2}/{key_str3}").matching(path) ->  {
         // com.mars.component.detail.ui.SecondPageActivity
         // - parameters:
         // --- key_str1 : kotlin.String?
         // --- key_str2 : kotlin.String?
         // --- key_str3 : kotlin.String?
-        Launcher().launch(com.mars.component.detail.ui.SecondPageActivity::class.java,queries,Path("activity/page2/{key_str1}/{key_str2}/{key_str3}").getParameters(path),results)
+        RubikLauncher().launch(com.mars.component.detail.ui.SecondPageActivity::class.java,queries,RubikPath("activity/page2/{key_str1}/{key_str2}/{key_str3}").getParameters(path),results)
       }
       "activity/page1_from_detail" == path ->  {
         // com.mars.component.detail.ui.FirstPageActivity
@@ -762,7 +762,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         // --- key_int_for_all : kotlin.Int?
         // --- key_int_for_detail : kotlin.Int?
         // --- uri : kotlin.String?
-        Launcher().launch(com.mars.component.detail.ui.FirstPageActivity::class.java,queries,null,results)
+        RubikLauncher().launch(com.mars.component.detail.ui.FirstPageActivity::class.java,queries,null,results)
       }
       "activity/page1_from_home" == path ->  {
         // com.mars.component.detail.ui.FirstPageActivity
@@ -777,7 +777,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         // --- key_int_for_all : kotlin.Int?
         // --- key_int_for_home : kotlin.Int?
         // --- uri : kotlin.String?
-        Launcher().launch(com.mars.component.detail.ui.FirstPageActivity::class.java,queries,null,results)
+        RubikLauncher().launch(com.mars.component.detail.ui.FirstPageActivity::class.java,queries,null,results)
       }
       "activity/page1" == path ->  {
         // com.mars.component.detail.ui.FirstPageActivity
@@ -790,7 +790,7 @@ class DetailAggregate : Aggregatable, DetailRouteActions {
         // --- key_a_ints : kotlin.collections.List<kotlin.Int>?
         // --- key_c_pa_li : kotlin.collections.List<com.mars.component.detail.value.TestCompanionBean>?
         // --- uri : kotlin.String?
-        Launcher().launch(com.mars.component.detail.ui.FirstPageActivity::class.java,queries,null,results)
+        RubikLauncher().launch(com.mars.component.detail.ui.FirstPageActivity::class.java,queries,null,results)
       }
       else -> { throw com.rubik.route.exception.BadPathOrVersionException(path)}
     }

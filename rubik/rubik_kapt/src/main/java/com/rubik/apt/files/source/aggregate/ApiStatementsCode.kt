@@ -32,7 +32,7 @@ internal fun FunSpec.Builder.addApiOnRouteStatements(
         val contextInvoker = api.contextInvoker(uri)
         val path = buildVersionPath(api.path, api.version)
         if (Constants.Aggregate.isParameterPath(path)) {
-            beginControlFlow("${Constants.Aggregate.PATH_CLASS_NAME}(\"$path\").${Constants.Aggregate.METHOD_MATCHING_NAME}(${Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME}) -> ")
+            beginControlFlow("${Constants.Aggregate.PATH_CLASS_NAME_AS}(\"$path\").${Constants.Aggregate.METHOD_MATCHING_NAME}(${Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME}) -> ")
             addStatement(Constants.Aggregate.makeAddPathQueriesCode(path))
         } else
             beginControlFlow("\"$path\" == ${Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME} -> ".noSpaces())

@@ -48,10 +48,14 @@ object Constants {
         const val COMPANION_SUPER_NAME = "${Router.PACKAGE_NAME}.context.AggregateFactory"
         const val PROPERTY_CREATOR_NAME = "CREATOR"
 
-        const val RESULT_PACKAGE_NAME = "${Router.PACKAGE_NAME}.route"
+        const val ROUTE_PACKAGE_NAME = "${Router.PACKAGE_NAME}.route"
         const val RESULT_CLASS_NAME = "Result"
-        const val QUERIES_FULL_CLASS_NAME = "${Router.PACKAGE_NAME}.route.Queries"
-        const val RESULTS_FULL_CLASS_NAME = "${Router.PACKAGE_NAME}.route.ResultGroups"
+        val RESULT_CLASS_NAME_AS = RESULT_CLASS_NAME.toLegalClassName()
+
+        const val QUERIES_CLASS_NAME = "Queries"
+        val QUERIES_CLASS_NAME_AS = QUERIES_CLASS_NAME.toLegalClassName()
+        const val RESULTS_CLASS_NAME = "ResultGroups"
+        val RESULTS_CLASS_NAME_AS = RESULTS_CLASS_NAME.toLegalClassName()
 
         const val PROPERTY_DEPENDENCIES_NAME = "DEPENDENCIES"
 
@@ -65,6 +69,8 @@ object Constants {
 
         const val PATH_PACKAGE_NAME = "${Router.PACKAGE_NAME}.router.uri"
         const val PATH_CLASS_NAME = "Path"
+        val PATH_CLASS_NAME_AS = PATH_CLASS_NAME.toLegalClassName()
+
         const val METHOD_MATCHING_NAME = "matching"
         const val METHOD_SET_PARAMETERS_NAME = "setParameters"
         private const val METHOD_GET_PARAMETERS_NAME = "getParameters"
@@ -72,6 +78,7 @@ object Constants {
 
         const val LAUNCHER_PACKAGE_NAME = "${Router.PACKAGE_NAME}.activity"
         const val LAUNCHER_CLASS_NAME = "Launcher"
+        val LAUNCHER_CLASS_NAME_AS = LAUNCHER_CLASS_NAME.toLegalClassName()
         const val METHOD_LAUNCH_NAME = "launch"
 
         const val MAPPING_PACKAGE_NAME = "${Router.PACKAGE_NAME}.route.mapping"
@@ -80,7 +87,7 @@ object Constants {
 
         private val PATH_PARAMETER_REGEX = Regex("\\{([^}]*)\\}")
         fun isParameterPath(path: String) = path.contains(PATH_PARAMETER_REGEX)
-        fun makeGetPathQueriesCode(originPath: String): String = "$PATH_CLASS_NAME(\"$originPath\").$METHOD_GET_PARAMETERS_NAME($ROUTE_PARAMETER_PATH_NAME)"
+        fun makeGetPathQueriesCode(originPath: String): String = "$PATH_CLASS_NAME_AS(\"$originPath\").$METHOD_GET_PARAMETERS_NAME($ROUTE_PARAMETER_PATH_NAME)"
         fun makeAddPathQueriesCode(originPath: String): String = "$ROUTE_PARAMETER_QUERIES_NAME.addAll(${makeGetPathQueriesCode(originPath)})"
 
         fun makeRouteExceptionCode() = "${Router.PACKAGE_NAME}.route.exception.BadPathOrVersionException($ROUTE_PARAMETER_PATH_NAME)"
@@ -91,7 +98,7 @@ object Constants {
         fun makeCaseToTypeCode(name: String, type: String? = null): String =
             "$name.$CASE_TO_TYPE_OF_T_FUNCTION_NAME${if (null != type) "<$type>" else ""}()".noSpaces()
 
-        fun makeResultsCode(name: String): String = "$RESULT_CLASS_NAME($name)"
+        fun makeResultsCode(name: String): String = "$RESULT_CLASS_NAME_AS($name)"
         fun makeSetResultsCode(code: String, index: Int): String = "${ROUTE_PARAMETER_RESULTS_NAME}.set($index, $code)".noSpaces()
     }
 
@@ -158,6 +165,9 @@ object Constants {
         const val RUBIK_CLASS_NAME = "Rubik"
         const val FIND_ACTIONS_FUNCTION_NAME = "findActions"
     }
+
+    private const val CLASS_NAME_PREFIX = "Rubik"
+    fun String.toLegalClassName() = if (!this.startsWith(CLASS_NAME_PREFIX)) toPascal(CLASS_NAME_PREFIX, this) else this
 
     object KDoc {
         fun function(

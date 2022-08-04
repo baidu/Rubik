@@ -11,6 +11,7 @@ object Arguments {
         const val AGGREGATE_GENERATED = "rubik.aggregate.generated"
         const val CONTEXT_ENABLE = "rubik.context.enable"
         const val DEFAULT_SCHEME = "rubik.default.scheme"
+        const val CONTEXT_ROUTER_ENABLE = "rubik.context.router.enable"
     }
 }
 

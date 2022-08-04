@@ -10,6 +10,10 @@
 
 </div>
 
+<div align="center">
+<a href="./README_en.md">English Readme</a>
+</div>
+
 # Rubik
 Rubik是一套解决Android平台组件化的综合方案，提供gradle project之间的路由通讯能力，以及对gradle project的组件定义、版本控制、maven发布、aar/jar与源码之间的切换以及组件的自由组合等能力。
 
@@ -143,7 +147,7 @@ class RouterTestCase {
         } // 测试用例
     }
     … // 继续写测试用例
-}
+ }
 
 ```
 

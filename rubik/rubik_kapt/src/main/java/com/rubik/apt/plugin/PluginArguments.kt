@@ -7,7 +7,8 @@ import javax.annotation.processing.ProcessingEnvironment
 data class PluginArguments(
     val defaultScheme: String?,
     val aggregateEnable: Boolean,
-    val aggregateGenerated: String?
+    val aggregateGenerated: String?,
+    val routerContextEnable: Boolean
 ) {
     private val contexts = mutableListOf<Pair<ContextDeclare, Boolean>>()
 
@@ -24,14 +25,15 @@ data class PluginArguments(
     }
 
     override fun toString(): String {
-        return "defaultScheme:$defaultScheme aggregateEnable:$aggregateEnable " +
-                "aggregateGenerated:$aggregateGenerated contexts:$contexts"
+        return "defaultScheme:$defaultScheme aggregateEnable:$aggregateEnable aggregateGenerated:$aggregateGenerated routerContextEnable:$routerContextEnable contexts:$contexts "
     }
+
     companion object {
         operator fun invoke(processingEnv: ProcessingEnvironment) = PluginArguments(
             processingEnv.arguments(Arguments.Declare.DEFAULT_SCHEME),
             processingEnv.booleanArguments(Arguments.Declare.AGGREGATE_ENABLE),
-            processingEnv.arguments(Arguments.Declare.AGGREGATE_GENERATED)
+            processingEnv.arguments(Arguments.Declare.AGGREGATE_GENERATED),
+            processingEnv.booleanArguments(Arguments.Declare.CONTEXT_ROUTER_ENABLE)
         ).apply {
             processingEnv.argumentContexts { context, enable ->
                 contexts.add(Pair(context, enable))

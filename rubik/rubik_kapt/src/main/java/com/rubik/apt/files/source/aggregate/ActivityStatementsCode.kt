@@ -10,7 +10,7 @@ fun FunSpec.Builder.addActivityOnRouteStatements(activities: Map<String, Activit
     activities.forEach { (_, activity) ->
         val path = buildVersionPath(activity.path, activity.version)
         if(Constants.Aggregate.isParameterPath(path))
-            beginControlFlow("${Constants.Aggregate.PATH_CLASS_NAME}(\"$path\").${Constants.Aggregate.METHOD_MATCHING_NAME}(${Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME}) -> ")
+            beginControlFlow("${Constants.Aggregate.PATH_CLASS_NAME_AS}(\"$path\").${Constants.Aggregate.METHOD_MATCHING_NAME}(${Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME}) -> ")
         else
             beginControlFlow("\"$path\" == ${Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME} -> ")
         Constants.KDoc.function(

@@ -66,6 +66,6 @@ class ActivityCodeBase(
         get() =  sortedProperties.map { queryCodeBase -> "${queryCodeBase.originalName} : ${queryCodeBase.originalType}" }
 
     fun startCode(path: String): String =
-        "${Constants.Aggregate.LAUNCHER_CLASS_NAME}().${Constants.Aggregate.METHOD_LAUNCH_NAME}($className::class.java,${Constants.Aggregate.ROUTE_PARAMETER_QUERIES_NAME},${if(Constants.Aggregate.isParameterPath(path)) Constants.Aggregate.makeGetPathQueriesCode(path) else "null"},${Constants.Aggregate.ROUTE_PARAMETER_RESULTS_NAME})"
+        "${Constants.Aggregate.LAUNCHER_CLASS_NAME_AS}().${Constants.Aggregate.METHOD_LAUNCH_NAME}($className::class.java,${Constants.Aggregate.ROUTE_PARAMETER_QUERIES_NAME},${if(Constants.Aggregate.isParameterPath(path)) Constants.Aggregate.makeGetPathQueriesCode(path) else "null"},${Constants.Aggregate.ROUTE_PARAMETER_RESULTS_NAME})"
 
 }

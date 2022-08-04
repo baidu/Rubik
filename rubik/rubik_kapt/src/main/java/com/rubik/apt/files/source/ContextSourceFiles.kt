@@ -20,7 +20,8 @@ import java.io.File
 
 class ContextSourceFiles(private val dictionary: File) {
     fun generate(
-        contexts: Map<String, ContextCodeBase>
+        contexts: Map<String, ContextCodeBase>,
+        routerContextEnable: Boolean
     ) {
         contexts.forEach { (uri, value) ->
             generateContextFile(
@@ -44,13 +45,15 @@ class ContextSourceFiles(private val dictionary: File) {
                 value.version,
                 dictionary
             )
-            generateContextRouteFile(
-                value.getRouteContextName(),
-                uri,
-                value.sections,
-                value.version,
-                dictionary
-            )
+            if (routerContextEnable) {
+                generateContextRouteFile(
+                    value.getRouteContextName(),
+                    uri,
+                    value.sections,
+                    value.version,
+                    dictionary
+                )
+            }
         }
     }
 
@@ -63,7 +66,7 @@ class ContextSourceFiles(private val dictionary: File) {
         routeActionsName: String
     ) {
         FileSpec.builder(Constants.Contexts.makeContextPackageName(uri), className).apply {
-            addImport(Constants.Aggregate.PATH_PACKAGE_NAME, Constants.Aggregate.PATH_CLASS_NAME)
+            addAliasedImport(ClassName(Constants.Aggregate.PATH_PACKAGE_NAME, Constants.Aggregate.PATH_CLASS_NAME), Constants.Aggregate.PATH_CLASS_NAME_AS)
             addImport(Constants.Apis.NAVIGATE_FUNCTION_PACKAGE_NAME, Constants.Apis.TOUCH_FUNCTION_NAME)
             addImport(Constants.Apis.NAVIGATE_FUNCTION_PACKAGE_NAME, Constants.Apis.NAVIGATE_FUNCTION_NAME)
             addImport(Constants.Router.PACKAGE_NAME, Constants.ContextRouters.RUBIK_CLASS_NAME)

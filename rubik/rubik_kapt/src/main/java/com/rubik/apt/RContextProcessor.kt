@@ -91,7 +91,7 @@ class RContextProcessor {
                 }
                 makeDefaultGeneratedDir(processingEnv)?.let { directory ->
                     processingContexts.find { value -> value.generatedEnable }.let { contexts->
-                        ContextSourceFiles(directory).generate(contexts)
+                        ContextSourceFiles(directory).generate(contexts, args.routerContextEnable)
                     }
                 }
             }

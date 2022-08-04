@@ -1,4 +1,4 @@
-const val BY_VERSION = "1.9.1.1-AGBT4-K1_3"
+const val BY_VERSION = "1.9.1.3-AGBT4-K1_5"
 // KTNail plugin update.
 //   by [sync].
-//   at timestamp : 2022-08-02 14:21:03.
+//   at timestamp : 2022-08-03 19:45:19.

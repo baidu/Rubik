@@ -15,6 +15,10 @@ object Ext {
 
     const val RUBIK_AUTO_GENERATE_AGGREGATE = "rubik_auto_generate_aggregate"
 
+    const val RUBIK_GENERATE_AGGREGATE_IN_BUILD_DIR = "rubik_generate_aggregate_in_build_dir"
+
+    const val RUBIK_GENERATE_ROUTER_CONTEXT = "rubik_generate_router_context"
+
     const val RUBIK_CLEAN_BEFORE_TASK = "rubik_clean_before_task"
 
     const val RUBIK_KAPT_SOURCE_FOLDER = "rubik_kapt_source_folder"

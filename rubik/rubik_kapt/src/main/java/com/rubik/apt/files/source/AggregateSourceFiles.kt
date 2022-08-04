@@ -28,23 +28,13 @@ class AggregateSourceFiles(
     ) {
         val className = context.getAggregateName()
         FileSpec.builder(Constants.Aggregate.Declare.makeAggregatePackageName(uri), className)
-            .addImport(Constants.Aggregate.PATH_PACKAGE_NAME, Constants.Aggregate.PATH_CLASS_NAME)
-            .addImport(
-                Constants.Aggregate.RESULT_PACKAGE_NAME,
-                Constants.Aggregate.RESULT_CLASS_NAME
-            )
-            .addImport(
-                Constants.Aggregate.LAUNCHER_PACKAGE_NAME,
-                Constants.Aggregate.LAUNCHER_CLASS_NAME
-            )
-            .addImport(
-                Constants.Aggregate.MAPPING_PACKAGE_NAME,
-                Constants.Aggregate.CASE_TO_TYPE_OF_T_FUNCTION_NAME
-            )
-            .addImport(
-                Constants.Aggregate.MAPPING_PACKAGE_NAME,
-                Constants.Aggregate.TO_TYPE_OF_T_FUNCTION_NAME
-            )
+            .addAliasedImport(ClassName(Constants.Aggregate.PATH_PACKAGE_NAME, Constants.Aggregate.PATH_CLASS_NAME), Constants.Aggregate.PATH_CLASS_NAME_AS)
+            .addAliasedImport(ClassName(Constants.Aggregate.ROUTE_PACKAGE_NAME, Constants.Aggregate.RESULT_CLASS_NAME), Constants.Aggregate.RESULT_CLASS_NAME_AS)
+            .addAliasedImport(ClassName(Constants.Aggregate.LAUNCHER_PACKAGE_NAME, Constants.Aggregate.LAUNCHER_CLASS_NAME), Constants.Aggregate.LAUNCHER_CLASS_NAME_AS)
+            .addAliasedImport(ClassName(Constants.Aggregate.ROUTE_PACKAGE_NAME, Constants.Aggregate.QUERIES_CLASS_NAME), Constants.Aggregate.QUERIES_CLASS_NAME_AS)
+            .addAliasedImport(ClassName(Constants.Aggregate.ROUTE_PACKAGE_NAME, Constants.Aggregate.RESULTS_CLASS_NAME), Constants.Aggregate.RESULTS_CLASS_NAME_AS)
+            .addImport(Constants.Aggregate.MAPPING_PACKAGE_NAME, Constants.Aggregate.CASE_TO_TYPE_OF_T_FUNCTION_NAME)
+            .addImport(Constants.Aggregate.MAPPING_PACKAGE_NAME, Constants.Aggregate.TO_TYPE_OF_T_FUNCTION_NAME)
             .addType(
                 TypeSpec.classBuilder(className).addSuperinterface(
                     ClassName.bestGuess(Constants.Aggregate.Declare.INTERFACE_NAME)
@@ -105,7 +95,7 @@ class AggregateSourceFiles(
                         Constants.Aggregate.LIVE_PARAMETER_MSG_NAME, String::class
                     ).addParameter(
                         Constants.Aggregate.ROUTE_PARAMETER_QUERIES_NAME,
-                        ClassName.bestGuess(Constants.Aggregate.QUERIES_FULL_CLASS_NAME)
+                        ClassName.bestGuess("${Constants.Aggregate.ROUTE_PACKAGE_NAME}.${Constants.Aggregate.QUERIES_CLASS_NAME}")
                     ).addLiveStatements {
                         addEventStatements(context.events)
                     }.build()
@@ -118,10 +108,10 @@ class AggregateSourceFiles(
                         Constants.Aggregate.ROUTE_PARAMETER_PATH_NAME, String::class
                     ).addParameter(
                         Constants.Aggregate.ROUTE_PARAMETER_QUERIES_NAME,
-                        ClassName.bestGuess(Constants.Aggregate.QUERIES_FULL_CLASS_NAME)
+                        ClassName.bestGuess("${Constants.Aggregate.ROUTE_PACKAGE_NAME}.${Constants.Aggregate.QUERIES_CLASS_NAME}")
                     ).addParameter(
                         Constants.Aggregate.ROUTE_PARAMETER_RESULTS_NAME,
-                        ClassName.bestGuess(Constants.Aggregate.RESULTS_FULL_CLASS_NAME)
+                        ClassName.bestGuess("${Constants.Aggregate.ROUTE_PACKAGE_NAME}.${Constants.Aggregate.RESULTS_CLASS_NAME}")
                     ).addRouteStatements {
                         addApiOnRouteStatements(uri, context.apis)
                         addActivityOnRouteStatements(context.activities)

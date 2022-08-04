@@ -24,7 +24,12 @@ buildscript {
 
 //        rubik_clean_before_task = false  // default: true
 
-//        rubik_auto_generate_aggregate = true   // default: false
+        rubik_auto_generate_aggregate = true   // default: false
+
+        rubik_generate_aggregate_in_build_dir = false  // default: true
+//                           only usable whenrubik_auto_generate_aggregate = true
+
+        rubik_generate_router_context = true   // default: false
 
 //        rubik_extension_name = "rk"
 
