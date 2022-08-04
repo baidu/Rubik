@@ -19,7 +19,7 @@ Rubik is a comprehensive solution for Android platform componentized development
 
 Rubik consists of two parts:
 * Rubik Router ：The function level routing capability of Rubik. Unlike normal page router, Rubik Router allows the Uri and parameters to be navigated to any execution of a public JVM language (Java/Kotlin) function . It allows for more flexible communication between Gradle Projects without code calls.
-* Rubik 工具链 ：Provides component context definition, versioning, Maven publishing, AAR/JAR and source switching capabilities, including 4 Gradle Plugins:
+* Rubik Tools link ：Provides component context definition, versioning, Maven publishing, AAR/JAR and source switching capabilities, including 4 Gradle Plugins:
     + rubik：
         - Provides the ability to define components globally, and automatically enables plugins such as rubik-context and rubik-root based on the global definition
     + rubik-context：
