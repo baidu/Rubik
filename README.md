@@ -39,9 +39,9 @@ Rubik由两部分组成：
 &ensp;&ensp;(2) 在最外层工程（gradle root project)的build.gradle或gradle.properties文件中配置Rubik版本号等初始化参数，并在最外层工程中启用rubik插件：
 ```groovy
 ext {
-    rubik_kapt_version = "com.rubik:kapt:1.9.0.1-K1_5"   
-    rubik_router_version = "com.rubik:router:1.9.0.1-K1_5"   
-    rubik_plugins_version = "com.rubik:plugins:1.9.0.1-AGBT4-K1_5"  
+    rubik_kapt_version = "com.rubik:kapt:1.9.1.1-K1_5"   
+    rubik_router_version = "com.rubik:router:1.9.1.1-K1_5"   
+    rubik_plugins_version = "com.rubik:plugins:1.9.1.1-AGBT4-K1_5"  
 } 
 
 apply plugin: 'rubik' // 启用rubik插件
