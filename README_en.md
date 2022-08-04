@@ -10,6 +10,10 @@
 
 </div>
 
+<div align="center">
+<a href="./README.md">Chinese Readme</a>
+</div>
+
 # Rubik
 Rubik is a comprehensive solution for Android platform componentized development. It provides the ability of routing communication between Gradle projects, as well as the ability of component definition, version control, Maven publishing, AAR/JAR and source code switching, and free composition of components.
 
