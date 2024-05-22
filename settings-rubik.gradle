@@ -1,0 +1,11 @@
+/**
+ * generated Rubik by Rubik Gradle Plugin (1.10.99.999T-AGBT4_2-K1_3-LOCAL).
+ * 
+ * update by: cuizhe01 
+ *        at: 2023-08-07 21:05:57
+ */
+include ':demo:demo_component_detail'
+include ':demo:demo_component_detail_java'
+include ':demo:demo_component_home'
+include ':demo:demo_until_library_b'
+include ':demo:demo_until_library_c_java'

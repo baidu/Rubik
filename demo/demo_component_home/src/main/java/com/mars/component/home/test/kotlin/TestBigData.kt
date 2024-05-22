@@ -18,7 +18,7 @@ class TestBigData {
 
         val startTimeAL = System.currentTimeMillis()
         val resultAL = DetailContext.Api.Bigdata.libArray(Array(testArraySize){
-            TestLibDataBean(it, "from home! array:$it")
+            TestDataBean(it, "from home! array:$it")
         })
         val alCost = System.currentTimeMillis() - startTimeAL
         "$tag TestBigData ARRAY LIB size:${resultAL?.size} cost:$alCost ".let { log->
@@ -49,7 +49,7 @@ class TestBigData {
 
         val startTimeLL = System.currentTimeMillis()
         val resultLL = DetailContext.Api.Bigdata.libList(MutableList(testListSize){
-            TestLibDataBean(it, "from home! list:$it")
+            TestDataBean(it, "from home! list:$it")
         })
         val llCost = System.currentTimeMillis() - startTimeLL
         "$tag TestBigData List LIB size:${resultLL?.size} cost:$llCost ".let { log->

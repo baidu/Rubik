@@ -3,10 +3,9 @@ package com.mars.component.detail.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mars.component.detail.R
-import com.mars.component.detail.value.TestDataBean
 import com.mars.component.detail.value.TestCompanionBean
+import com.mars.component.detail.value.TestDataBean
 import com.rubik.annotations.route.RProperty
-import com.rubik.annotations.route.RRoute
 import com.rubik.annotations.route.page.RPage
 import com.rubik.router.property
 import kotlinx.android.synthetic.main.activity_a1.*
@@ -100,8 +99,10 @@ class FirstPageActivity : AppCompatActivity() {
 //                    "${paLiP?.get(0)?.b1}\n"
         text_hello.text = msg
 
+
     }
 }
 
-@RRoute(path = "notActivity")
-class NotActivity()
+//@RRoute(path = "notActivity2")
+//class NotActivity(val b :TestClassB){
+//}

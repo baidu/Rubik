@@ -15,52 +15,54 @@
  */
 package com.rubik.apt.codebase.api
 
-import com.blueprint.kotlin.lang.element.KbpElement
-import com.blueprint.kotlin.pool.ElementPool
+import com.rubik.apt.codebase.RToken
+import com.rubik.apt.codebase.RouteCodeBase
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.TokenName
 import com.rubik.apt.codebase.invoker.InvokeContextCodeBase
-import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
-import com.squareup.kotlinpoet.TypeName
+import com.rubik.apt.codebase.invoker.InvokeOriginalCodeBase
+import com.rubik.apt.codebase.invoker.OriginalInvokable
 
 /**
  * The code structure of Router Api.
  *
  * @since 1.1
  */
-class ApiCodeBase(
+open class ApiCodeBase(
+    override val invoker: InvokeOriginalCodeBase,
     path: String,
     version: String,
+    val defineResultType: String? = null,
     navigationOnly: Boolean,
-    pathSectionOptimize: Boolean,
-    val originalInvoker: InvokeElementCodeBase,
-    val defineResultType: String?,
-    val forResult: Boolean = false
-) : RouteCodeBase(path, version, navigationOnly, pathSectionOptimize) {
-    companion object {
-        operator fun invoke(
-            elementPool: ElementPool,
-            element: KbpElement,
-            path: String,
-            version: String,
-            defineResultType: String? = null,
-            navigationOnly: Boolean,
-            forResult: Boolean,
-            pathSectionOptimize: Boolean
-        ): ApiCodeBase? {
-            return InvokeElementCodeBase(elementPool, element)?.let { invoker ->
-                ApiCodeBase(
-                    path,
-                    version,
-                    navigationOnly,
-                    pathSectionOptimize,
-                    invoker,
-                    defineResultType,
-                    forResult
-                )
-            }
-        }
-    }
+    val syncReturn: Boolean = false,
+    pathSectionOptimize: Boolean
+) : RouteCodeBase(path, version, navigationOnly, pathSectionOptimize), OriginalInvokable, RToken {
 
     fun contextInvoker(uri: String) = InvokeContextCodeBase(this, uri)
+
+    fun objectContextInvoker(uri: String) = InvokeContextCodeBase(this, uri, inObject = true)
+
+    override fun resetCrashPath(crash: RouteCodeBase) {
+        resetPath = resetPath ?: (path + invoker.parameterPathSuffix)
+
+        if (crash.versionPath == versionPath)
+            super.resetCrashPath(crash)
+    }
+
+    override fun location() = invoker.location
+
+    override val tokenList
+        get() = TokenList(
+            TokenName(versionPath),
+            defineResultType,
+            navigationOnly,
+            syncReturn,
+            pathSectionOptimize,
+            invoker,
+            key = "API",
+            warp = false
+        )
+
 }
 
 

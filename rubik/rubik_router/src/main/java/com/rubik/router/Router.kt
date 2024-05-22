@@ -37,7 +37,7 @@ import com.rubik.route.mapping.query
 import com.rubik.route.mapping.typeOfT
 import com.rubik.route.mapping.valueProperty
 import com.rubik.router.annotations.RInvariant
-import com.rubik.router.exception.RContextNotFoundException
+import com.rubik.router.exception.RubikAggregateNotFoundException
 import java.lang.reflect.Type
 
 class Router internal constructor(
@@ -61,7 +61,7 @@ class Router internal constructor(
      * route and get the result.
      */
     fun routeForResult(type: Type? = null): Any? {
-        return routeSync().value(0).caseToTypeOfT()
+        return safeRouteAny { routeSync().value(0).caseToTypeOfT() }
     }
 
     @RInvariant
@@ -76,7 +76,7 @@ class Router internal constructor(
     }
 
     private fun findAggregate(uri: String): Aggregatable {
-        return Rubik.createAggregate(uri) ?: throw RContextNotFoundException(uri)
+        return Rubik.createAggregate(uri) ?: throw RubikAggregateNotFoundException(uri)
     }
 
     private fun checkRouterVersion() {
@@ -238,6 +238,15 @@ fun bundleQueries(block: BundleQueriesFrameable<Unit>.() -> Unit) =
 
 @RInvariant
 fun <T> safeRoute(body: () -> T): T? {
+    return try {
+        return body()
+    } catch (e: Exception) {
+        Logger.e(" RUBIK navigation with exception : $e", e)
+        null
+    }
+}
+
+fun safeRouteAny(body: () -> Any): Any? {
     return try {
         return body()
     } catch (e: Exception) {

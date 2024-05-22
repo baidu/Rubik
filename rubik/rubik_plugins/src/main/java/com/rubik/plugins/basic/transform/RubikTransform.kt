@@ -39,6 +39,7 @@ abstract class RubikTransform : Transform() {
                 dir.scopes,
                 Format.DIRECTORY
             ).let { out ->
+                out.deleteRecursively()
                 dir.file.copyRecursively(out,true)
                 afterCopy?.invoke(out)
             }
@@ -58,6 +59,7 @@ abstract class RubikTransform : Transform() {
                 jar.scopes,
                 Format.JAR
             ).let { out ->
+                out.delete()
                 jar.file.copyTo(out, true)
                 afterCopy?.invoke(out)
             }

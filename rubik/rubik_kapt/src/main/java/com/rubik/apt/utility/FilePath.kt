@@ -1,7 +1,6 @@
 package com.rubik.apt.utility
 
 import com.rubik.apt.plugin.Arguments
-import com.rubik.apt.plugin.PluginArguments
 import com.rubik.apt.plugin.arguments
 import java.io.File
 import javax.annotation.processing.ProcessingEnvironment
@@ -11,10 +10,7 @@ fun makeDefaultGeneratedDir(processingEnv: ProcessingEnvironment) =
         File(it).apply { mkdirs() }
     }
 
-fun cleanAggregateGeneratedDir(arg: PluginArguments) =
-    arg.aggregateGenerated?.let {
-        File(it).apply {
-            deleteRecursively()
-            mkdirs()
-        }
+fun makeAggregateGeneratedDir(aggregateGenerated: String?) =
+    aggregateGenerated?.let {
+        File(it).apply { mkdirs() }
     }

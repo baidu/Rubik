@@ -36,6 +36,7 @@ fun TypeSpec.Builder.addToucherClass(version: String): TypeSpec.Builder = apply 
         ).build()
     )
 }
+
 fun TypeSpec.Builder.addTouchFunction(): TypeSpec.Builder = apply {
     addFunction(
         FunSpec.builder(

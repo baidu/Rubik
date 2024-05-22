@@ -30,7 +30,11 @@ import com.google.auto.service.AutoService;
         Constants.Annotations.R_ROUTE_INSTANCE_REPEATABLE,
         Constants.Annotations.R_ROUTE_ASSIST,
         Constants.Annotations.R_ROUTE_ASSIST_REPEATABLE,
-        Constants.Annotations.R_VALUE
+        Constants.Annotations.R_INSTANCE,
+        Constants.Annotations.R_INSTANCE_REPEATABLE,
+        Constants.Annotations.R_VALUE,
+        Constants.Annotations.R_OBJECT
+
 })
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)

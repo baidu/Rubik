@@ -21,6 +21,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.rubik.annotations.route.function.RDefaultType;
+
 @Retention(RetentionPolicy.SOURCE)
 @Repeatable(RRouteRepeatable.class)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.TYPE})
@@ -28,9 +30,11 @@ public @interface RRoute {
     String uri() default "";
     @Deprecated
     String context() default "";
-    String path();
+    String path() default "";
     String version() default "";
     boolean navigationOnly() default false;
+    @Deprecated
     boolean forResult() default false;
-    Class resultType() default Object.class;
+    boolean syncReturn() default false;
+    Class resultType() default RDefaultType.class;
 }

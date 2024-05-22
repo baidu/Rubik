@@ -40,7 +40,7 @@ interface Aggregatable {
 
 abstract class AggregateFactory {
     abstract val URI: String
-    abstract val DEPENDENCIES: List<String>
+    open val DEPENDENCIES: List<String> = listOf()
     abstract val EVENT_MSGS: List<String>
     abstract val CREATOR: () -> Aggregatable
 

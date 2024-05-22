@@ -18,16 +18,16 @@
 Rubik是一套解决Android平台组件化的综合方案，提供gradle project之间的路由通讯能力，以及对gradle project的组件定义、版本控制、maven发布、aar/jar与源码之间的切换以及组件的自由组合等能力。
 
 Rubik由两部分组成：
-* Rubik Router ：即Rubik的函数级路由能力，与一般的页面路由不同，Rubik Router允许把Uri及参数，导航到工程内部，任意的一个公开的JVM语言（Java/Kotlin）函数的执行上，以便于更灵活的进行gradle project之间不基于代码调用的通讯。
+* Rubik Router ：提供组件之间的低耦合通讯能力，即Rubik的"函数路由"，与一般的页面路由不同，Rubik Router允许把Uri及参数，导航到工程内部，任意的一个公开的JVM语言（Java/Kotlin）函数的执行上，以便于更灵活的进行gradle project之间不基于代码调用的通讯。
 * Rubik 工具链 ：提供组件上下文的定义、版本控制、maven发布、aar/jar与源码之间的切换等能力，包括4个gradle plugin:
     + rubik：
-        - 提供全局定义组件的能力，并根据全局定义自动启用rubik-context、rubik-root等插件
+        - 提供全局定义组件的能力，并根据全局定义自动启用rubik-context、rubik-shell等插件
     + rubik-context：
-        - 提供task，自动生成镜像函数等中间代码，并把中间代码打包成context.jar ,按版本号发布到maven
+        - 提供task，自动生成接口中间代码，并把中间代码打包成context.jar ,按版本号发布到maven
         - 提供task，把业务代码按flavor、版本号编译成aar (包括代码、资源、内置SDK)发布到maven
-        - 通过全局定义的组件，为组件所在子工程自动添加其他context.jar的依赖
-    + rubik-root：
-        - 给壳工程提供筛选组件等能力，根据flavor、版本号筛选要打包进apk的业务组件
+        - 通过全局定义的组件，为组件所在子工程自动添加其他组件的context.jar的依赖
+    + rubik-shell：
+        - 给壳工程提供筛选组件能力，根据flavor、版本号筛选要打包进apk的业务组件
         - 提供组件的源码工程和aar切换的能力
     + rubik-test:
         - 给工程提供单元测试环境
@@ -52,7 +52,7 @@ apply plugin: 'rubik' // 启用rubik插件
 rubik {
     component { // 第一个组件
         uri "app://com.myapp.home"  // 组件的Uri
-        dependencies {    // 组件需要依赖的其他组件
+        touching {    // 组件需要依赖的其他组件
             uri ("app://com.myapp.detail" ) { 
                 version "0.1.1"  // 依赖其他组件的版本
             }
@@ -153,7 +153,3 @@ class RouterTestCase {
 
 ## 如何贡献
 请用Kotlin语言编写，所有注明动机的合理改动提交都会被接收。
-
-
-## 讨论
-百度如流讨论群：8105247

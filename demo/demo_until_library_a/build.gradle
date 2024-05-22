@@ -4,16 +4,19 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion 23
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         consumerProguardFiles 'consumer-rules.pro'
+//
+//        missingDimensionStrategy 'company', 'company1', 'company2'
+//        missingDimensionStrategy 'channel', 'channel1', 'channel2', 'channel3'
     }
 
     buildTypes {
@@ -28,15 +31,46 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+//    flavorDimensions "abc" , 'channel'
+
+//    productFlavors {
+//        abc1 {
+//            dimension "abc"
+//            missingDimensionStrategy 'company', 'company1'
+//        }
+//        abc2 {
+//            dimension "abc"
+//            missingDimensionStrategy 'company', 'company2'
+////            missingDimensionStrategy 'channel', 'channel1', 'channel2', 'channel3'
+//        }
+//
+//        channel1 {
+//            dimension "channel"
+//        }
+//
+//        channel2 {
+//            dimension "channel"
+//        }
+//
+//        channel3 {
+//            dimension "channel"
+//        }
+//    }
+
 }
 
+//configurations {
+//    abc1Implementation {
+//    }
+//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
 
-    api project(':demo:demo_until_library_b')
+//    implementation project(':demo:demo_until_library_b')
 
 }

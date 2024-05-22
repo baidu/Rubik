@@ -10,6 +10,7 @@ class Events {
     }
 
     @REvent(msg = LifeCycleEvent.DESTROY)
+    @REvent(msg = "MY")
     fun myDestory(){
         println(" CT DBG destroy HOME begin !!!")
     }

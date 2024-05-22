@@ -1,0 +1,41 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation gradleApi()
+
+    implementation "com.android.tools.build:gradle:$agbt_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+    implementation deps.ktnail.x
+    implementation deps.ktnail.gradle
+    implementation deps.synccode.syncer
+
+    implementation deps.rubik.annotations
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+compileKotlin {
+    kotlinOptions.freeCompilerArgs += ['-module-name', "kmd.mars.rubik.context"]
+}
+
+publishing {
+    publications {
+        rubikPlugins(MavenPublication) {
+            groupId "com.rubik"
+            artifactId 'context'
+            version pubs.rubik.context
+            description 'context'
+            from components.java
+        }
+    }
+
+    apply from: '../rubik_maven_repositories.gradle'
+    addRubikMavenRepos(repositories)
+}

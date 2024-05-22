@@ -15,31 +15,29 @@
  */
 package com.rubik.apt.codebase.api
 
-import com.blueprint.kotlin.lang.element.KbpElement
-import com.blueprint.kotlin.pool.ElementPool
-import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
+import com.rubik.apt.codebase.RToken
+import com.rubik.apt.codebase.RouteCodeBase
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.TokenName
+import com.rubik.apt.codebase.invoker.InvokeOriginalCodeBase
+import com.rubik.apt.codebase.invoker.OriginalInvokable
 
 class ApiInstanceCodeBase(
-    val forPath: String,
-    val version: String,
-    val invoker: InvokeElementCodeBase
+    override val invoker: InvokeOriginalCodeBase,
+    path: String,
+    version: String
+) : RToken, OriginalInvokable, RouteCodeBase(
+    path,
+    version,
+    navigationOnly = false,
+    pathSectionOptimize = true
 ) {
-    companion object {
-        operator fun invoke(
-            elementPool: ElementPool,
-            element: KbpElement,
-            forPath: String,
-            version: String
-        ): ApiInstanceCodeBase? {
-            return InvokeElementCodeBase(elementPool, element)?.let { invoker ->
-                ApiInstanceCodeBase(
-                    forPath,
-                    version,
-                    invoker
-                )
-            }
-        }
-    }
+
+    override fun location() = invoker.location
+
+    override val tokenList: TokenList
+        get() = TokenList(TokenName(versionPath), invoker, key = "AIN", warp = false)
+
 }
 
 

@@ -1,65 +1,33 @@
 package com.rubik.apt.utility
 
-import com.blueprint.kotlin.lang.element.KbpVariableElement
+import com.blueprint.kotlin.lang.element.*
 import com.blueprint.kotlin.lang.type.KbpType
-import com.blueprint.kotlin.lang.utility.asTypeElement
-import com.blueprint.kotlin.lang.utility.hasSuperTypeOrInterface
-import com.blueprint.kotlin.lang.utility.isCharSequence
-import com.blueprint.kotlin.lang.utility.isPrimitive
+import com.blueprint.kotlin.lang.utility.findConstructors
+import com.ktnail.x.camelToPascal
+import com.ktnail.x.pascalToSnake
+import com.ktnail.x.toPascal
+import com.rubik.annotations.route.RCallback
 import com.rubik.annotations.route.RResult
-import com.rubik.annotations.route.RValue
-import com.rubik.apt.Constants
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.TypeName
-import java.io.Serializable
+import javax.lang.model.element.Element
+import javax.lang.model.element.TypeElement
 import javax.lang.model.type.MirroredTypeException
-import javax.lang.model.type.TypeKind
-import javax.lang.model.type.TypeMirror
 
-
-fun KbpType.containRValue(): Boolean =
-    this.jmType?.isRValue() == true || null != typeArguments.find { child -> child.containRValue() }
 
 fun KbpType.isVarargs() = (null != typeArguments.firstOrNull()?.toTypeName()) && isVarargs
 
-fun KbpType.toRValueTypeName(uri: String? = null): TypeName =
-    if (containRValue() && null != uri) {
-        toTypeName {
-            if (jmType?.isRValue() == true) {
-                (name as? ClassName)?.let { className ->
-                    ClassName(Constants.Contexts.makeContextPackageName(uri), className.simpleName)
-                } ?: name
-            } else {
-                name
-            }
-        }
-    } else {
-        toTypeName()
-    }.let {
-        val firstTypeArguments = typeArguments.firstOrNull()?.toTypeName()
-        if (null != firstTypeArguments && isVarargs()) {
-            firstTypeArguments
-        } else {
-            it
-        }
-    }
+fun KbpAbsElement.isResultCallback() = jmElement?.isResultCallback() == true
 
-fun TypeMirror.isRValue(): Boolean =
-    null != asTypeElement()?.getAnnotation(RValue::class.java)
+fun Element?.isResultCallback() =
+    null != this?.getAnnotation(RCallback::class.java) || null != this?.getAnnotation(RResult::class.java)
 
-fun KbpVariableElement.isResultInvoker() = null != jmElement?.getAnnotation(RResult::class.java)
-
-fun KbpType.isSerializable(): Boolean =
-    !isPrimitive() && !isCharSequence() && hasSuperTypeOrInterface(Serializable::class.java.name)
-
-fun KbpType.isSerializableArrayOrCollection(): Boolean =
-    (jmType?.kind == TypeKind.ARRAY || hasSuperTypeOrInterface("java.util.Collection") ) && null != typeArguments.find { type -> type.hasSuperTypeOrInterface(Serializable::class.java.name) }
-
-fun KbpType.isParcelable(): Boolean =
-    name.toString() != "android.os.Bundle" && hasSuperTypeOrInterface("android.os.Parcelable")
-
-fun KbpType.isParcelableArrayOrCollection(): Boolean =
-    (jmType?.kind == TypeKind.ARRAY || hasSuperTypeOrInterface("java.util.Collection")) && null != typeArguments.find { type -> type. hasSuperTypeOrInterface("android.os.Parcelable") }
+fun KbpElement.defaultPath() = when (this) {
+    is KbpRooterElement -> toPascal("create", simpleNames, "Instance")
+    is KbpConstructorElement -> toPascal("create",  (jmElement?.enclosingElement as? TypeElement)?.simpleName.toString(), "Instance")
+    is KbpFunctionElement -> name
+    is KbpHighOrderFunctionElement -> name
+    is KbpVariableElement -> name
+    else -> null
+}?.pascalToSnake(false, "-")
 
 fun typeToStringInAnnotations(action: () -> String?) = try {
     action().toString()

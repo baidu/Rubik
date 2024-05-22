@@ -3,13 +3,14 @@ package com.rubik.apt.codebase.activity
 import com.blueprint.kotlin.lang.type.KbpType
 import com.ktnail.x.toCamel
 import com.rubik.apt.Constants
-import com.rubik.apt.codebase.api.TypeCodeBase
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.invoker.TypeCodeBase
 
 class ActivityPropertyCodeBase(
     private val name: String,
-    type: KbpType,
+    originalType: KbpType,
     private val queryWithType: String? = null
-    ) : TypeCodeBase(type) {
+) : TypeCodeBase(originalType) {
 
     val legalName
         get() = Constants.Apis.toLegalParameterName(name)
@@ -19,5 +20,9 @@ class ActivityPropertyCodeBase(
 
     fun makeAddToQueryCode(): String =
         "\"$originalName\" ${if (null != queryWithType) toCamel("with", queryWithType) else "with"} $legalName"
+
+    override val tokenList
+        get() = TokenList(name, queryWithType, originalType, key = "PRT", warp = false)
+
 }
 

@@ -1,0 +1,51 @@
+ext.useLocalMaven = true
+ext.useGithubMaven = false
+
+ext.publishTaskPrefix = "publish-LINK-"
+ext.publishK1_3Suffix = "-K1_3"
+ext.publishK1_5Suffix = "-K1_5"
+ext.publishK1_7Suffix = "-K1_7"
+ext.publishAGBT4_2Suffix = "-AGBT4_2"
+ext.publishAGBT4Suffix = "-AGBT4"
+ext.publishLocalSuffix = "-LOCAL"
+
+ext.k1_3Version = '1.3.72'
+ext.k1_5Version = '1.5.0'
+ext.k1_7Version = '1.7.10'
+ext.AGBT4Version = '4.0.1'
+ext.AGBT4_2Version = '4.2.0'
+
+// default
+ext.kotlin_version = k1_5Version
+ext.kotlin_version_suffix = ext.publishK1_5Suffix
+ext.agbt_version = AGBT4_2Version
+ext.agbt_version_suffix = ext.publishAGBT4_2Suffix
+
+gradle.startParameter.taskNames.forEach { name ->
+    if (name.startsWith(publishTaskPrefix)) {
+        if (name.contains(publishK1_3Suffix)) {
+            ext.kotlin_version = k1_3Version
+            ext.kotlin_version_suffix = ext.publishK1_3Suffix
+        } else if (name.contains(publishK1_5Suffix)) {
+            ext.kotlin_version = k1_5Version
+            ext.kotlin_version_suffix = ext.publishK1_5Suffix
+        } else if (name.contains(publishK1_7Suffix)) {
+            ext.kotlin_version = k1_7Version
+            ext.kotlin_version_suffix = ext.publishK1_7Suffix
+        }
+        if (name.contains(publishAGBT4_2Suffix)) {
+            ext.agbt_version = AGBT4_2Version
+            ext.agbt_version_suffix = ext.publishAGBT4_2Suffix
+        } else if (name.contains(publishAGBT4Suffix)) {
+            ext.agbt_version = AGBT4Version
+            ext.agbt_version_suffix = ext.publishAGBT4Suffix
+        }
+        ext.useLocalMaven = name.contains(publishLocalSuffix)
+    }
+}
+
+if (ext.useLocalMaven) {
+    ext.local_version_suffix = ext.publishLocalSuffix
+} else {
+    ext.local_version_suffix = ''
+}

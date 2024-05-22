@@ -115,4 +115,57 @@ class TestDataTypeTask {
         println(" AP DBG doTestDataType18 ArrayList<String?>!!!")
         return data
     }
+
+    @RRoute(path = "doTestDataType19", forResult = true)
+    fun doTestDataType19(data: ArrayList<Pair<String?, Int?>>): ArrayList<Pair<String?, Int?>> {
+        println(" AP DBG doTestDataType19 ArrayList<Pair<String?,Int?>>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType20", forResult = true)
+    fun doTestDataType20(media: Pair<Long?, String?>): List<String>?{
+        return  null
+    }
+
+    @RRoute(path = "doTestDataType21", forResult = true)
+    fun doTestDataType21(data: List<TestNullableBean>): List<TestNullableBean> {
+        println(" AP DBG doTestDataType21  List<TestNullableBean>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType22", forResult = true)
+    fun doTestDataType22(data: MutableList<TestNullableBean>): MutableList<TestNullableBean> {
+        println(" AP DBG doTestDataType22 MutableList<TestNullableBean>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType23", forResult = true)
+    fun doTestDataType23(data: Array<TestNullableBean>): Array<TestNullableBean> {
+        println(" AP DBG doTestDataType23 Array<TestNullableBean>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType24", forResult = true)
+    fun doTestDataType24(data: Map<String, TestNullableBean>): Map<String, TestNullableBean> {
+        println(" AP DBG doTestDataType24 Map<String, TestNullableBean>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType25", forResult = true)
+    fun doTestDataType25(data: MutableMap<String, TestNullableBean>): MutableMap<String, TestNullableBean> {
+        println(" AP DBG doTestDataType25  MutableMap<String, TestNullableBean>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType26", forResult = true)
+    fun doTestDataType26(data: Set<TestNullableBean>): Set<TestNullableBean> {
+        println(" AP DBG doTestDataType26 ASet<TestNullableBean>!!!")
+        return data
+    }
+
+    @RRoute(path = "doTestDataType27", forResult = true)
+    fun doTestDataType27(data: MutableSet<TestNullableBean>): MutableSet<TestNullableBean> {
+        println(" AP DBG doTestDataType27 MutableSet<TestNullableBean>!!!")
+        return data
+    }
 }

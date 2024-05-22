@@ -15,13 +15,21 @@
  */
 package com.rubik.apt.codebase.api
 
+import com.blueprint.kotlin.lang.element.KbpHighOrderFunctionElement
 import com.blueprint.kotlin.lang.element.KbpVariableElement
 import com.blueprint.kotlin.lang.type.KbpType
+import com.blueprint.kotlin.lang.utility.asTypeElement
+import com.blueprint.kotlin.lang.utility.toKbpClassElement
 import com.blueprint.kotlin.pool.ElementPool
 import com.ktnail.x.camelToPascal
 import com.rubik.annotations.route.RExtend
 import com.rubik.apt.Constants
-import com.rubik.apt.utility.isResultInvoker
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.callback.FunctionCallbackCodeBase
+import com.rubik.apt.codebase.callback.ObjectCallbackCodeBase
+import com.rubik.apt.codebase.invoker.Callbackable
+import com.rubik.apt.codebase.invoker.TypeCodeBase
+import com.rubik.apt.utility.isResultCallback
 import com.rubik.apt.utility.isVarargs
 
 /**
@@ -34,7 +42,7 @@ class QueryCodeBase(
     type: KbpType,
     val isExtendThis: Boolean,
     val isVarargs: Boolean,
-    val resultInvoker: ResultInvokerCodeBase?
+    val callback: Callbackable?
 ) : TypeCodeBase(type) {
     companion object {
         operator fun invoke(
@@ -46,7 +54,7 @@ class QueryCodeBase(
                     type,
                     isExtendThis = false,
                     isVarargs = false,
-                    resultInvoker = null
+                    callback = null
                 )
             }
 
@@ -60,22 +68,27 @@ class QueryCodeBase(
                     variableElement.type,
                     isExtendThis = null != variableElement.jmElement?.getAnnotation(RExtend::class.java),
                     isVarargs = variableElement.type.isVarargs(),
-                    resultInvoker = if (variableElement.isResultInvoker()) ResultInvokerCodeBase(
-                        variableElement,
-                        elementPool
-                    ) else null
+                    callback = when {
+                        variableElement is KbpHighOrderFunctionElement -> FunctionCallbackCodeBase(variableElement)
+                        variableElement.isResultCallback() -> variableElement.jmElement?.asTypeElement()?.toKbpClassElement(elementPool)?.let { classElement ->
+                            ObjectCallbackCodeBase(elementPool, classElement)
+                        }
+                        else -> null
+                    }
                 )
             }
     }
 
-    fun addNameAssistPrefix() {
+    fun addNameApiInstancePrefix() {
         if (!name.startsWith(Constants.Apis.PARAMETER_NAME_INSTANCE_PREFIX)) {
             name = "${Constants.Apis.PARAMETER_NAME_INSTANCE_PREFIX}${name.camelToPascal()}"
         }
     }
 
     val legalName
-        get() = Constants.Apis.toLegalParameterName(name)
+        get() = Constants.Apis.toLegalParameterName(
+            (callback as? FunctionCallbackCodeBase)?.function?.legalName ?: name
+        )
 
     val originalName
         get() = name
@@ -83,7 +96,19 @@ class QueryCodeBase(
     val callName
         get() = if (isVarargs) "*${legalName}" else legalName
 
-    fun makeGetQueryContextTypeCode(name: String, index: Int) =
-        Constants.Aggregate.makeGetQueryCode(name, index)
+    val resultCallbacks
+        get() = if (null != callback && callback.isResult) callback else null
+
+
+    override val tokenList
+        get() = TokenList(
+            name,
+            originalType,
+            isExtendThis,
+            isVarargs,
+            null != resultCallbacks,
+            key = "QUY",
+            warp = false
+        )
 
 }

@@ -1,16 +1,53 @@
 package com.rubik.plugins.basic
 
-object LogTags {
-    const val PUBLISH_CONTEXT_LIBS = "<RUBIK> PUBLISH_CONTEXT "
-    const val PUBLISH_COMPONENTS = "<RUBIK> PUBLISH_COMPONENT "
-    const val COMPUTE_CONTEXT_LIBS = "<RUBIK> COMPUTE_CONTEXT "
-    const val TRANSFORM_CLASSES = "<RUBIK> TRANSFORM_CLASSES "
-    const val CONTEXT_EXTENSION = "<RUBIK> CONTEXT_EXTENSION "
-    const val ALL_TASKS = "<RUBIK> ALL_TASKS "
-    const val PLUGIN = "<RUBIK> PLUGIN "
-    const val TASK_GRAPHIC = "<RUBIK> TASK_GRAPHIC "
-    const val PICK_CONTEXT = "<RUBIK> PICK_CONTEXT "
-    const val MODULE_LINK = "<RUBIK> MODULE_LINK "
-    const val CHECK_ROUTER_VERSION = "<RUBIK> CHECK_ROUTER_VERSION "
+import com.ktnail.gradle.p
+import com.ktnail.x.LogTag
+import com.ktnail.x.Logger
+import com.rubik.context.extra.Context
+import org.gradle.api.Project
 
+object LogTags {
+    val PREPARE_CONTEXT = LogTag("<RUBIK> PREPARE_CONTEXT ", Logger.Level.DEFAULT)
+    val DO_PICK = LogTag("<RUBIK> DO_PICK ", Logger.Level.LOW)
+
+    val PLUGIN = LogTag("<RUBIK> PLUGIN ", Logger.Level.DEFAULT)
+    val TRANSFORM_CLASSES = LogTag("<RUBIK> TRANSFORM_CLASSES ", Logger.Level.LOW)
+    val CHECK_CLASS = LogTag("<RUBIK> CHECK_CLASS ", Logger.Level.LOW)
+
+    private val RUBIK_STEP_APPLY_CONFIG =
+        LogTag("<< - RUBIK_STEP_CHANGED - >> < - APPLY CONFIG - >  ", Logger.Level.LOW)
+    private val RUBIK_STEP_APPLY_CONTEXT =
+        LogTag("<< - RUBIK_STEP_CHANGED - >>  < - APPLY CONTEXT - >  ", Logger.Level.LOW)
+    private val RUBIK_STEP_PREPARE_CONTEXT =
+        LogTag("<< - RUBIK_STEP_CHANGED - >>  < - PREPARE_CONTEXT - >  ", Logger.Level.LOW)
+    private val RUBIK_STEP_CREATE_TASK =
+        LogTag("<< - RUBIK_STEP_CHANGED - >> < - CREATE_TASK - >  ", Logger.Level.LOW)
+    private val RUBIK_STEP_PICK =
+        LogTag("<< - RUBIK_STEP_CHANGED - >> < - PICK - >  ", Logger.Level.LOW)
+
+    fun logApplyConfigFinish(project: Project) =
+        Logger.p(RUBIK_STEP_APPLY_CONFIG, project) {
+            " FINISH ! \n"
+        }
+
+    fun logApplyContext(project: Project) =
+        Logger.p(RUBIK_STEP_APPLY_CONTEXT, project) {
+            " START ! \n"
+        }
+
+    fun logPrepareContextFinish(project: Project, context: Context) =
+        Logger.p(RUBIK_STEP_PREPARE_CONTEXT, project) {
+            "  <${context.uri}> FINISH ! \n"
+        }
+
+    fun logCreateTaskFinish(project: Project) =
+        Logger.p(RUBIK_STEP_CREATE_TASK, project) {
+            " FINISH ! \n"
+        }
+
+    fun logPickFinish(project: Project) =
+        Logger.p(RUBIK_STEP_PICK, project) {
+            " FINISH ! \n"
+        }
 }
+

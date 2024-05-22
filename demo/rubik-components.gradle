@@ -1,33 +1,70 @@
 rubik {
-    component {
-        uri 'demo://com.mars.rubik-test.detail'
-        source {
-            project ':demo:demo_component_detail'
-            maven {
-                variant 'company1-channel1-debug'
-            }
-        }
-        tag('pr1')
-        tag('pr2')
+    global {
+
+        scheme 'demo'
+        group 'com.mars.rubik-test'
+
+        devMode true
+
+//      forceMavenMode true
+
+        variant 'release'
+
     }
 
     component {
-        uri 'demo://com.mars.rubik-test.detail-java'
+        uri '.detail'
+        source {
+            project (':demo:demo_component_detail')
+            maven {
+                variant 'company1Channel1Release'
+            }
+        }
 
+        tag 'pr1', 'pr2', 'pr3'
+    }
+
+    component {
+        uri '.detail-java'
         source {
             project ":demo:demo_component_detail_java"
         }
+        tag 'lib1'
     }
 
     component {
-        uri 'demo://com.mars.rubik-test.home'
-        dependencies {
-            uri 'demo://com.mars.rubik-test.detail'
-            uri 'demo://com.mars.rubik-test.detail-java'
-        }
+        uri '.home'
+        touching '.detail', '.detail-java'
+
         source {
             project ':demo:demo_component_home'
         }
-        tag('pr2')
+
+        tag 'pr2'
     }
+
+    library {
+        uri '.library.b'
+        source {
+            project ":demo:demo_until_library_b"
+            maven{
+                forFlavor('company1') {
+                    variant "company1Channel1Release"
+                }
+                forFlavor('company2') {
+                    variant "company2Channel2Release"
+                }
+            }
+        }
+        tag 'lib1'
+    }
+
+    library {
+        uri '.library.c-java'
+        source {
+            project ":demo:demo_until_library_c_java"
+        }
+        tag 'lib1'
+    }
+
 }

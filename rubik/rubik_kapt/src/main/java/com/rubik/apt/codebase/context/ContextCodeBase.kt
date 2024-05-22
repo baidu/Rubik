@@ -17,107 +17,171 @@ package com.rubik.apt.codebase.context
 
 import com.ktnail.x.find
 import com.ktnail.x.toPascal
-import com.ktnail.x.uri.buildVersionPath
 import com.rubik.apt.Constants
+import com.rubik.apt.InvokeElementType
+import com.rubik.apt.codebase.RToken
+import com.rubik.apt.codebase.RouteCodeBase
+import com.rubik.apt.codebase.TokenList
 import com.rubik.apt.codebase.activity.ActivityCodeBase
 import com.rubik.apt.codebase.api.ApiCodeBase
 import com.rubik.apt.codebase.api.ApiInstanceCodeBase
+import com.rubik.apt.codebase.createToken
 import com.rubik.apt.codebase.event.EventCodeBase
 import com.rubik.apt.codebase.event.EventInstanceCodeBase
+import com.rubik.apt.codebase.callback.ObjectCallbackCodeBase
+import com.rubik.apt.codebase.objekt.ObjectCodeBase
 import com.rubik.apt.codebase.value.ValueCodeBase
+import com.rubik.apt.utility.toArrayCode
 
 /**
  * The code structure of Router Context.
  *
  * @since 1.1
  */
-class ContextCodeBase {
+class ContextCodeBase : RToken {
     var name: String = ""
-    var dependencies: List<String> = listOf()
+    val apis: MutableMap<String, ApiCodeBase> = mutableMapOf() // key : path
     val events: MutableMap<String, MutableList<EventCodeBase>> = mutableMapOf() // key : msg
-    val eventAssistants: MutableMap<String, EventInstanceCodeBase> = mutableMapOf() // key : tag
     val values: MutableList<ValueCodeBase> = mutableListOf()
-    val sections = SectionCodeBase()
-    val apis: MutableMap<String, ApiCodeBase> = mutableMapOf() // key : versionPath
-    val apiAssistants: MutableMap<String, ApiInstanceCodeBase> = mutableMapOf() // key : versionPath
+    val valuesCreateByConstructor
+        get() = values.filter { value -> value.createByConstructor }
     val activities: MutableMap<String, ActivityCodeBase> = mutableMapOf()
     var version: String = "undefine"
 
-    var generatedEnable: Boolean = false
+    val sections = SectionCodeBase<RouteCodeBase>()
+    private val apiInstances: MutableList<ApiInstanceCodeBase> = mutableListOf()
+    private val eventInstances: MutableMap<String, EventInstanceCodeBase> = mutableMapOf() // key : tag
+    val objects: MutableMap<String, ObjectCodeBase> = mutableMapOf() // key : classname
+    val callbacks: MutableList<ObjectCallbackCodeBase> = mutableListOf()
 
-    fun getAggregateName() = Constants.Aggregate.Declare.makeAggregateClassName(name)
-
-    fun getContextName(): String = toPascal(name, Constants.Contexts.CONTEXT_BASE_CLASS_NAME)
-
-    fun getRouteActionsName(): String = toPascal(name, Constants.RouteActions.CONTEXT_ROUTE_ACTIONS_BASE_CLASS_NAME)
-
-    fun getRouteContextName(): String = toPascal(name, Constants.ContextRouters.ROUTE_CONTEXT_BASE_CLASS_NAME)
+    var generatedContextLibsEnable: Boolean = false
+    var generatedAggregateEnable: Boolean = false
 
     fun merge(other: ContextCodeBase) {
         events.putAll(other.events)
-        eventAssistants.putAll(other.eventAssistants)
+        eventInstances.putAll(other.eventInstances)
         values.addAll(other.values)
         apis.putAll(other.apis)
-        apiAssistants.putAll(other.apiAssistants)
+        apiInstances.addAll(other.apiInstances)
         activities.putAll(other.activities)
+        objects.putAll(other.objects)
+        callbacks.addAll(other.callbacks)
     }
 
     fun addActivity(activity: ActivityCodeBase) {
-        activities[buildVersionPath(activity.path, activity.version)] = activity
+        activities[activity.versionPath] = activity
     }
 
-    fun addApi(api: ApiCodeBase) {
-        apis[buildVersionPath(api.path, api.version)] = api
+    fun addApi(api: ApiCodeBase, pathCrash: (ApiCodeBase) -> ApiCodeBase) {
+        val addedApi = apis[api.versionPath]
+        if (null != addedApi)
+            addApi(pathCrash(addedApi), pathCrash)
+        else
+            apis[api.versionPath] = api
     }
 
-    fun compose() {
-        composeSections()
-        composeEventAssistants()
-        composeApiAssistants()
+    fun addApiInstance(codeBase: ApiInstanceCodeBase) {
+        apiInstances.add(codeBase)
     }
+
+    fun addEventInstance(codeBase: EventInstanceCodeBase){
+        eventInstances[codeBase.forTag] = codeBase
+    }
+
+    fun addObject(objekt: ObjectCodeBase) {
+        objects[objekt.qualifiedName] = objekt
+    }
+
+     fun addCallback(callBack: ObjectCallbackCodeBase){
+         callbacks.add(callBack)
+     }
 
     private fun composeSections() {
         activities.forEach { (_, activity) ->
-            sections.addItem(activity, activity.sections)
-
+            sections.addItem(activity, activity.sections) { route -> !route.navigationOnly }
         }
         apis.forEach { (_, api) ->
-            sections.addItem(api, api.sections)
+            sections.addItem(api, api.sections) { route -> !route.navigationOnly }
         }
     }
 
-    private fun composeEventAssistants() {
-        eventAssistants.forEach { (tag, assistant) ->
-            assistant.invoker.queries.forEach { query ->
-                query.addNameAssistPrefix()
+    private fun composeEventInstances() {
+        eventInstances.forEach { (tag, instance) ->
+            instance.invoker.queries.forEach { query ->
+                query.addNameApiInstancePrefix()
             }
             events.forEach { (_, msgEvents) ->
                 msgEvents.filter { life -> life.tag == tag }.forEach { life ->
-                    life.invoker.assistant = assistant.invoker
+                    life.invoker.instance = instance
                 }
             }
         }
     }
 
-    private fun composeApiAssistants() {
-        apiAssistants.forEach { (versionPath, assistant) ->
-            assistant.invoker.queries.forEach { query ->
-                query.addNameAssistPrefix()
+    private fun composeApiInstances() {
+        apiInstances.forEach { instance ->
+            instance.invoker.queries.forEach { query ->
+                query.addNameApiInstancePrefix()
             }
-            if (assistant.version.isNotBlank())
-                apis[versionPath]?.let { api ->
-                    composeApiAssistant(api, assistant)
-                }
-            else
-                apis.find { api -> api.path == assistant.forPath }.forEach { (_, api) ->
-                    composeApiAssistant(api, assistant)
-                }
+            apis.find { api -> instance.isSamePath(api) }.forEach { (_, api) ->
+                api.invoker.instance = instance
+            }
         }
-
     }
 
-    private fun composeApiAssistant(api: ApiCodeBase, apiAssistant: ApiInstanceCodeBase) {
-        api.originalInvoker.assistant = apiAssistant.invoker
+    private fun composeObject() {
+        objects.forEach { (className, objekt) ->
+            apis.forEach { (versionPath, api) ->
+                if (api.invoker.clazz.name == className) {
+                    if (api.invoker.type == InvokeElementType.CONSTRUCTOR) {
+                        objekt.addConstructor(api)
+                    } else {
+                        objekt.addApi(versionPath, api)
+                        api.invoker.instance = objekt
+                    }
+                }
+            }
+            objekt.composeSections()
+        }
     }
 
+    fun compose() {
+        composeObject()
+        composeSections()
+        composeEventInstances()
+        composeApiInstances()
+    }
+
+    // make code
+    val aggregateName
+        get() = Constants.Aggregate.Declare.makeAggregateClassName(name)
+    val contextName
+        get() = toPascal(name, Constants.Contexts.CONTEXT_BASE_CLASS_NAME)
+    val routeActionsName
+        get() = toPascal(name, Constants.RouteActions.CONTEXT_ROUTE_ACTIONS_BASE_CLASS_NAME)
+    val routeContextName
+        get() = toPascal(name, Constants.ContextRouters.ROUTE_CONTEXT_BASE_CLASS_NAME)
+    val contextIdName
+        get() = toPascal(name, Constants.Identity.Declare.CONTEXT_ID_BASE_CLASS_NAME)
+    val aggregateIdName
+        get() = toPascal(name, Constants.Identity.Declare.AGGREGATE_ID_BASE_CLASS_NAME)
+    val eventsArray: String
+        get() = events.keys.toArrayCode { event -> "\"$event\"" }
+
+    private var _token: String? = null
+
+    val token: String
+        get() = _token ?: createToken().apply { _token = this }
+
+    override val tokenList
+        get() = TokenList(
+            *apis.map { entry -> entry.value }.sortedBy { api -> api.path }.toTypedArray(),
+            *activities.map { entry -> entry.value }.sortedBy { act -> act.path }.toTypedArray(),
+            *events.flatMap { entry -> entry.value }.sortedBy { evt -> evt.msg }.toTypedArray(),
+            *values.sortedBy { it.qualifiedName }.toTypedArray(),
+            *objects.map { entry -> entry.value }.sortedBy { obj -> obj.qualifiedName }.toTypedArray(),
+            *callbacks.sortedBy { it.qualifiedName }.toTypedArray(),
+            key = null,
+            warp = true
+        )
 }

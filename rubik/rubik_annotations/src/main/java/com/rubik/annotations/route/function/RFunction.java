@@ -26,9 +26,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.CONSTRUCTOR})
 public @interface RFunction {
     String uri() default "";
-    String path();
+    String path() default "";
     String version() default "";
     boolean navigationOnly() default false;
-    boolean forResult() default true;
-    Class resultType() default Object.class;
+    @Deprecated
+    boolean forResult() default false;
+    boolean syncReturn() default true;
+    Class resultType() default RDefaultType.class;
 }

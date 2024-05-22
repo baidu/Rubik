@@ -1,0 +1,81 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.synccode",
+    "module": "syncer",
+    "version": "0.0.8-K1_5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.7.1",
+      "buildId": "p55bypxrkjaldfvorgp2bmalee"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.localToProject": "public",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "syncer-0.0.8-K1_5.jar",
+          "url": "syncer-0.0.8-K1_5.jar",
+          "size": 7770,
+          "sha512": "707b15101f37771276fa7e861c068e25ac7ef38cba22f40f53a2ce4de771d3d1246b266de78242437f74b780eb30234f2ffd3d9371dc56edcb3bea5c0e8f7dca",
+          "sha256": "32ad4a4e86ba797ac3893e335ca7516363b786c83c2c9ec86098036411bccf87",
+          "sha1": "8f334171759c3d4c836689e3414fe97eda6707eb",
+          "md5": "e8f819ae4c533db083cc0fc6cd853d02"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.localToProject": "public",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.5.0"
+          }
+        },
+        {
+          "group": "com.ktnail",
+          "module": "x",
+          "version": {
+            "requires": "0.0.45-K1_5"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "syncer-0.0.8-K1_5.jar",
+          "url": "syncer-0.0.8-K1_5.jar",
+          "size": 7770,
+          "sha512": "707b15101f37771276fa7e861c068e25ac7ef38cba22f40f53a2ce4de771d3d1246b266de78242437f74b780eb30234f2ffd3d9371dc56edcb3bea5c0e8f7dca",
+          "sha256": "32ad4a4e86ba797ac3893e335ca7516363b786c83c2c9ec86098036411bccf87",
+          "sha1": "8f334171759c3d4c836689e3414fe97eda6707eb",
+          "md5": "e8f819ae4c533db083cc0fc6cd853d02"
+        }
+      ]
+    }
+  ]
+}

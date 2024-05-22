@@ -18,4 +18,7 @@ package com.rubik.apt.codebase
 data class AnnotationCodeBase(
     val className: String,
     val members: List<String>
-)
+) : RToken {
+    override val tokenList
+        get() = TokenList(TokenName(className), members, key = "ANT", warp = false)
+}

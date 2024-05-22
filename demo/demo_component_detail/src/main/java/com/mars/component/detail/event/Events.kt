@@ -1,8 +1,10 @@
 package com.mars.component.detail.event
 
 import android.content.Context
+import com.mars.component.detail.value.TestDataBean
 import com.rubik.annotations.context.REvent
-import com.rubik.annotations.context.instance.REventInstance
+import com.rubik.annotations.route.RInstance
+import com.rubik.annotations.route.RResult
 import com.rubik.context.LifeCycleEvent
 
 data class EventsWithLambda(
@@ -41,6 +43,21 @@ class EventsByInstance {
     fun onDestroy(arg1: Any, arg2: Any, arg3: Any) {
         println(" CT DBG MY_DESTROY DETAIL:${hashCode()}  arg1:$arg1 arg2:$arg2 arg3:$arg3  EventsByInstance begin !!!")
     }
+
+    @REvent(msg = "MY_CALLBACK_RES", tag = "events-by-instance")
+    fun onCallbackRes(arg1: Any, @RResult result: (Int) -> Unit) {
+        println(" CT DBG MY_CALLBACK DETAIL:${hashCode()}  arg1:$arg1 result:$result EventsByInstance begin !!!")
+    }
+
+    @REvent(msg = "MY_CALLBACK_RES_BEAN", tag = "events-by-instance")
+    fun onCallbackResBean(arg1: Any, @RResult result: (TestDataBean) -> Unit) {
+        println(" CT DBG MY_CALLBACK_RES_BEAN DETAIL:${hashCode()}  arg1:$arg1 result:$result EventsByInstance begin !!!")
+    }
+
+    @REvent(msg = "MY_CALLBACK_BEAN", tag = "events-by-instance")
+    fun onCallbackBean(arg1: Any, bean: TestDataBean) {
+        println(" CT DBG MY_CALLBACK_BEAN DETAIL:${hashCode()}  arg1:$arg1 result:$bean EventsByInstance begin !!!")
+    }
 }
 
 fun initSdk() {
@@ -49,6 +66,6 @@ fun initSdk() {
 
 private val life = EventsByInstance()
 
-@REventInstance(provideForTag = "events-by-instance")
-@REventInstance(provideForTag = "events-by-instance")
+@RInstance(provideForTag = "events-by-instance")
+@RInstance(provideForTag = "events-by-instance")
 fun provideEventsInstance(bool: Boolean) = life

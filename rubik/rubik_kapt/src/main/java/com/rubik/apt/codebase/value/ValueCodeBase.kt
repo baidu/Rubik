@@ -16,15 +16,21 @@
 package com.rubik.apt.codebase.value
 
 import com.blueprint.kotlin.lang.element.KbpAnnotationElement
+import com.blueprint.kotlin.lang.element.KbpConstructorElement
 import com.blueprint.kotlin.lang.element.KbpRooterElement
+import com.blueprint.kotlin.lang.element.KbpVariableElement
+import com.blueprint.kotlin.lang.type.KbpType
 import com.blueprint.kotlin.lang.utility.findInterface
+import com.blueprint.kotlin.lang.utility.toType
 import com.rubik.apt.Constants
 import com.rubik.apt.codebase.AnnotationCodeBase
+import com.rubik.apt.codebase.ClassMirrorable
+import com.rubik.apt.codebase.RToken
+import com.rubik.apt.codebase.TokenList
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.asClassName
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import java.io.Serializable
 
 /**
  * The code structure of Router Value.
@@ -32,44 +38,60 @@ import java.io.Serializable
  * @since 1.1
  */
 class ValueCodeBase(
-    val className: String,
+    override val qualifiedName: String,
+    override val simpleName: String,
+    override val originalType: KbpType,
     val interfaces: List<ClassName>,
     val annotations: List<AnnotationCodeBase>,
-    val fields: List<ValueFieldCodeBase>
-) {
+    val fields: List<ValueFieldCodeBase>,
+    val createByConstructor: Boolean
+) : ClassMirrorable, RToken {
     companion object {
-        operator fun invoke(classElement: KbpRooterElement): ValueCodeBase {
-            return ValueCodeBase(
+        operator fun invoke(
+            classElement: KbpRooterElement,
+            constructorElement: KbpConstructorElement? = null,
+            ignoreAnnotations: List<String>
+        ): ValueCodeBase? = classElement.toType()?.let { type ->
+            ValueCodeBase(
+                classElement.qualifiedName,
                 classElement.simpleNames,
-                createInterfaceNames(classElement),
-                createAnnotationCodeBase(classElement.annotations),
-                classElement.properties.filter { entry ->
-                    entry.value.type.name.toString() != Constants.Contexts.PARCELABLE_CREATOR_CLASS_NAME && entry.value.type.name.toString() != classElement.qualifiedName + Constants.Contexts.COMPANION_CLASS_NAME
-                }.map { entry ->
-                    ValueFieldCodeBase(
-                        entry.value.name,
-                        entry.value.type,
-                        createFiledAnnotationCodeBase(entry.value.annotations),
-                        entry.value.defaultValue,
-                        entry.value.isConstant
-                    )
-                }
+                type,
+                classElement.toInterfaceNames(),
+                classElement.annotations.toAnnotationCodeBase(),
+                constructorElement?.toFields(ignoreAnnotations) ?: classElement.toFields(ignoreAnnotations),
+                createByConstructor = null != constructorElement
             )
         }
 
-        private fun createInterfaceNames(classElement: KbpRooterElement): List<ClassName> {
+        private fun KbpConstructorElement.toFields(ignoreAnnotations: List<String>) = parameters.map { parameter ->
+            parameter.toValueFieldCodeBase(ignoreAnnotations)
+        }
+
+        private fun KbpRooterElement.toFields(ignoreAnnotations: List<String>) = properties.filter { (_, parameter) ->
+            parameter.type.name.toString() != Constants.Contexts.PARCELABLE_CREATOR_CLASS_NAME && parameter.type.name.toString() != qualifiedName + Constants.Contexts.COMPANION_CLASS_NAME
+        }.map { (_, parameter) ->
+            parameter.toValueFieldCodeBase(ignoreAnnotations)
+        }
+
+        private fun KbpVariableElement.toValueFieldCodeBase(ignoreAnnotations: List<String>) =
+            ValueFieldCodeBase(
+            name,
+            type,
+                createFiledAnnotationCodeBase(annotations, ignoreAnnotations),
+            defaultValueWithSuffix,
+            isConstant
+        )
+
+        private fun KbpRooterElement.toInterfaceNames(): List<ClassName> {
             return mutableListOf<ClassName>().apply {
-//                classElement.jmElement?.findInterface(Serializable::class.qualifiedName.toString())?.let { element ->
-//                    add(element.asClassName())
-//                }
-                classElement.jmElement?.findInterface("android.os.Parcelable")?.let { element ->
+                jmElement?.findInterface("android.os.Parcelable")?.let { element ->
                     add(element.asClassName())
                 }
             }
         }
 
-        private fun createAnnotationCodeBase(elements: List<KbpAnnotationElement>): List<AnnotationCodeBase> {
-            return elements.filter { element ->
+        private fun List<KbpAnnotationElement>.toAnnotationCodeBase(): List<AnnotationCodeBase> {
+            return filter { element ->
                 element.className == "kotlinx.android.parcel.Parcelize"
             }.map { element ->
                 AnnotationCodeBase(
@@ -81,9 +103,14 @@ class ValueCodeBase(
             }
         }
 
-        private fun createFiledAnnotationCodeBase(elements: List<KbpAnnotationElement>): List<AnnotationCodeBase> {
+        private fun createFiledAnnotationCodeBase(
+            elements: List<KbpAnnotationElement>,
+            ignoreAnnotations: List<String>
+        ): List<AnnotationCodeBase> {
             return elements.filter { element ->
-                element.className != Nullable::class.qualifiedName.toString() && element.className != NotNull::class.qualifiedName.toString()
+                element.className != Nullable::class.qualifiedName.toString()
+                        && element.className != NotNull::class.qualifiedName.toString()
+                        && !ignoreAnnotations.contains(element.className)
             }.map { element ->
                 AnnotationCodeBase(
                     element.className,
@@ -95,4 +122,13 @@ class ValueCodeBase(
         }
     }
 
+    override val tokenList
+        get() = TokenList(
+            originalType,
+            interfaces,
+            annotations,
+            fields,
+            key = "VLE",
+            warp = false
+        )
 }

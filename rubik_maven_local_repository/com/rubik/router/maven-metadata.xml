@@ -3,15 +3,11 @@
   <groupId>com.rubik</groupId>
   <artifactId>router</artifactId>
   <versioning>
-    <latest>1.9.0.1.T-K1_3-LOCAL</latest>
-    <release>1.9.0.1.T-K1_3-LOCAL</release>
+    <latest>1.10.0.0-K1_5-LOCAL</latest>
+    <release>1.10.0.0-K1_5-LOCAL</release>
     <versions>
-      <version>1.8.11.1-K1_3-LOCAL</version>
-      <version>1.8.11.1-K1_5-LOCAL</version>
-      <version>1.8.12.1.T-K1_3-LOCAL</version>
-      <version>1.8.20.1-K1_3-LOCAL</version>
-      <version>1.9.0.1.T-K1_3-LOCAL</version>
+      <version>1.10.0.0-K1_5-LOCAL</version>
     </versions>
-    <lastUpdated>20220802044751</lastUpdated>
+    <lastUpdated>20240522045053</lastUpdated>
   </versioning>
 </metadata>

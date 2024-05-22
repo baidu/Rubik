@@ -16,6 +16,8 @@
 package com.rubik.apt.codebase.api
 
 import com.blueprint.kotlin.lang.type.KbpType
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.invoker.TypeCodeBase
 import javax.lang.model.type.TypeKind
 
 /**
@@ -36,4 +38,13 @@ class ResultCodeBase(
             else
                 null
     }
+
+    override val tokenList
+        get() = TokenList(
+            name,
+            originalType,
+            key =  "RST",
+            warp = false
+        )
+
 }

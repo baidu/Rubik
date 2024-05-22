@@ -5,11 +5,11 @@ import com.rubik.context.AggregateFactory
 import com.rubik.context.RouteActions
 import com.rubik.logger.Logger
 import com.rubik.route.exception.BadAggregatableClassException
-import com.rubik.route.exception.DuplicateRegisteredUriException
 import com.rubik.router.annotations.RInvariant
 import com.rubik.router.exception.BadRubikVersionException
-import com.rubik.router.exception.RContextNotFoundException
+import com.rubik.router.exception.RubikAggregateNotFoundException
 import com.rubik.router.exception.RubikNotInitException
+import com.rubik.router.safeRoute
 import kotlin.reflect.full.companionObjectInstance
 
 /**
@@ -25,6 +25,10 @@ object Rubik {
         block(Logger)
     }
 
+    object Properties{
+        var autoParcel = true
+    }
+
     private var aggregateFactories: MutableMap<String, () -> Aggregatable> = mutableMapOf()
     private var aggregateFactoriesByMsg: MutableMap<String, MutableSet<() -> Aggregatable>> = mutableMapOf()
 
@@ -32,15 +36,17 @@ object Rubik {
      * register AggregateFactory to rubik router.
      */
    internal fun registerAggregateFactory(factory: AggregateFactory) {
-        if (!aggregateFactories.containsKey(factory.URI)) {
-            aggregateFactories[factory.URI] = factory.CREATOR
-            factory.EVENT_MSGS.forEach { msg ->
-                aggregateFactoriesByMsg.getOrPut(msg) {
-                    mutableSetOf()
-                }.add(factory.CREATOR)
+        try {
+            if (!aggregateFactories.containsKey(factory.URI)) {
+                aggregateFactories[factory.URI] = factory.CREATOR
+                factory.EVENT_MSGS.forEach { msg ->
+                    aggregateFactoriesByMsg.getOrPut(msg) {
+                        mutableSetOf()
+                    }.add(factory.CREATOR)
+                }
             }
-        } else {
-            throw DuplicateRegisteredUriException(factory.URI)
+        } catch (e: Exception) {
+            Logger.e(" RUBIK register on uri: ${factory.URI} with exception : $e", e)
         }
     }
 
@@ -81,7 +87,14 @@ object Rubik {
 
     @RInvariant
     inline fun <reified T : RouteActions> findActions(uri: String): T {
-        return (createAggregate(uri) as? T) ?: throw RContextNotFoundException(uri)
+        return (createAggregate(uri) as? T) ?: throw RubikAggregateNotFoundException(uri)
+    }
+
+    @RInvariant
+    inline fun <reified T : RouteActions> safeFindActions(uri: String): T? {
+       return safeRoute {
+           (createAggregate(uri) as? T) ?: throw RubikAggregateNotFoundException(uri)
+        }
     }
 
     internal fun touchUri(uri: String): Boolean {

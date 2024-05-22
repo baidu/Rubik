@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
                 println(result)
                 text_hello.text = "${text_hello.text}\n$result"
             }
-            text_hello.text = "${text_hello.text}\n\nroute cost:${System.currentTimeMillis()-timeRoute}"
+            text_hello.text = "${text_hello.text}\n\nroute  cost:${System.currentTimeMillis()-timeRoute}"
         }
 
         button_context_k_2_j.setOnClickListener{
@@ -236,9 +236,9 @@ class HomeActivity : AppCompatActivity() {
             "onActivityResult requestCode:$requestCode resultCode:$resultCode data:${data?.getStringExtra("data")}"
     }
 
-    private fun List<TestListBean>.toLog() =
+    private fun List<TestListBean?>.toLog() =
         fold("") { str, bean ->
-            "$str/${bean.d2?.fold("") { beanStr, value ->
+            "$str/${bean?.d2?.fold("") { beanStr, value ->
                 "$beanStr|$value"
             }}"
         }

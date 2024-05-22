@@ -15,9 +15,10 @@
  */
 package com.rubik.apt.codebase.event
 
-import com.blueprint.kotlin.lang.element.KbpElement
-import com.blueprint.kotlin.pool.ElementPool
-import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
+import com.rubik.apt.codebase.RToken
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.invoker.OriginalInvokable
+import com.rubik.apt.codebase.invoker.InvokeOriginalCodeBase
 
 /**
  * The code structure of Router Event.
@@ -25,26 +26,19 @@ import com.rubik.apt.codebase.invoker.InvokeElementCodeBase
  * @since 1.1
  */
 class EventCodeBase(
+    override val invoker: InvokeOriginalCodeBase,
     val msg: String,
-    val tag: String?,
-    val invoker: InvokeElementCodeBase
-) {
-    companion object {
-        operator fun invoke(
-            elementPool: ElementPool,
-            element: KbpElement,
-            msg: String,
-            tag: String?
-        ): EventCodeBase? {
-            return InvokeElementCodeBase(elementPool, element)?.let { invoker ->
-                EventCodeBase(
-                    msg,
-                    tag,
-                    invoker
-                )
-            }
-        }
-    }
+    val tag: String?
+) : OriginalInvokable, RToken {
+
+    override val tokenList
+        get() = TokenList(
+            msg,
+            tag,
+            invoker,
+            key = "EVT",
+            warp = false
+        )
 }
 
 

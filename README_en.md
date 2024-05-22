@@ -11,22 +11,23 @@
 </div>
 
 <div align="center">
-<a href="./README.md">Chinese Readme</a>
+<a href="./README.md">中文 Readme</a>
 </div>
 
 # Rubik
 Rubik is a comprehensive solution for Android platform componentized development. It provides the ability of routing communication between Gradle projects, as well as the ability of component definition, version control, Maven publishing, AAR/JAR and source code switching, and free composition of components.
 
 Rubik consists of two parts:
-* Rubik Router ：The function level routing capability of Rubik. Unlike normal page router, Rubik Router allows the Uri and parameters to be navigated to any execution of a public JVM language (Java/Kotlin) function . It allows for more flexible communication between Gradle Projects without code calls.
+* Rubik Router ：Provide low coupling communication between components. The function level routing capability of Rubik. Unlike normal page router, Rubik Router allows the Uri and 
+  parameters to be navigated to any execution of a public JVM language (Java/Kotlin) function . It allows for more flexible communication between Gradle Projects without code calls.
 * Rubik Tools link ：Provides component context definition, versioning, Maven publishing, AAR/JAR and source switching capabilities, including 4 Gradle Plugins:
     + rubik：
-        - Provides the ability to define components globally, and automatically enables plugins such as rubik-context and rubik-root based on the global definition
+        - Provides the ability to define components globally, and automatically enables plugins such as rubik-context and rubik-shell based on the global definition
     + rubik-context：
-        - Provide Task, automatically generate the intermediate code such as mirror function, and package the intermediate code into context.jar, release to Maven according to the version.
+        - Provide Task, automatically generate the intermediate code such as interface, and package the intermediate code into context.jar, release to Maven according to the version.
         - Provides tasks to compile business codes into AAR (including code, resources, and built-in SDK) based on flavor and version. publish them to Maven.
         - Automatically adds dependencies on other context.jars to subprojects where components reside
-    + rubik-root：
+    + rubik-shell：
         - Provides the ability to picking components, picking components to be packaged into APK based on flavor and version.
         - Provide component source code and AAR switching ability.
     + rubik-test:
@@ -52,7 +53,7 @@ apply plugin: 'rubik' // enable the Rubik plugin
 rubik {
     component { // The first component
         uri "app://com.myapp.home"  //   The Uri of component
-        dependencies {    // The component needs to depend on other components
+        touching {    // The component needs to depend on other components
             uri ("app://com.myapp.detail" ) { 
                 version "0.1.1"  // Versions that depend on other components
             }
@@ -154,6 +155,3 @@ class RouterTestCase {
 ## How to contribute
 Please write in Kotlin, and all change commit with reasonable motivation will be accepted.
 
-
-## Discuss
-Baidu 如流 discussion group ：8105247

@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
         button_navigation_fragment_start_for_result_k_2_k.setOnClickListener {
             navigate {
                 uri = DetailContext.Uris.Activity.Page2.KeyStr1.KeyStr2.KEY_STR3(
-                    "fff3",
+                    "fff33",
                     "ggg3",
                     "hhh3"
                 )
@@ -45,8 +45,8 @@ class HomeFragment : Fragment() {
         button_navigation_fragment_start_for_result_k_2_j.setOnClickListener {
             navigate {
                 uri = DetailJavaContext.Uris.Activity.JavaPage2.KeyStr1.KeyStr2.KEY_STR3(
-                    "ccc5",
-                    "vvv5",
+                    "ccc55",
+                    "vvv55",
                     88.toString()
                 )
                 query {
@@ -58,8 +58,8 @@ class HomeFragment : Fragment() {
         button_context_fragment_start_for_result_k_2_j.setOnClickListener {
             DetailJavaContext.Activity.JavaPage2.KeyStr1.KeyStr2.keyStr3(
                 this,
-                "ccc5",
-                "vvv5",
+                "ccc55",
+                "vvv55",
                 88,
                 null,
                 304

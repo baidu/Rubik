@@ -1,9 +1,17 @@
 package com.rubik.plugins
 
-import com.rubik.plugins.basic.exception.RubikPluginNotApplyException
-import com.rubik.plugins.context.AllContextController
-import com.rubik.plugins.module.ModuleController
+import com.ktnail.x.Logger
+import com.ktnail.x.now
+import com.rubik.publish.extra.PublishModule
+import com.rubik.context.extra.ContextModule
+import com.rubik.context.extra.libTmpDirRoot
+import com.rubik.picker.extra.PickerModule
+import com.rubik.plugins.basic.extra.logLevel
+import com.rubik.plugins.basic.extra.logWriteToFile
+import com.rubik.plugins.basic.extra.rubikSingleton
+import com.rubik.plugins.context.controller.AllContextController
 import org.gradle.api.Project
+import java.io.File
 
 /**
  * The the plugin of rubik config project (gradle root).
@@ -13,25 +21,22 @@ import org.gradle.api.Project
  */
 class MainPlugin : RubikPlugin() {
 
-    private var _moduleController: ModuleController? = null
-    private val moduleController: ModuleController
-        get() = _moduleController ?: throw RubikPluginNotApplyException()
-
-    private var _contextController: AllContextController? = null
-    private val contextController: AllContextController
-        get() = _contextController ?: throw RubikPluginNotApplyException()
-
     override fun apply(project: Project) {
+        Logger.level = project.logLevel
+        Logger.writeToFile =
+            if (project.logWriteToFile)
+                File(project.libTmpDirRoot.absolutePath + File.separator + now() + ".log")
+            else null
+
+        ContextModule.inject { project.rubikSingleton }
+        PublishModule.inject { project.rubikSingleton }
+        PickerModule.inject { project.rubikSingleton }
+
         super.apply(project)
 
-        _contextController = AllContextController(project)
-        contextController.init()
-
-        _moduleController = ModuleController(project)
-        moduleController.init()
+        AllContextController(project).init()
 
     }
-
 
 }
 

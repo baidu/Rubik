@@ -3,7 +3,12 @@ package com.rubik.apt.codebase.activity
 import com.blueprint.kotlin.lang.element.KbpRooterElement
 import com.rubik.annotations.route.RProperty
 import com.rubik.apt.Constants
-import com.rubik.apt.codebase.api.RouteCodeBase
+import com.rubik.apt.codebase.RToken
+import com.rubik.apt.codebase.RouteCodeBase
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.TokenName
+import com.rubik.apt.namebox.FileNameBox
+import com.rubik.apt.utility.noSpaces
 
 /**
  * The code structure of Router Activity.
@@ -17,7 +22,7 @@ class ActivityCodeBase(
     pathSectionOptimize: Boolean,
     val className: String,
     private val properties: List<ActivityPropertyCodeBase>
-) :RouteCodeBase(path, version, navigationOnly, pathSectionOptimize){
+) : RouteCodeBase(path, version, navigationOnly, pathSectionOptimize), RToken {
     companion object {
         operator fun invoke(
             classElement: KbpRooterElement,
@@ -65,7 +70,25 @@ class ActivityCodeBase(
     val propertiesKDoc
         get() =  sortedProperties.map { queryCodeBase -> "${queryCodeBase.originalName} : ${queryCodeBase.originalType}" }
 
-    fun startCode(path: String): String =
-        "${Constants.Aggregate.LAUNCHER_CLASS_NAME_AS}().${Constants.Aggregate.METHOD_LAUNCH_NAME}($className::class.java,${Constants.Aggregate.ROUTE_PARAMETER_QUERIES_NAME},${if(Constants.Aggregate.isParameterPath(path)) Constants.Aggregate.makeGetPathQueriesCode(path) else "null"},${Constants.Aggregate.ROUTE_PARAMETER_RESULTS_NAME})"
+    fun startCode(path: String, nameBox: FileNameBox): String =
+        "${Constants.Aggregate.LAUNCHER_CLASS_NAME_AS}().${Constants.Aggregate.METHOD_LAUNCH_NAME}(${
+            nameBox.closeSimpleName(className)
+        }::class.java, ${Constants.Aggregate.ROUTE_PARAMETER_QUERIES_NAME}, ${
+            if (Constants.Aggregate.isParameterPath(path)) Constants.Aggregate.makeGetPathQueriesCode(path) else "null"
+        }, ${Constants.Aggregate.ROUTE_PARAMETER_RESULTS_NAME})".noSpaces()
+
+    override fun location() = className
+
+    override val tokenList
+        get() = TokenList(
+            path,
+            version,
+            navigationOnly,
+            pathSectionOptimize,
+            TokenName(className),
+            properties,
+            key = "ACT",
+            warp = false
+        )
 
 }

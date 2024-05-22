@@ -3,18 +3,11 @@
   <groupId>com.rubik</groupId>
   <artifactId>plugins</artifactId>
   <versioning>
-    <latest>1.9.0.1.T-AGBT4-K1_3-LOCAL</latest>
-    <release>1.9.0.1.T-AGBT4-K1_3-LOCAL</release>
+    <latest>1.10.0.0-AGBT4_2-K1_5-LOCAL</latest>
+    <release>1.10.0.0-AGBT4_2-K1_5-LOCAL</release>
     <versions>
-      <version>1.8.11.1-AGBT4-K1_3-LOCAL</version>
-      <version>1.8.11.1-AGBT4-K1_5-LOCAL</version>
-      <version>1.8.12.1-AGBT4-K1_3-LOCAL</version>
-      <version>1.8.12.1-AGBT4-K1_5-LOCAL</version>
-      <version>1.8.12.1.1-AGBT4-K1_3-LOCAL</version>
-      <version>1.8.12.1.T-AGBT4-K1_3-LOCAL</version>
-      <version>1.8.20.1-AGBT4-K1_3-LOCAL</version>
-      <version>1.9.0.1.T-AGBT4-K1_3-LOCAL</version>
+      <version>1.10.0.0-AGBT4_2-K1_5-LOCAL</version>
     </versions>
-    <lastUpdated>20220803114007</lastUpdated>
+    <lastUpdated>20240522044648</lastUpdated>
   </versioning>
 </metadata>

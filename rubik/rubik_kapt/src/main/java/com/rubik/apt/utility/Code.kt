@@ -6,49 +6,11 @@ import com.ktnail.x.pathToCamel
 import com.rubik.annotations.source.RGenerated
 import com.rubik.annotations.source.RGeneratedRouter
 import com.rubik.apt.Constants
-import com.rubik.apt.InvokeElementType
 import com.rubik.apt.codebase.AnnotationCodeBase
-import com.rubik.apt.codebase.api.RouteCodeBase
+import com.rubik.apt.codebase.RouteCodeBase
 import com.rubik.apt.codebase.context.SectionCodeBase
-import com.rubik.apt.files.source.value.addAnnotationMembers
+import com.rubik.apt.files.source.mirror.value.addAnnotationMembers
 import com.squareup.kotlinpoet.*
-
-fun invokeElementCode(
-    type: InvokeElementType,
-    staticClass: Boolean,
-    className: String,
-    staticElement: Boolean,
-    elementName: String,
-    instanceCode: String?,
-    queriesCode: String?
-): String {
-    val instance = when {
-        staticClass -> className
-        staticElement -> {
-            if (className.endsWith("Kt"))
-                className.removeSuffix("Kt").let { name ->
-                    name.removeRange(name.lastIndexOf("."), name.length)
-                }
-            else className
-        }
-        else -> instanceCode ?: "$className()"
-    }
-    val element = when (type) {
-        InvokeElementType.METHOD, InvokeElementType.HIGHER_ORDER_FUNC, InvokeElementType.CONSTRUCTOR -> {
-            "$elementName(${
-                if (queriesCode.isNullOrBlank()) {
-                    ""
-                } else {
-                    "$queriesCode"
-                }
-            })"
-        }
-        InvokeElementType.PROPERTY -> {
-            elementName
-        }
-    }
-    return if (instance.isEmpty()) element else "$instance.$element"
-}
 
 
 fun FunSpec.Builder.inControlFlowStatementIf(
@@ -57,12 +19,25 @@ fun FunSpec.Builder.inControlFlowStatementIf(
     action: () -> Unit
 ) {
     if (checkIf){
-        beginControlFlow("if ( null!=$nameIf )".noSpaces())
+        beginControlFlow("if (null != $nameIf)".noSpaces())
         action()
         endControlFlow()
     } else {
         action()
     }
+}
+
+fun FunSpec.Builder.addWhenBlockStatements(
+    whenWhat: String?,
+    elseCode: String?,
+    action: FunSpec.Builder.() -> Unit
+) = apply {
+    if (whenWhat.isNullOrBlank()) beginControlFlow("when {".noSpaces())
+    else beginControlFlow("when (${whenWhat}){".noSpaces())
+    action.invoke(this)
+    if (elseCode.isNullOrBlank()) addStatement("else -> { }".noSpaces())
+    else addStatement("else -> { $elseCode }".noSpaces())
+    endControlFlow()
 }
 
 fun TypeSpec.Builder.addRGeneratedAnnotation(kind: String, version: String) = apply {
@@ -96,38 +71,66 @@ fun FunSpec.Builder.addRGeneratedRouterAnnotation(
     )
 }
 
-fun TypeSpec.Builder.addThisLevelSectionTypes(
-    sections: SectionCodeBase,
-    action: (TypeSpec.Builder, RouteCodeBase) -> Unit
+private fun <T : RouteCodeBase> TypeSpec.Builder.addThisLevelSectionTypes(
+    sections: SectionCodeBase<T>,
+    action: (TypeSpec.Builder, T) -> Unit
 ): TypeSpec.Builder = apply {
     sections.items.forEach { codeBase ->
         action(this, codeBase)
     }
 }
 
-fun TypeSpec.Builder.addNextLevelSectionTypes(
-    sections: SectionCodeBase,
-    action: (TypeSpec.Builder, RouteCodeBase) -> Unit
+private  fun <T : RouteCodeBase> TypeSpec.Builder.addNextLevelSectionTypes(
+    sections: SectionCodeBase<T>,
+    static:Boolean = false,
+    action: (TypeSpec.Builder, T) -> Unit
 ): TypeSpec.Builder = apply {
     sections.nextLevel.forEach { (typeName, codeBase) ->
-        addType(
-            TypeSpec.objectBuilder(
-                typeName.pathToCamel().camelToPascal()
-            ).addSectionTypes(
-                codeBase, action
-            ).addAnnotation(
-                AnnotationSpec.builder(ClassName.bestGuess(Constants.Contexts.KEEP_ANNOTATION_CLASS_NAME)).build()
-            ).build()
-        )
+        val spaceName =  typeName.pathToCamel().camelToPascal()
+        if (static) {
+            addType(
+                TypeSpec.objectBuilder(
+                    spaceName
+                ).addSectionTypes(
+                    codeBase, static, null, action
+                ).addAnnotation(
+                    AnnotationSpec.builder(ClassName.bestGuess(Constants.Contexts.KEEP_ANNOTATION_CLASS_NAME))
+                        .build()
+                ).build()
+            )
+        } else {
+            val spaceInnerClassName = "NameSpace${spaceName}"
+            addType(
+                TypeSpec.classBuilder(
+                    spaceInnerClassName
+                ).addModifiers(
+                    KModifier.INNER
+                ).addSectionTypes(
+                    codeBase, static, null, action
+                ).addAnnotation(
+                    AnnotationSpec.builder(ClassName.bestGuess(Constants.Contexts.KEEP_ANNOTATION_CLASS_NAME))
+                        .build()
+                ).build()
+            )
+            addProperty(
+                PropertySpec.builder(
+                    spaceName,
+                    ClassName("", spaceInnerClassName)
+                ).getter(
+                    FunSpec.getterBuilder().addStatement("return ${spaceInnerClassName}()").build()
+                ).build())
+        }
     }
 }
 
-fun TypeSpec.Builder.addSectionTypes(
-    sections: SectionCodeBase,
-    action: (TypeSpec.Builder, RouteCodeBase) -> Unit
+fun <T : RouteCodeBase> TypeSpec.Builder.addSectionTypes(
+    sections: SectionCodeBase<T>,
+    static:Boolean = true,
+    addNextLevelTo: TypeSpec.Builder? = null,
+    action: (TypeSpec.Builder, T) -> Unit
 ): TypeSpec.Builder = apply {
     addThisLevelSectionTypes(sections, action)
-    addNextLevelSectionTypes(sections, action)
+    (addNextLevelTo ?: this).addNextLevelSectionTypes(sections, static, action)
 }
 
 fun TypeSpec.Builder.addAnnotations(annotations: List<AnnotationCodeBase>) = apply {
@@ -144,4 +147,30 @@ fun TypeSpec.Builder.addInterfaces(interfaces: List<ClassName>) = apply {
     interfaces.forEach { name ->
         addSuperinterface(name)
     }
+}
+
+fun <T> Collection<T>.toArrayCode(transform: ((T) -> CharSequence)? = null) = joinToString(",\n" , transform = transform).let { code->
+    if(code.isNotBlank()) "\n$code\n" else code
+}
+
+fun bestGuessNameOrNull(className: String) = try {
+    ClassName.bestGuess(className)
+} catch (e: Exception) {
+    null
+}
+
+fun <T> List<T>.toParametersCode(
+    transform: ((T) -> CharSequence)? = null
+): String {
+    return if (isEmpty()) ""
+    else
+        """
+            |
+            |${joinToString(separator = ",\n") { 
+            """
+            |  ${transform?.invoke(it) ?: it.toString() }
+            """.trimMargin()
+            }}
+            |
+        """.trimMargin()
 }

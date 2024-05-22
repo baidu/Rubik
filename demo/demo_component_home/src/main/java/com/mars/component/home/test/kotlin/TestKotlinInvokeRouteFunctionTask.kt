@@ -50,6 +50,23 @@ class TestKotlinInvokeRouteFunctionTask {
             onFinish("$tag NA DBG doSthAsyncInterface value:$v1,$v2")
         }
 
+        DetailContext.doSthAsync3Interface({ v1, v2 ->
+            onFinish("$tag NA DBG doSthAsync3Interface value:$v1,$v2")
+        }, { v1, v2 ->
+            onFinish("$tag NA DBG doSthAsync3Interface value:$v1,$v2")
+        }, { data ->
+            onFinish("$tag NA DBG doSthAsync3Interface value:${data?.d1},${data?.d2}")
+        })
+
+        DetailContext.doSthAsyncInterfaceMultiFunc({ v1, v2 ->
+            onFinish("$tag NA DBG doSthAsyncInterfaceMultiFunc value:$v1,$v2")
+        }, { data ->
+            onFinish("$tag NA DBG doSthAsyncInterfaceMultiFunc data:${data?.d1},${data?.d2}")
+        }, { v1, v2 ->
+            onFinish("$tag NA DBG doSthAsyncInterfaceMultiFunc value:${v1},${v2}")
+        })
+
+
         // 返回View
         DetailRouteContext.viewGet(context) { view ->
             onFinish("$tag NA DBG getView value:$view")

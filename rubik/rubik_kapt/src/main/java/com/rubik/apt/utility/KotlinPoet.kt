@@ -15,4 +15,25 @@
  */
 package com.rubik.apt.utility
 
+import com.ktnail.x.Logger
+import com.squareup.kotlinpoet.FileSpec
+
 fun String.noSpaces() = this.replace(" ", "·")
+
+fun FileSpec.Builder.process()  = apply {
+    try {
+        // fix kotlinpoet issue : "import xxx as xxx" auto wrapping
+        this::class.java.getDeclaredField("memberImports").let { field ->
+            field.isAccessible = true
+            (field.get(this) as? Set<*>)?.forEach { import ->
+                if (null != import) {
+                    val importString = import::class.java.getDeclaredField("importString")
+                    importString.isAccessible = true
+                    importString.set(import, importString.get(import).toString().noSpaces())
+                }
+            }
+        }
+    } catch (e: Exception) {
+        Logger.e(e.toString())
+    }
+}

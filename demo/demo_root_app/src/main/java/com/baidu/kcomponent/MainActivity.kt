@@ -7,10 +7,12 @@ import com.mars.component.home.test.kotlin.TestBigData
 import com.mars.component.home.test.kotlin.invokeDataType
 import com.mars.component.home.ui.HomeActivity
 import com.mars.component.home.ui.java.JavaHomeActivity
+import com.rubik.Rubik
 import com.rubik.context.LifeCycleEvent
 import com.rubik.router.doEvent
 import com.rubik.router.doEventWithContext
 import kotlinx.android.synthetic.main.activity_main.*
+import rubik.generate.shell.idChecker
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         button_test_data_type.setOnClickListener {
-             invokeDataType(applicationContext)
+            invokeDataType(applicationContext)
         }
 
         button_test_big_data.setOnClickListener {
@@ -44,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             TestBigData().invoke(applicationContext) { info ->
                 text_info.text = text_info.text.toString() + "\n" + info
             }
+        }
+
+        button_check_ids.setOnClickListener {
+             Rubik.idChecker().check()
         }
     }
 }

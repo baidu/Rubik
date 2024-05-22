@@ -15,15 +15,18 @@
  */
 package com.rubik.apt.codebase.invoker
 
+import com.blueprint.kotlin.lang.type.toKotlinTypeName
 import com.rubik.apt.Constants
 import com.rubik.apt.codebase.api.ApiCodeBase
 import com.rubik.apt.codebase.api.QueryCodeBase
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 
 class InvokeContextCodeBase(
     val receiver: QueryCodeBase?,
+    private val objectInstance: QueryCodeBase?,
     val parameters: List<QueryCodeBase>,
     val hasSyncReturn: Boolean,
     val resultParameters: List<LambdaTypeCodeBase>,
@@ -32,79 +35,104 @@ class InvokeContextCodeBase(
     companion object {
         operator fun invoke(
             api: ApiCodeBase,
-            contextUri: String
+            contextUri: String,
+            inObject: Boolean = false
         ): InvokeContextCodeBase {
-            val receiver = api.originalInvoker.queries.find { query -> query.isExtendThis }
-            val parameters = (api.originalInvoker.assistant?.queries ?: listOf()) + api.originalInvoker.queries.filter { query ->
-                null == query.resultInvoker&&!query.isExtendThis
+            val receiver = api.invoker.parameters.find { query -> query.isExtendThis }
+
+            var objectInstance: QueryCodeBase? = null
+
+            val parameter = api.invoker.parameters.filter { query ->
+                null == query.resultCallbacks && !query.isExtendThis
+            }.let {
+                if (inObject) it.filter { query ->
+                    (query.originalName != Constants.Object.OBJECT_INSTANCE_PARAMETER_NAME).also { check ->
+                        if (!check) objectInstance = query
+                    }
+                } else it
             }
-            val hasSyncReturn = api.forResult && null != api.originalInvoker.result
-            val resultParameters = api.originalInvoker.getResultGroupsLambdaOrDefine(
-                if (hasSyncReturn) api.defineResultType else null,
+
+            val hasSyncReturn = api.syncReturn && null != api.invoker.result
+
+            val resultParameters = api.invoker.getResultGroupsLambdaOrDefine(
+                api.defineResultType,
                 contextUri,
                 hasSyncReturn
             )
-            val returnType = api.originalInvoker.getForResultOrDefine(api.defineResultType, contextUri)
+
+            val returnType = api.invoker.getForResultOrDefine(api.defineResultType, contextUri)
+
             return InvokeContextCodeBase(
                 receiver,
-                parameters,
+                objectInstance,
+                parameter,
                 hasSyncReturn,
                 resultParameters,
                 returnType
             )
         }
 
-        private  fun InvokeElementCodeBase.getForResultOrDefine(defineResultType: String?, uri: String): TypeName {
+        private fun InvokeOriginalCodeBase.getForResultOrDefine(
+            defineResultType: String?,
+            uri: String
+        ): TypeName {
             return if (defineResultType?.isNotBlank() == true)
-                Class.forName(defineResultType).asTypeName()
+                Class.forName(defineResultType).asTypeName().toKotlinTypeName()
             else
                 result?.toContextTypeName(uri) ?: Unit::class.asClassName()
         }
 
-        private fun InvokeElementCodeBase.getResultGroupsLambdaOrDefine(
+        private fun InvokeOriginalCodeBase.getResultGroupsLambdaOrDefine(
             defineResultType: String?,
             uri: String,
             hasSyncReturn: Boolean
         ): List<LambdaTypeCodeBase> =
             mutableListOf<LambdaTypeCodeBase>().apply {
-                val resultInvokers = queries.filter { query -> null != query.resultInvoker }
-                resultInvokers.forEachIndexed { index, query ->
-                    if (index == 0 && defineResultType?.isNotBlank() == true) {
+                val resultCallbackFunctions = queries.flatMap { query ->
+                    query.resultCallbacks?.functions?.map { function->
+                        query to function
+                    } ?: listOf()
+                }
+                resultCallbackFunctions.forEach { (query, function) ->  // have @RResult callback
+                    if (size == 0 && defineResultType?.isNotBlank() == true) {
+                        // if have defineResultType and have @RResult, merge there in first callback
                         add(
                             LambdaTypeCodeBase(
-                                Constants.Apis.makeFunctionResultName(size, query.legalName),
-                                listOf(Class.forName(defineResultType).asTypeName()),
+                                Constants.Apis.toResultTransformerName(size, function.legalName),
+                                listOf(Class.forName(defineResultType).asTypeName().toKotlinTypeName()),
                                 Unit::class.asClassName(),
-                                query.resultInvoker?.nullable ?: false
+                                query.nullable
                             )
                         )
-                    } else{
-                        val parameters = query.resultInvoker?.parameters?.map { codeBase -> codeBase.toContextTypeName(uri) } ?: listOf()
+                    } else {
+                        val parameters = function.queries.map { codeBase -> codeBase.toContextTypeName(uri) }
                         add(
                             LambdaTypeCodeBase(
-                                Constants.Apis.makeFunctionResultName(size, query.legalName),
+                                Constants.Apis.toResultTransformerName(size, function.legalName),
                                 parameters,
                                 Unit::class.asClassName(),
-                                query.resultInvoker?.nullable ?: false
+                                query.nullable
                             )
                         )
                     }
                 }
                 if (!hasSyncReturn) {
-                    if (defineResultType?.isNotBlank() == true && resultInvokers.isEmpty()) {
+                    if (resultCallbackFunctions.isEmpty() && defineResultType?.isNotBlank() == true) {
+                        // if have defineResultType but no @RResult, give a defineResultType callback
                         add(
                             LambdaTypeCodeBase(
-                                Constants.Apis.makeFunctionResultName(size, result?.name),
-                                listOf(Class.forName(defineResultType).asTypeName()),
+                                Constants.Apis.toResultTransformerName(size, result?.name),
+                                listOf(Class.forName(defineResultType).asTypeName().toKotlinTypeName()),
                                 Unit::class.asClassName(),
                                 result?.originalType?.nullable ?: false
                             )
                         )
                     }
                     if (isEmpty() && null != result) {
+                        // still no callback but is asnyc return, give callback of function return type
                         add(
                             LambdaTypeCodeBase(
-                                Constants.Apis.makeFunctionResultName(size, result.name),
+                                Constants.Apis.toResultTransformerName(size, result.name),
                                 listOf(result.toContextTypeName(uri)),
                                 Unit::class.asClassName(),
                                 result.originalType.nullable
@@ -114,4 +142,10 @@ class InvokeContextCodeBase(
                 }
             }
     }
+
+    fun invokeParameterNames(): List<String> =
+        listOfNotNull(objectInstance?.let { query->"this@${(query.originalType.toTypeName() as? ClassName)?.simpleName}" }) +
+                listOfNotNull(receiver?.let { "this" }) +
+                parameters.map { query -> query.callName } +
+                resultParameters.map { lambda -> lambda.name }
 }

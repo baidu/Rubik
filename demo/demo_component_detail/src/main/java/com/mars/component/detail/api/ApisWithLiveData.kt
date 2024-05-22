@@ -27,8 +27,8 @@ class ApisWithLiveData {
     }
 
     @RRoute(path = "live-data-bean-list/get")
-    fun getSthLiveDataBeanList(): LiveData<List<TestListBean>> {
-        return MutableLiveData<List<TestListBean>>().apply {
+    fun getSthLiveDataBeanList(): LiveData<List<TestListBean?>> {
+        return MutableLiveData<List<TestListBean?>>().apply {
             this.value = listOf(
                 TestListBean(45566778, listOf("A2QQQ", "A2WWW", "A2EEE")),
                 TestListBean(67788990, listOf("A2AAA", "A2SSS", "A2DDD"))

@@ -1,10 +1,11 @@
 def addRubikMavenRepos(RepositoryHandler handler) {
-    if (rubikUseLocalMaven) {
+    if (useLocalMaven) {
         handler.maven {
             name 'local'
             url rubik_maven_local_repository
+            allowInsecureProtocol = true
         }
-    } else if(rubikUseGithubMaven){
+    } else if(useGithubMaven){
         handler.maven {
             name 'github'
             url rubik_github_maven_repository
@@ -12,6 +13,7 @@ def addRubikMavenRepos(RepositoryHandler handler) {
                 username rubik_github_maven_username
                 password rubik_github_maven_password
             }
+            allowInsecureProtocol = true
         }
     } else {
         handler.maven {
@@ -21,6 +23,7 @@ def addRubikMavenRepos(RepositoryHandler handler) {
                 username rubik_maven_username
                 password rubik_maven_password
             }
+            allowInsecureProtocol = true
         }
     }
 }

@@ -1,0 +1,42 @@
+// 本地本地的组件组合配置,覆盖云端配置
+rubik {
+    packing { // 被选择组合成app的组件
+
+//        mavenMode all
+
+        projectMode all
+
+        mavenMode '.detail' , '.detail-java'
+
+//        mavenMode tag("pr2")
+
+//        noSourceMode tag("pr2")
+
+//        except '.detail'
+
+//        uri('.detail') {
+//            noSourceMode {
+//                aggregate false
+//            }
+//        }
+
+//        flavor('samsung') {
+//            uri('.library.c-java') {
+//                mavenMode {
+//                    variant "samsung"
+//                }
+//            }
+//        }
+//
+//        flavor('netdisk') {
+//            uri('.library.c-java') {
+//                mavenMode {
+//                    variant "netdisk"
+//                }
+//            }
+//        }
+    }
+
+//    except '.library.c-java', "detail-java"
+}
+

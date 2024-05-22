@@ -15,16 +15,13 @@
  */
 package com.rubik.plugins
 
-import com.android.build.gradle.api.BaseVariant
+import com.ktnail.gradle.p
 import com.ktnail.x.Logger
-import com.ktnail.x.toCamel
 import com.rubik.plugins.basic.LogTags
-import com.rubik.plugins.basic.exception.RubikPluginNotApplyException
-import com.rubik.plugins.basic.utility.*
+import com.rubik.context.exception.RubikPluginNotApplyException
+import com.rubik.plugins.basic.extra.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
-
 /**
  *  The super class of all gradle plugin in rubik.
  *
@@ -38,66 +35,8 @@ abstract class RubikPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         _project = project
         Logger.p(LogTags.PLUGIN, project) { " APPLIED PLUGIN (${this::class.java})" }
-        project.rubikExtension
+        project.rubik
         project.addRubikRepository()
     }
-
-    fun makeGeneratedDirs(onMakeDir: (File, BaseVariant) -> Unit) {
-        project.forEachVariant { variant ->
-            makeBuildGeneratedDir(variant).let { dir ->
-                dir.mkdirs()
-                onMakeDir(dir, variant)
-            }
-        }
-    }
-
-    private fun makeBuildGeneratedDir(variant: BaseVariant): File =
-        File(project.file(File(project.buildDir, "generated/source/rubikKotlin")), variant.name)
-
-    fun addImplementationJarDirDependency(dir: File) {
-        project.addDirDependency(DependencyType.IMPLEMENTATION, dir)
-    }
-
-    fun addImplementationDependency(groupId: String, artifactId: String, version: String) {
-        project.addDependency(DependencyType.IMPLEMENTATION, groupId, artifactId, version)
-    }
-
-    fun addImplementationDependency(flavor:String, groupId: String, artifactId: String, version: String) {
-        project.addDependency(DependencyType.IMPLEMENTATION, flavor, groupId, artifactId, version)
-    }
-
-    fun addImplementationDependency(depProject: Project) {
-        project.addProjectDependency(DependencyType.IMPLEMENTATION, depProject)
-    }
-
-    fun addImplementationDependency(flavor:String, depProject: Project) {
-        project.addProjectDependency(flavor.flavorDependencyType(DependencyType.IMPLEMENTATION), depProject)
-    }
-
-    fun addAndroidTestImplementationDependency(groupId: String, artifactId: String, version: String) {
-        project.addDependency(DependencyType.ANDROID_TEST_IMPLEMENTATION, groupId, artifactId, version)
-    }
-
-    fun addAndroidTestImplementationDependency(flavor:String, groupId: String, artifactId: String, version: String) {
-        project.addDependency(DependencyType.ANDROID_TEST_IMPLEMENTATION, flavor, groupId, artifactId, version)
-    }
-
-    fun addCompileOnlyJarDirDependency(dir: File) {
-        project.addDirDependency(DependencyType.COMPILE_ONLY, dir)
-    }
-
-    fun addCompileOnlyDependency(groupId: String, artifactId: String, version: String) {
-        project.addDependency(DependencyType.COMPILE_ONLY, groupId, artifactId, version)
-    }
-
-    fun addAndroidTestCompileOnlyDependency(groupId: String, artifactId: String, version: String) {
-        project.addDependency(DependencyType.ANDROID_TEST_COMPILE_ONLY, groupId, artifactId, version)
-    }
-
-    fun addAndroidTestCompileOnlyDependency(flavor:String, groupId: String, artifactId: String, version: String) {
-        project.addDependency(toCamel(flavor, DependencyType.ANDROID_TEST_COMPILE_ONLY), groupId, artifactId, version)
-    }
-
-
 
 }

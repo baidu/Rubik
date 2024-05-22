@@ -16,11 +16,13 @@ class ApisAsyncReturn {
     // 高阶函数异步返回
     @RRoute(path = "doSthAsyncHOFNullable")
     fun doSthAsyncHOFNullable(
-        @RResult hof: ((String, TestDataBean) -> Unit)?,
-        hof2p: ((String, TestDataBean) -> Unit)?
+        @RResult hofx1res: ((String, TestDataBean) -> Unit)?,
+        hof2xx: ((String, TestDataBean) -> Unit)?,
+//        @RResult hofx3res: ((String, Int, TestDataBean) -> TestDataBean)?,
+        hof4xx: ((String, Int, TestDataBean) -> TestDataBean?)?
     ) {
         println(" AP DBG DETAIL  doSthAsyncHOFNullable begin !!!")
-        hof?.invoke("dfg", TestDataBean(101, "xxx"))
+        hofx1res?.invoke("dfg", TestDataBean(101, "xxx"))
     }
 
     @RRoute(path = "doSthAsync2HOF")
@@ -46,12 +48,26 @@ class ApisAsyncReturn {
         onResult.onCall("zxc", 33)
     }
 
-    @RRoute(path = "do-sth-async-2-interface")
-    fun doSthAsync2Interface(@RResult onResult: Callbackable, @RResult onResult2: Callbackable, @RResult onResult3: BeanCallbackable) {
+    @RRoute(path = "do-sth-async-3-interface")
+    fun doSthAsync2Interface(
+        @RResult onResult: Callbackable?,
+        @RResult onResult2: Callbackable,
+        @RResult onResult3: BeanCallbackable
+//        @RResult onResult4: BeanReturnCallbackable,
+//        func5: BeanReturnCallbackable
+    ) {
         println(" AP DBG DETAIL  doSthAsyncInterface begin !!!")
-        onResult.onCall("zxc", 33)
+        onResult?.onCall("zxc", 33)
         onResult2.onCall("zxc2", 332)
         onResult3.onCall(TestDataBean(0, "abd"))
+    }
+
+    @RRoute(path = "do-sth-async-interface-multi-func")
+    fun doSthAsyncInterfaceMultiFunc(@RResult onResult: MultiCallback) {
+        println(" AP DBG DETAIL  doSthAsyncInterface begin !!!")
+        onResult.start("start1", 55)
+        onResult.data(TestDataBean(1, "dfg"))
+        onResult.stop("stop2", 66)
     }
 }
 
@@ -72,4 +88,19 @@ interface Callbackable {
 
 interface BeanCallbackable {
     fun onCall(v: TestDataBean?)
+}
+
+interface MultiCallback {
+    @RResult
+    fun start(v1: String?, v2: Int)
+
+    @RResult
+    fun data(v: TestDataBean?)
+
+    @RResult
+    fun stop(v1: String?, v2: Int)
+}
+
+interface BeanReturnCallbackable {
+    fun onCall(v: TestDataBean?):TestDataBean
 }

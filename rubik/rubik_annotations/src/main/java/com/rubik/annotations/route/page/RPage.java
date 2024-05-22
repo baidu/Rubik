@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE})
 public @interface RPage {
     String uri() default "";
-    String path();
+    String path() default "";
     String version() default "";
     boolean navigationOnly() default false;
 }

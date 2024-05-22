@@ -17,12 +17,23 @@ package com.rubik.apt.codebase.value
 
 import com.blueprint.kotlin.lang.type.KbpType
 import com.rubik.apt.codebase.AnnotationCodeBase
-import com.rubik.apt.codebase.api.TypeCodeBase
+import com.rubik.apt.codebase.TokenList
+import com.rubik.apt.codebase.invoker.TypeCodeBase
 
-data class ValueFieldCodeBase(
+class ValueFieldCodeBase(
     val name: String,
-    private val kbpType: KbpType,
+    originalType: KbpType,
     val annotations: List<AnnotationCodeBase>,
     val defaultValueCode: String?,
     val isConstant: Boolean
-) : TypeCodeBase(kbpType)
+) : TypeCodeBase(originalType) {
+    override val tokenList
+        get() = TokenList(
+            originalType,
+            annotations,
+            defaultValueCode,
+            isConstant,
+            key = "FLD",
+            warp = false
+        )
+}

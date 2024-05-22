@@ -4,14 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
-import com.rubik.route.mapping.query
 import com.rubik.router.bundleQueries
 import com.rubik.router.property
-import rubik.generate.context.demo_com_mars_rubik_test_detail.DetailContext
+import rubik.generate.context.demo_com_mars_rubik_test_detail.*
 import rubik.generate.context.demo_com_mars_rubik_test_detail.DetailContext.Companion.doSthExt
-import rubik.generate.context.demo_com_mars_rubik_test_detail.TestDataBean
-import rubik.generate.context.demo_com_mars_rubik_test_detail.TestParcelizeBean
-import rubik.generate.context.demo_com_mars_rubik_test_detail.TestSerializableBean
+import rubik.generate.context.demo_com_mars_rubik_test_detail.callback.CallbackTestInterface
+import rubik.generate.context.demo_com_mars_rubik_test_detail.objekt.ObjectTest
 
 class TestKotlinInvokeActionFunctionTask {
     fun invoke(context: Context, onFinish: (String) -> Unit) {
@@ -43,11 +41,11 @@ class TestKotlinInvokeActionFunctionTask {
         })
 
         // 接口异步返回
-        DetailContext.doSthAsyncOpen("textUri") {  v1, v2 ->
+        DetailContext.doSthAsyncOpen("textUri") { v1, v2 ->
             onFinish("$tag NA DBG doSthAsyncOpen value:$v1,$v2")
         }
 
-        DetailContext.doSthAsyncInterface {  v1, v2 ->
+        DetailContext.doSthAsyncInterface { v1, v2 ->
             onFinish("$tag NA DBG doSthAsyncInterface value:$v1,$v2")
         }
 
@@ -57,15 +55,15 @@ class TestKotlinInvokeActionFunctionTask {
         }
 
         // Companion方法
-        DetailContext.doSthCompanion(8,"asd",22L){value ->
+        DetailContext.doSthCompanion(8, "asd", 22L) { value ->
             onFinish("$tag NA DBG doSthCompanion value:$value")
         }
 
         // Companion属性
-        DetailContext.propertyCompanion { value ->  onFinish("$tag NA DBG propertyCompanion value:$value")}
+        DetailContext.propertyCompanion { value -> onFinish("$tag NA DBG propertyCompanion value:$value") }
 
         // Companion高阶函数
-        DetailContext.doSthHOFCompanion(6){ value ->
+        DetailContext.doSthHOFCompanion(6) { value ->
             onFinish("$tag NA DBG doSthHOFCompanion value:$value")
         }
 
@@ -76,7 +74,7 @@ class TestKotlinInvokeActionFunctionTask {
             arrayOf("asd"),
             listOf("ghj", "zxc"),
             arrayOf(TestDataBean(100, "101")),
-            listOf(TestDataBean(101, "102"),TestDataBean(103, "104"))
+            listOf(TestDataBean(101, "102"), TestDataBean(103, "104"))
         ) { list ->
             list.forEach {
                 onFinish("$tag NA DBG doSthTop d1:${it.d1} d1:${it.d2}")
@@ -96,9 +94,20 @@ class TestKotlinInvokeActionFunctionTask {
         // 通过assist获取实例
         DetailContext.doSthProvideInstanceByFunc()
 
-        DetailContext.doSthProvideInstanceByParameterFunc("2 value_ST 2", null, v1 = "2 value_ST- 2", v2 = 2888, v3 = 2999)
+        DetailContext.doSthProvideInstanceByParameterFunc(
+            "2 value_ST 2",
+            null,
+            v1 = "2 value_ST- 2",
+            v2 = 2888,
+            v3 = 2999
+        )
 
-        DetailContext.doSthProvideInstanceByConstructor("2 value_ST 3", v1 = "2 value_ST- 3", v2 = 3888, v3 = 3999)
+        DetailContext.doSthProvideInstanceByConstructor(
+            "2 value_ST 3",
+            v1 = "2 value_ST- 3",
+            v2 = 3888,
+            v3 = 3999
+        )
 
         // Bean参数返回值
         DetailContext.doSthBean(TestDataBean(8, null)) { value ->
@@ -120,7 +129,7 @@ class TestKotlinInvokeActionFunctionTask {
         }
 
         //扩展函数
-        100.doSthExt("tmp"){
+        100.doSthExt("tmp") {
             onFinish("$tag NA DBG doSthExt value:$it")
         }
 
@@ -129,17 +138,23 @@ class TestKotlinInvokeActionFunctionTask {
             object : ResultReceiver(Handler()) {
                 override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
                     super.onReceiveResult(resultCode, resultData)
-                    onFinish("$tag NA DBG doSthResultReceiver resultCode:$resultCode resultData1:${resultData?.property<String>(
-                        "fromA"
-                    )} resultData2:${resultData?.property<TestDataBean>(
-                        "BEAN_fromA"
-                    )?.d2}")
+                    onFinish(
+                        "$tag NA DBG doSthResultReceiver resultCode:$resultCode resultData1:${
+                            resultData?.property<String>(
+                                "fromA"
+                            )
+                        } resultData2:${
+                            resultData?.property<TestDataBean>(
+                                "BEAN_fromA"
+                            )?.d2
+                        }"
+                    )
                 }
             }
         ) { value ->
             value.send(1010, bundleQueries {
                 "fromB" with " this is B "
-                "BEAN_fromB" with TestDataBean(333,"B3w3w3w")
+                "BEAN_fromB" with TestDataBean(333, "B3w3w3w")
             })
             onFinish("$tag NA DBG doSthResultReceiver value:$value")
         }
@@ -147,14 +162,132 @@ class TestKotlinInvokeActionFunctionTask {
         // 变长参数
         DetailContext.doSthVararg(1, "qwe111", "asd2")
 
-       val parcelizeBean = DetailContext.Api.Serialization.parcelBean(TestParcelizeBean(1, "from home!"))
+        val parcelizeBean =
+            DetailContext.Api.Serialization.parcelBean(TestParcelizeBean(1, "from home!"))
         onFinish("$tag NA DBG Serialization value:${parcelizeBean?.d2}")
 
 
-
-    //        // 原始value
+        //        // 原始value
 //        DetailContext.doKeepOriginalValue(A4Bean(135,"135X")){
 //            onFinish("$tag NA DBG doKeepOriginalValue d1:${it.d1} d2:${it.d2}")
 //        }
+
+        // 传递实例
+
+        val commonInstance = ObjectTest("asd")
+        onFinish("$tag NA DBG getCommonInstance commonInstance:${commonInstance?.originalObject.hashCode()} ")
+        commonInstance?.doSthInCommonInstance { bean->
+            onFinish("$tag NA DBG doSthInCommonInstance bean:${bean.d1}  ${bean.d2}")
+
+        }
+
+        commonInstance?.let {
+            DetailContext.sendBackCommonInstance(commonInstance)
+            onFinish("$tag NA DBG sendBackCommonInstance commonInstance:${commonInstance.originalObject.hashCode()}")
+        }
+
+        DetailContext.getAOtherCommonInstance(425) { instance ->
+            onFinish("$tag NA DBG getAOtherCommonInstance  instance:${instance.originalObject.hashCode()} ")
+            DetailContext.sendBackCommonInstance(instance)
+            onFinish("$tag NA DBG sendBackCommonInstance instance:${instance.originalObject.hashCode()}")
+
+
+            instance.doSthInCommonInstanceParameter("xx", 123, 345)
+            instance.doSthInCommonInstanceParameter("xx", 123, 345)
+
+        }
+
+        val commonInstanceList = DetailContext.getALotOfCommonInstance(523)
+        onFinish(
+            "$tag NA DBG getALotOfCommonInstance commonInstance:${
+                commonInstanceList?.joinToString("~") { ins ->
+                    ins.originalObject.hashCode().toString()
+                }
+            }"
+        )
+
+        DetailContext.sendBackALotOfCommonInstance(mutableMapOf<String, ObjectTest>().apply {
+            commonInstanceList?.forEachIndexed { index, value ->
+                put("xxz${index}", value)
+            }
+        })
+
+
+        DetailContext.getAOtherCommonInstanceNull(23425) { instance ->
+            onFinish("$tag NA DBG getAOtherCommonInstanceNull  instance:${instance?.originalObject.hashCode()} ")
+            instance?.let {
+                DetailContext.sendBackCommonInstanceNull(null)
+                onFinish("$tag NA DBG sendBackCommonInstanceNull instance:${instance.originalObject.hashCode()}")
+            }
+        }
+
+        val commonInstanceListNull = DetailContext.getALotOfCommonInstanceNull(523)
+        onFinish(
+            "$tag NA DBG getALotOfCommonInstanceNull commonInstance:${
+                commonInstanceListNull?.joinToString("~") { ins ->
+                    ins?.originalObject.hashCode().toString()
+                }
+            }"
+        )
+
+        DetailContext.sendBackALotOfCommonInstanceNull(mutableMapOf<String?, ObjectTest?>().apply {
+            commonInstanceList?.forEachIndexed { index, value ->
+                put("wd${index}", if (index == 1) null else value)
+            }
+        })
+
+
+
+        // 传递callback
+        DetailContext.doSthCallbackObject(object : CallbackTestInterface {
+            override fun callbackBean(bean: TestDataBean) {
+                onFinish(
+                    "$tag NA DBG doSthCallbackObject callbackBean:${bean.d1} ${bean.d2}"
+                )
+
+            }
+
+            override fun callbackBeanReBean(bean: TestDataBean?) {
+                onFinish(
+                    "$tag NA DBG doSthCallbackObject callbackBeanReBean:${bean?.d1} ${bean?.d2}"
+                )
+            }
+
+            override fun callbackInt(i: Int) {
+                onFinish(
+                    "$tag NA DBG doSthCallbackObject callbackInt:${i}"
+                )
+            }
+
+        })
+
+        // 传递mapping value
+        DetailContext.doSthMappingBean(TestDataMappingBean(555,"asd")) { bean->
+            onFinish(
+                "$tag NA DBG doSthMappingBean :${bean.d1} ${bean.d2}"
+            )
+        }
+
+        DetailContext.doSthTestNestDataMappingBean(
+            TestNestDataMappingBean(
+                TestDataBean(123, "AAsdsd"),
+                TestDataMappingBean(155, "AAsdsd"),
+                TestNestDataMappingBean(
+                    TestDataBean(2223, "BBsdsd"),
+                    TestDataMappingBean(2255, "BBsdsd"),
+                    null,
+                    listOf(TestDataBean(2223, "BBsdsd")),
+                    listOf(TestDataMappingBean(2255, "BBsdsd"))
+                ),
+                listOf(TestDataBean(123, "AAsdsd")),
+                listOf(TestDataMappingBean(155, "AAsdsd"))
+
+            )
+        ) { bean ->
+            onFinish(
+                "$tag NA DBG doSthTestNestDataMappingBean :${bean.d1?.d2} ${bean.d2?.d2} ${bean.d3?.d2} ${bean.d4} ${bean.d5}"
+            )
+        }
+
     }
 }
